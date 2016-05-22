@@ -4,8 +4,9 @@ namespace XaviMontero\DrivewayOvershoot;
 
 class SudokuTest extends \PHPUnit_Framework_TestCase
 {
-    public function testTrue()
+    public function testIsOfProperClass()
     {
-        $this->assertTrue( true );
+        $sut = new Sudoku();
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Sudoku', $sut );
     }
 }
