@@ -26,4 +26,19 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
         $state = $this->getSut()->getState();
         $this->assertEquals( PotentialValuesState::Full(), $state );
     }
+
+    public function testCreationHasAllNumbers()
+    {
+        for( $i = 1; $i <= 9; $i++ )
+        {
+            $this->assertTrue( $this->getSut()->isOption( new Value( $i ) ) );
+        }
+    }
+
+    public function testKillingSomeLeavesASemiState()
+    {
+        $this->getSut()->killOption( new Value( 3 ) );
+        $state = $this->getSut()->getState();
+        $this->assertEquals( PotentialValuesState::Semi(), $state );
+    }
 }
