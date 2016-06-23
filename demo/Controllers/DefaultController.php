@@ -30,7 +30,7 @@ class DefaultController
         }
         catch( \Exception $e )
         {
-            echo($e->getMessage());
+            $this->printPage( $e->getMessage() );
         }
     }
 
@@ -69,7 +69,7 @@ d) transforms the data into a DTO suitable for the VIEW, and
 e) renders the view.
         */
 
-        $this->renderTheView();
+        $this->printPage( $this->renderTheView() );
     }
 
     private function renderTheView()
@@ -77,6 +77,11 @@ e) renders the view.
         $viewData = new \stdClass();
         $viewData->name = 'world';
 
-        $this->viewRenderers[ 'success' ]->render( $viewData );
+        return $this->viewRenderers[ 'success' ]->render( $viewData );
+    }
+
+    private function printPage( $page )
+    {
+        echo( $page );
     }
 }

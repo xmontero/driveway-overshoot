@@ -20,8 +20,9 @@ $commandLineParser = new Helpers\CommandLineParser( $argv );
 $sudokuReader = new Helpers\SudokuReaderFileImplementation();
 
 $ansi = new Helpers\AnsiColorCodesGenerator();
-$successViewRenderer = new Views\SuccessView( $ansi );
-$errorViewRenderer = new Views\ErrorView( $ansi );
+$widgets = new Views\AnsiWidgets( $ansi );
+$successViewRenderer = new Views\SuccessView( $widgets );
+$errorViewRenderer = new Views\ErrorView( $widgets );
 $viewRenderers = [ 'success' => $successViewRenderer, 'error' => $errorViewRenderer ];
 
 //-------------------------------------------------------------------------//

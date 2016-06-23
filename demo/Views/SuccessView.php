@@ -4,14 +4,17 @@ namespace DrivewayOvershoot\Demo\Views;
 
 class SuccessView
 {
+    private $widgets;
+
+    public function __construct( $widgets )
+    {
+        $this->widgets = $widgets;
+    }
+
     public function render( $data )
     {
-        echo(
-"+-----------------------------------+
-| driveway-overshoot                |
-+-----------------------------------+
-
-Files
+        $page = $this->widgets->header();
+        $page .= "Files
 -----
 * The demo.php is the FRONT-CONTROLLER that sets the autoloader up, and then calls the real controller.
 * The Controllers/DefaultController.php is the CONTROLLER in the MVC pattern.
@@ -32,7 +35,8 @@ Execution
 ---------
 
 Hello, $data->name!
-"
-        );
+";
+
+        return $page;
     }
 }

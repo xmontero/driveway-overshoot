@@ -4,11 +4,11 @@ namespace DrivewayOvershoot\Demo\Views;
 
 class ErrorView
 {
-    private $ansi;
+    private $widgets;
 
-    public function __construct( $ansi )
+    public function __construct( $widgets )
     {
-        $this->ansi = $ansi;
+        $this->widgets = $widgets;
     }
 
     public function renderInvalidNumberOfArguments( $command, $numberOfArguments )
@@ -31,34 +31,9 @@ class ErrorView
 
     private function renderGenericErrorMessage( $command, $errorMessage )
     {
-        $reset = $this->ansi->reset();
-        $red = $this->ansi->red();
-        $green = $this->ansi->green();
-        $yellow = $this->ansi->yellow();
-        $blue = $this->ansi->blue();
+        $page = $this->widgets->header();
+        $page .= $this->widgets->body( $command, $errorMessage );
 
-        return(
-            $green . "+-----------------------------------+" . $reset . "
-" . $green . "|" . $yellow . " driveway-overshoot                " . $green . "|" . $reset . "
-" . $green . "+-----------------------------------+" . $reset . "
-
-" . $red . "ERROR:" . $reset . " $errorMessage
-
-" . $blue . "SYNOPSIS" . $reset . "
-        php $command game_id
-
-" . $blue . "OPTIONS" . $reset . "
-        game_id
-            An integer representing the number of game to be solved. The game must exist in demo/Games/game_*.php
-
-" . $blue . "EXAMPLES" . $reset . "
-        php $command 1
-            This will solve demo/Games/game_1.php 
-
-        php $command 2
-            This will solve demo/Games/game_2.php 
-
-"
-        );
+        return $page;
     }
 }
