@@ -30,6 +30,6 @@ This model represents a sudoku solver.
     host$ vagrant up
     host$ vagrant ssh
     virtual$ cd /vagrant
-    virtual$ php demo/demo.php demo/games/game01.php
+    virtual$ php demo/demo.php 1
 
-    // You can change the game01 by any other file.
+    // You can change the 1 by any other number provided there is a file in the demo/Games directory.

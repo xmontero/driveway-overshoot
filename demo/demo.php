@@ -1,6 +1,11 @@
 <?php
 
-$view = new stdClass();
-$view->name = 'world';
+namespace DrivewayOvershoot\Demo;
 
-require_once( 'view.php' );
+require_once( 'ClassAutoloader.php' );
+
+$a = new ClassAutoloader();
+$a->setupAutoloader();
+
+$c = new Controllers\DefaultController();
+$c->run();
