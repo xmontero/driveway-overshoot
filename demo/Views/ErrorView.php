@@ -13,26 +13,19 @@ class ErrorView
 
     public function renderInvalidNumberOfArguments( $command, $numberOfArguments )
     {
-        $errorMessage = "Invalid number of arguments." . PHP_EOL .
-            "Expected: 1" . PHP_EOL .
-            "Actual:   $numberOfArguments";
-
-        return( $this->renderGenericErrorMessage( $command, $errorMessage ) );
+        return( $this->renderGenericErrorMessage( $command, "Invalid number of arguments.", 1, $numberOfArguments ) );
     }
 
     public function renderArgumentIsNotInteger( $command, $gameId )
     {
-        $errorMessage = "Invalid argument type for game_id." . PHP_EOL .
-            "Expected: {integer}" . PHP_EOL .
-            "Actual:   '$gameId'";
-
-        return( $this->renderGenericErrorMessage( $command, $errorMessage ) );
+        return( $this->renderGenericErrorMessage( $command, "Invalid argument type for game_id.", "{integer}", "'$gameId'" ) );
     }
 
-    private function renderGenericErrorMessage( $command, $errorMessage )
+    private function renderGenericErrorMessage( $command, $errorMessage, $expected, $actual )
     {
         $page = $this->widgets->header();
-        $page .= $this->widgets->body( $command, $errorMessage );
+        $page .= $this->widgets->error( $errorMessage, $expected, $actual );
+        $page .= $this->widgets->usage( $command );
 
         return $page;
     }

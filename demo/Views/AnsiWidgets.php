@@ -25,15 +25,26 @@ class AnsiWidgets
         return $message;
     }
 
-    public function body( $command, $errorMessage )
+    public function error( $errorMessage, $expected, $actual )
+    {
+        $reset = $this->ansi->reset();
+        $red = $this->ansi->red();
+
+        $widget = $red . "ERROR:" . $reset . " " . $errorMessage . PHP_EOL .
+            "        Expected: " . $expected . PHP_EOL .
+            "        Actual:   " . $actual . PHP_EOL .
+            PHP_EOL;
+
+        return $widget;
+    }
+
+    public function usage( $command )
     {
         $reset = $this->ansi->reset();
         $red = $this->ansi->red();
         $blue = $this->ansi->blue();
 
-        return( $red . "ERROR:" . $reset . " $errorMessage
-
-" . $blue . "SYNOPSIS" . $reset . "
+        $widget = $blue . "SYNOPSIS" . $reset . "
         php $command game_id
 
 " . $blue . "OPTIONS" . $reset . "
@@ -47,7 +58,8 @@ class AnsiWidgets
         php $command 2
             This will solve demo/Games/game_2.php 
 
-"
-        );
+";
+
+        return $widget;
     }
 }
