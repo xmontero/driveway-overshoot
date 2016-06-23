@@ -45,18 +45,18 @@ class AnsiWidgets
         $blue = $this->ansi->blue();
 
         $widget = $blue . "SYNOPSIS" . $reset . "
-        php $command game_id
+        php $command gameId
 
 " . $blue . "OPTIONS" . $reset . "
-        game_id
-            An integer representing the number of game to be solved. The game must exist in demo/Games/game_*.php
+        gameId
+            An integer representing the number of game to be solved. The game must exist in demo/Games/Game*.php where * is the gameId.
 
 " . $blue . "EXAMPLES" . $reset . "
         php $command 1
-            This will solve demo/Games/game_1.php 
+            This will solve demo/Games/Game1.php 
 
         php $command 2
-            This will solve demo/Games/game_2.php 
+            This will solve demo/Games/Game2.php 
 
 ";
 

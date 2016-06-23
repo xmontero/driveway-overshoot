@@ -18,12 +18,12 @@ class ErrorView
 
     public function renderArgumentIsNotInteger( $command, $gameId )
     {
-        return( $this->renderGenericErrorMessage( $command, "Invalid argument type for game_id.", "{integer}", "'$gameId'" ) );
+        return( $this->renderGenericErrorMessage( $command, "Invalid argument type for gameId.", "{integer}", "'$gameId'" ) );
     }
 
     public function renderGameIdDoesNotExist( $command, $gameId )
     {
-        return( $this->renderGenericErrorMessage( $command, "Invalid domain.", "{valid_integer} in the range of demo/Games/game_*.php.", "$gameId" ) );
+        return( $this->renderGenericErrorMessage( $command, "Invalid domain.", "{valid_integer} in the range of demo/Games/Game*.php.", "$gameId" ) );
     }
 
     private function renderGenericErrorMessage( $command, $errorMessage, $expected, $actual )

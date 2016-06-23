@@ -6,6 +6,6 @@ class SudokuReaderFileImplementation
 {
     public function gameExists( $gameId )
     {
-        return false;
+        return class_exists( 'DrivewayOvershoot\Demo\Games\Game' . $gameId );
     }
 }

@@ -16,11 +16,20 @@ class ClassAutoloader
         if( substr( $className, 0, $prefixLen ) === $prefix )
         {
             $trailingClassName = substr( $className, $prefixLen );
-            include( __DIR__ . '/' . str_replace( '\\', '/', $trailingClassName ) . '.php' );
+
+            $filename = __DIR__ . '/' . str_replace( '\\', '/', $trailingClassName ) . '.php';
+            if( file_exists( $filename ) )
+            {
+                include( $filename );
+            }
+            else
+            {
+                trigger_error( 'Invalid class name ' . $className . ' within the ' . $prefix . ' namespace.', E_USER_WARNING );
+            }
         }
         else
         {
-            throw new \Exception( 'Invalid class name.' );
+            trigger_error( 'Invalid class name ' . $className . '.', E_USER_WARNING );
         }
     }
 }
