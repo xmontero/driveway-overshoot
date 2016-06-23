@@ -8,6 +8,7 @@ class DefaultController
     private $sudokuReader;
     private $viewRenderers;
     private $command;
+    private $gameId;
 
     public function __construct( $commandLineParser, $sudokuReader, $viewRenderers )
     {
@@ -46,17 +47,22 @@ class DefaultController
 
     public function assertGameIdIsInteger()
     {
-        $gameId = $this->commandLineParser->getGameId();
-        if( ! ctype_digit( $gameId ) )
+        $this->gameId = $this->commandLineParser->getGameId();
+        if( ! ctype_digit( $this->gameId ) )
         {
-            $errorMessage = $this->viewRenderers[ 'error' ]->renderArgumentIsNotInteger( $this->command, $gameId );
+            $errorMessage = $this->viewRenderers[ 'error' ]->renderArgumentIsNotInteger( $this->command, $this->gameId );
             throw new \Exception( $errorMessage );
         }
     }
 
     public function assertGameIdExists()
     {
-        // TODO: Must check that the game exists.
+        $gameExists = $this->sudokuReader->gameExists( $this->gameId );
+        if( ! $gameExists )
+        {
+            $errorMessage = $this->viewRenderers[ 'error' ]->renderGameIdDoesNotExist( $this->command, $this->gameId );
+            throw new \Exception( $errorMessage );
+        }
     }
 
     private function cleanRun()
