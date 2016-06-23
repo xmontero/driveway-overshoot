@@ -2,7 +2,7 @@
 
 namespace DrivewayOvershoot\Demo\Views;
 
-class DefaultView
+class SuccessView
 {
     public function render( $data )
     {
@@ -15,7 +15,7 @@ Files
 -----
 * The demo.php is the FRONT-CONTROLLER that sets the autoloader up, and then calls the real controller.
 * The Controllers/DefaultController.php is the CONTROLLER in the MVC pattern.
-* The Views/DefaultView.php is the VIEW in the MVC pattern.
+* The Views/SuccessView.php is the VIEW in the MVC pattern.
 * The the project itself (under src/) is the MODEL in the MVC pattern.
 
 How it works
