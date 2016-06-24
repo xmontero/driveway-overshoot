@@ -8,13 +8,16 @@ use XaviMontero\DrivewayOvershoot\SudokuSaverInterface;
 
 class SudokuPersisterInMemoryImplementation implements SudokuLoaderInterface, SudokuSaverInterface
 {
-    public function load( Sudoku $sudoku )
+    public $callCountLoad = 0;
+    public $callCountSave = 0;
+
+    public function load( string $gameId, Sudoku $sudoku )
     {
-        // TODO: Implement load() method.
+        $this->callCountLoad++;
     }
 
-    public function save( Sudoku $sudoku )
+    public function save( string $gameId, Sudoku $sudoku )
     {
-        // TODO: Implement save() method.
+        //$this->callCountSave++;
     }
 }

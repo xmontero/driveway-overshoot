@@ -4,5 +4,5 @@ namespace XaviMontero\DrivewayOvershoot;
 
 interface SudokuSaverInterface
 {
-    public function save( Sudoku $sudoku );
+    public function save( string $gameId, Sudoku $sudoku );
 }

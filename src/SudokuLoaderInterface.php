@@ -4,5 +4,5 @@ namespace XaviMontero\DrivewayOvershoot;
 
 interface SudokuLoaderInterface
 {
-    public function load( Sudoku $sudoku );
+    public function load( string $gameId, Sudoku $sudoku );
 }
