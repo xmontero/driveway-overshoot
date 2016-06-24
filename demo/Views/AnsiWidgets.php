@@ -40,25 +40,30 @@ class AnsiWidgets
 
     public function usage( $command )
     {
+        $synopsisContent = "        php $command gameId" . PHP_EOL;
+        $widget = $this->block( 'SYNOPSIS', $synopsisContent );
+
+        $optionsContent = "        gameId" . PHP_EOL;
+        $optionsContent .= "            An integer representing the number of game to be solved. The game must exist in demo/Games/Game*.php where * is the gameId." . PHP_EOL;
+        $widget .= $this->block( 'OPTIONS' , $optionsContent );
+
+        $examplesContent = "        php $command 1" . PHP_EOL;
+        $examplesContent .= "            This will solve demo/Games/Game1.php" . PHP_EOL . PHP_EOL;
+        $examplesContent .= "        php $command 2" . PHP_EOL;
+        $examplesContent .= "            This will solve demo/Games/Game2.php" . PHP_EOL;
+        $widget .= $this->block( 'EXAMPLES' , $examplesContent );
+
+        return $widget;
+    }
+
+    public function block( $title, $content )
+    {
         $reset = $this->ansi->reset();
-        $red = $this->ansi->red();
         $blue = $this->ansi->blue();
 
-        $widget = $blue . "SYNOPSIS" . $reset . "
-        php $command gameId
-
-" . $blue . "OPTIONS" . $reset . "
-        gameId
-            An integer representing the number of game to be solved. The game must exist in demo/Games/Game*.php where * is the gameId.
-
-" . $blue . "EXAMPLES" . $reset . "
-        php $command 1
-            This will solve demo/Games/Game1.php 
-
-        php $command 2
-            This will solve demo/Games/Game2.php 
-
-";
+        $widget = $blue . $title . $reset . PHP_EOL;
+        $widget .= $content;
+        $widget .= PHP_EOL;
 
         return $widget;
     }
