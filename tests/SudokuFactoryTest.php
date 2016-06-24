@@ -1,6 +1,8 @@
 <?php
 
-namespace XaviMontero\DrivewayOvershoot;
+namespace XaviMontero\DrivewayOvershoot\Tests;
+
+use XaviMontero\DrivewayOvershoot\SudokuFactory;
 
 class SudokuFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -9,7 +11,7 @@ class SudokuFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->persister = new Tests\Helpers\SudokuPersisterInMemoryImplementation();
+        $this->persister = new Helpers\SudokuPersisterInMemoryImplementation();
         $this->sut = new SudokuFactory( $this->persister, $this->persister );
     }
 
@@ -25,13 +27,22 @@ class SudokuFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateSudokuReturnsProperType()
     {
-        $sudoku = $this->getSut()->createSudoku( 'game1' );
+        $sudoku = $this->getSut()->createSudoku( 'easy1' );
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Sudoku', $sudoku );
     }
 
     public function testCreationCallsTheReader()
     {
-        $this->getSut()->createSudoku( 'game1' );
+        $this->getSut()->createSudoku( 'easy1' );
         $this->assertEquals( 1, $this->persister->callCountLoad );
+    }
+
+    public function testCreationDoesPredefinedResult()
+    {
+        $sudoku = $this->getSut()->createSudoku( 'empty' );
+        $this->assertTrue( $sudoku->isEmpty() );
+
+        $sudoku = $this->getSut()->createSudoku( 'easy1' );
+        $this->assertFalse( $sudoku->isEmpty() );
     }
 }
