@@ -9,8 +9,9 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   #config.vm.box = "ubuntu/xenial64"
-  config.vm.box = "rasmus/php7dev"
+  config.vm.box = "gbarbieru/xenial"
   config.vm.hostname = "driveway-overshoot-model-ddd-with-symfony"
+  config.vm.provision :shell, path: "vagrant/bootstrap.sh"
 
 #  config.vm.provision :puppet do |puppet|
 #    puppet.manifests_path = "puppet/manifests"
