@@ -8,7 +8,8 @@ class SudokuFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->sut = new SudokuFactory();
+        $persister = new Tests\Helpers\SudokuPersisterInMemoryImplementation();
+        $this->sut = new SudokuFactory( $persister );
     }
 
     private function getSut() : SudokuFactory

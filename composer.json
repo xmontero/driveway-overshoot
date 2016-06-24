@@ -3,7 +3,8 @@
     {
         "psr-4":
         {
-            "XaviMontero\\DrivewayOvershoot\\": "src/"
+            "XaviMontero\\DrivewayOvershoot\\": "src/",
+            "XaviMontero\\DrivewayOvershoot\\Tests\\": "tests/"
         }
     },
     "require-dev":
