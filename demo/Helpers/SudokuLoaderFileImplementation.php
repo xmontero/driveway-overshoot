@@ -2,7 +2,7 @@
 
 namespace XaviMontero\DrivewayOvershoot\Demo\Helpers;
 
-class SudokuReaderFileImplementation
+class SudokuLoaderFileImplementation
 {
     public function gameExists( int $gameId )
     {
