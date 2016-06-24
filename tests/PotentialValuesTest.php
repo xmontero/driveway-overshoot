@@ -119,6 +119,48 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    /**
+     * @dataProvider getSingleOptionThrowsExceptionIfInImproperValueProvider
+     */
+    public function testGetSingleOptionThrowsExceptionIfInImproperValue( $kill )
+    {
+        $this->killSutByArray( $kill );
+
+        $this->expectException( \LogicException::class );
+        $this->getSut()->getSingleOption();
+    }
+
+    public function getSingleOptionThrowsExceptionIfInImproperValueProvider()
+    {
+        return
+            [
+                [ [ ] ],
+                [ [ 3 ] ],
+                [ [ 8, 9 ] ],
+                [ [ 4, 5, 1, 8 ] ],
+                [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ] ],
+            ];
+    }
+
+    /**
+     * @dataProvider getSingleOptionReturnsNonKilledValue
+     */
+    public function testGetSingleOptionReturnsNonKilledValue( $kill, $expected )
+    {
+        $this->killSutByArray( $kill );
+        $this->assertTrue( $this->getSut()->getSingleOption()->equals( new Value( $expected ) ) );
+    }
+
+    public function getSingleOptionReturnsNonKilledValue()
+    {
+        return
+            [
+                [ [ 2, 3, 4, 5, 6, 7, 8, 9 ], 1 ],
+                [ [ 1, 2, 3, 4, 5, 7, 8, 9 ], 6 ],
+                [ [ 1, 2, 3, 4, 5, 6, 7, 8 ], 9 ],
+            ];
+    }
+
     //---------------------------------------------------------------------//
     // Private                                                             //
     //---------------------------------------------------------------------//

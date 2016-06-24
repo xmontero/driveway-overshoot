@@ -60,4 +60,15 @@ class PotentialValues
     {
         $this->potential[ $value->getValue() ] = false;
     }
+
+    public function getSingleOption() : Value
+    {
+        $state = $this->getState();
+        if( $state != PotentialValuesState::Single() )
+        {
+            throw new \LogicException( "getSingleValue can only be called when the state is PotentialValuesState::Single, state " . $state . " found." );
+        }
+
+        return new Value( array_search( true, $this->potential ) );
+    }
 }
