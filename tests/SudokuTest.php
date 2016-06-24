@@ -2,6 +2,7 @@
 
 namespace XaviMontero\DrivewayOvershoot\Tests;
 
+use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\Sudoku;
 
 class SudokuTest extends \PHPUnit_Framework_TestCase
@@ -30,16 +31,14 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
 
     public function testGetTileReturnsProperType()
     {
-        $tile = $this->getSut()->getTile( 4, 4 );
+        $tile = $this->getSut()->getTile( new Coordinates( 4, 4 ) );
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Tile', $tile );
     }
 
-    /*
     public function testAfterSettingValuesIsNotEmpty()
     {
         $sut = new Sudoku();
-        $sut->getTile( 4, 4 )->setValue( 9 );
+        $sut->getTile( new Coordinates( 4, 4 ) )->setInitialValue( 9 );
         $this->assertFalse( $sut->isEmpty() );
     }
-    */
 }
