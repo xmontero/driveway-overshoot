@@ -75,4 +75,14 @@ class ValueTest extends \PHPUnit_Framework_TestCase
             [ 9 ],
         ];
     }
+
+    public function testEquals()
+    {
+        $sut = new Value( 7 );
+        $otherNotEquals = new Value( 8 );
+        $otherEquals = new Value( 7 );
+
+        $this->assertFalse( $sut->equals( $otherNotEquals ) );
+        $this->assertTrue( $sut->equals( $otherEquals ) );
+    }
 }

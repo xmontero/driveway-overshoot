@@ -25,4 +25,9 @@ class Value
     {
         return $this->value;
     }
+
+    public function equals( Value $other )
+    {
+        return ( $this->getValue() === $other->getValue() );
+    }
 }
