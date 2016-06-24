@@ -6,6 +6,7 @@ namespace DrivewayOvershoot\Demo;
 // Set the autoloader up                                                   //
 //-------------------------------------------------------------------------//
 
+error_reporting( E_ALL ^ E_NOTICE ^ E_USER_WARNING );
 require_once( 'ClassAutoloader.php' );
 
 $autoloader = new ClassAutoloader();
