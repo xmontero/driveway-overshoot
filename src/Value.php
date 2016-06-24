@@ -21,7 +21,7 @@ class Value
         $this->value = $value;
     }
 
-    public function getValue()
+    public function getValue() : int
     {
         return $this->value;
     }

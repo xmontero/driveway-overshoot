@@ -18,7 +18,7 @@ class ValueTest extends \PHPUnit_Framework_TestCase
     public function testCreationThrowsDomainExceptionIfValueIsOutOfRange( int $value )
     {
         $this->expectException( \DomainException::class );
-        $sut = new Value( $value );
+        new Value( $value );
     }
 
     public function creationThrowsDomainExceptionIfValueIsOutOfRangeProvider()
@@ -40,7 +40,7 @@ class ValueTest extends \PHPUnit_Framework_TestCase
     public function testCreationThrowsTypeExceptionIfValueIsOfWrongType( $value )
     {
         $this->expectException( \TypeError::class );
-        $sut = new Value( $value );
+        new Value( $value );
     }
 
     public function creationThrowsTypeExceptionIfValueIsOfWrongTypeProvider()
