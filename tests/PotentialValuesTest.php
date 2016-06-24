@@ -15,29 +15,19 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
         $this->sut = new PotentialValues();
     }
 
-    private function getSut() : PotentialValues
-    {
-        return $this->sut;
-    }
+    //---------------------------------------------------------------------//
+    // Tests                                                               //
+    //---------------------------------------------------------------------//
 
     public function testCreationIsOfProperClass()
     {
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\PotentialValues', $this->getSut() );
     }
 
+    //-- States -----------------------------------------------------------//
+
     public function testCreationLeavesAFullState()
     {
-        $state = $this->getSut()->getState();
-        $this->assertEquals( PotentialValuesState::Full(), $state );
-    }
-
-    public function testCreationHasAllNumbers()
-    {
-        for( $i = 1; $i <= 9; $i++ )
-        {
-            $this->assertTrue( $this->getSut()->isOption( new Value( $i ) ) );
-        }
-
         $state = $this->getSut()->getState();
         $this->assertEquals( PotentialValuesState::Full(), $state );
     }
@@ -55,33 +45,87 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
     public function killingSomeLeavesASemiStateProvider()
     {
         return
-            [
-                [ [ 3 ] ],
-                [ [ 3, 5 ] ],
-                [ [ 4, 5, 1, 8 ] ],
-            ];
+        [
+            [ [ 3 ] ],
+            [ [ 3, 5 ] ],
+            [ [ 4, 5, 1, 8 ] ],
+        ];
     }
 
     /**
-     * @dataProvider killing8ValuesLeavesASingleProvider
+     * @dataProvider killingEightValuesLeavesASingleProvider
      */
-    public function testKilling8ValuesLeavesASingleState( $kill )
+    public function testKillingEightValuesLeavesASingleState( $kill )
     {
         $this->killSutByArray( $kill );
         $state = $this->getSut()->getState();
         $this->assertEquals( PotentialValuesState::Single(), $state );
     }
 
-    public function killing8ValuesLeavesASingleProvider()
+    public function killingEightValuesLeavesASingleProvider()
     {
         return
-            [
-                [ [ 2, 3, 4, 5, 6, 7, 8, 9 ] ],
-                [ [ 1, 2, 4, 5, 6, 7, 8, 9 ] ],
-                [ [ 1, 2, 3, 4, 6, 7, 8, 9 ] ],
-                [ [ 1, 2, 3, 4, 5, 6, 8, 9 ] ],
-                [ [ 1, 2, 3, 4, 5, 6, 7, 8 ] ],
-            ];
+        [
+            [ [ 2, 3, 4, 5, 6, 7, 8, 9 ] ],
+            [ [ 1, 2, 4, 5, 6, 7, 8, 9 ] ],
+            [ [ 1, 2, 3, 4, 6, 7, 8, 9 ] ],
+            [ [ 1, 2, 3, 4, 5, 6, 8, 9 ] ],
+            [ [ 1, 2, 3, 4, 5, 6, 7, 8 ] ],
+        ];
+    }
+
+    public function testKillingAllValuesLeavesASingleState()
+    {
+        $this->killSutByArray( [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ] );
+        $state = $this->getSut()->getState();
+        $this->assertEquals( PotentialValuesState::Empty(), $state );
+    }
+
+    //-- Content ----------------------------------------------------------//
+
+    /**
+     * @dataProvider killingEliminatesTheOptionsProvider
+     */
+    public function testKillingEliminatesTheOptions( $kill )
+    {
+        foreach( $kill as $killValue )
+        {
+            $this->getSut()->killOption( new Value( $killValue ) );
+        }
+
+        for( $i = 1; $i <= 9; $i++ )
+        {
+            $expected = ! in_array( $i, $kill );
+            $actual = $this->getSut()->isOption( new Value( $i ) );
+
+            $this->assertEquals( $expected, $actual );
+        }
+    }
+
+    public function killingEliminatesTheOptionsProvider()
+    {
+        return
+        [
+            [ [ ] ],
+            [ [ 1 ] ],
+            [ [ 3 ] ],
+            [ [ 3, 5 ] ],
+            [ [ 8, 9 ] ],
+            [ [ 4, 5, 1, 8 ] ],
+            [ [ 2, 3, 4, 5, 6, 7, 8, 9 ] ],
+            [ [ 1, 2, 3, 4, 5, 7, 8, 9 ] ],
+            [ [ 1, 2, 3, 4, 5, 6, 7, 8 ] ],
+            [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ] ],
+        ];
+    }
+
+    //---------------------------------------------------------------------//
+    // Private                                                             //
+    //---------------------------------------------------------------------//
+
+    private function getSut() : PotentialValues
+    {
+        return $this->sut;
     }
 
     private function killSutByArray( $kill )
