@@ -6,6 +6,7 @@ use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\Sudoku;
 use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
 use XaviMontero\DrivewayOvershoot\SudokuSaverInterface;
+use XaviMontero\DrivewayOvershoot\Value;
 
 class SudokuPersisterInMemoryImplementation implements SudokuLoaderInterface, SudokuSaverInterface
 {
@@ -43,9 +44,13 @@ class SudokuPersisterInMemoryImplementation implements SudokuLoaderInterface, Su
                 {
                     for( $x = 1; $x <= 9; $x++ )
                     {
-                        $coordinates = new Coordinates( $x, $y );
                         $value = $easy1[ $y - 1 ][ $x - 1 ];
-                        $sudoku->getTile( $coordinates )->setInitialValue( $value );
+
+                        if( $value != 0 )
+                        {
+                            $coordinates = new Coordinates( $x, $y );
+                            $sudoku->getTile( $coordinates )->setInitialValue( new Value( $value ) );
+                        }
                     }
                 }
                 break;

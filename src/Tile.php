@@ -16,7 +16,7 @@ class Tile
         return new PotentialValues;
     }
 
-    public function setInitialValue( int $value )
+    public function setInitialValue( Value $value )
     {
         $this->initialValue = $value;
     }

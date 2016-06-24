@@ -3,6 +3,7 @@
 namespace XaviMontero\DrivewayOvershoot\Tests;
 
 use XaviMontero\DrivewayOvershoot\Tile;
+use XaviMontero\DrivewayOvershoot\Value;
 
 class TileTest extends \PHPUnit_Framework_TestCase
 {
@@ -43,7 +44,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
 
     public function testAfterInitializingIsNotEmpty()
     {
-        $this->getSut()->setInitialValue( 4 );
+        $this->getSut()->setInitialValue( new Value( 4 ) );
         $this->assertFalse( $this->getSut()->isEmpty() );
     }
 }
