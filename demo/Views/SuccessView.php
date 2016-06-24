@@ -1,6 +1,6 @@
 <?php
 
-namespace DrivewayOvershoot\Demo\Views;
+namespace XaviMontero\DrivewayOvershoot\Demo\Views;
 
 class SuccessView
 {

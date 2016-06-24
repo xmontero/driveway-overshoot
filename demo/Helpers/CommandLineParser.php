@@ -1,6 +1,6 @@
 <?php
 
-namespace DrivewayOvershoot\Demo\Helpers;
+namespace XaviMontero\DrivewayOvershoot\Demo\Helpers;
 
 class CommandLineParser
 {

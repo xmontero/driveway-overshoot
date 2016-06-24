@@ -1,11 +1,11 @@
 <?php
 
-namespace DrivewayOvershoot\Demo\Helpers;
+namespace XaviMontero\DrivewayOvershoot\Demo\Helpers;
 
 class SudokuReaderFileImplementation
 {
-    public function gameExists( $gameId )
+    public function gameExists( int $gameId )
     {
-        return class_exists( 'DrivewayOvershoot\Demo\Games\Game' . $gameId );
+        return class_exists( 'XaviMontero\DrivewayOvershoot\Demo\Games\Game' . $gameId );
     }
 }

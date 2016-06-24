@@ -1,6 +1,6 @@
 <?php
 
-namespace DrivewayOvershoot\Demo\Games;
+namespace XaviMontero\DrivewayOvershoot\Demo\Games;
 
 class Game1
 {

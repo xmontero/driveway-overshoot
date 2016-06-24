@@ -1,6 +1,6 @@
 <?php
 
-namespace DrivewayOvershoot\Demo\Controllers;
+namespace XaviMontero\DrivewayOvershoot\Demo\Controllers;
 
 class DefaultController
 {

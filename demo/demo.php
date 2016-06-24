@@ -1,6 +1,6 @@
 <?php
 
-namespace DrivewayOvershoot\Demo;
+namespace XaviMontero\DrivewayOvershoot\Demo;
 
 //-------------------------------------------------------------------------//
 // Set the autoloader up                                                   //

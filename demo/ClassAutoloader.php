@@ -1,6 +1,6 @@
 <?php
 
-namespace DrivewayOvershoot\Demo;
+namespace XaviMontero\DrivewayOvershoot\Demo;
 
 class ClassAutoloader
 {
@@ -11,7 +11,7 @@ class ClassAutoloader
 
     private function loader( $className )
     {
-        $prefix = 'DrivewayOvershoot\\Demo\\';
+        $prefix = 'XaviMontero\\DrivewayOvershoot\\Demo\\';
         $prefixLen = strlen( $prefix );
         if( substr( $className, 0, $prefixLen ) === $prefix )
         {
