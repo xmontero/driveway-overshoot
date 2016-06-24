@@ -2,7 +2,9 @@
 
 declare( strict_types = 1 );
 
-namespace XaviMontero\DrivewayOvershoot;
+namespace XaviMontero\DrivewayOvershoot\Tests;
+
+use XaviMontero\DrivewayOvershoot\Value;
 
 class ValueTest extends \PHPUnit_Framework_TestCase
 {

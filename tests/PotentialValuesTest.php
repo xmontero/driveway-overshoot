@@ -1,6 +1,10 @@
 <?php
 
-namespace XaviMontero\DrivewayOvershoot;
+namespace XaviMontero\DrivewayOvershoot\Tests;
+
+use XaviMontero\DrivewayOvershoot\PotentialValues;
+use XaviMontero\DrivewayOvershoot\PotentialValuesState;
+use XaviMontero\DrivewayOvershoot\Value;
 
 class PotentialValuesTest extends \PHPUnit_Framework_TestCase
 {

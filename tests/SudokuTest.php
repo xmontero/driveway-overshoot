@@ -1,6 +1,8 @@
 <?php
 
-namespace XaviMontero\DrivewayOvershoot;
+namespace XaviMontero\DrivewayOvershoot\Tests;
+
+use XaviMontero\DrivewayOvershoot\Sudoku;
 
 class SudokuTest extends \PHPUnit_Framework_TestCase
 {
