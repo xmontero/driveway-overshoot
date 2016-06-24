@@ -49,8 +49,6 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
 
     public function testProperValueAfterLoadingNonEmptyValues()
     {
-        $this->markTestIncomplete();
-
         $this->loader->load( 'easy1', $this->sut );
         $this->assertFalse( $this->sut->isEmpty() );
         $this->assertTrue( $this->sut->getTile( new Coordinates( 2, 3 ) )->isEmpty() );

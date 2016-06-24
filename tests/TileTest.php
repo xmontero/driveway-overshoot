@@ -35,16 +35,14 @@ class TileTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\PotentialValues', $potentialValues );
     }
 
-    /*
-    public function testAfterCreationHasAllPotentialValues()
-    {
-        $this->getSut()->getPotentialValues()
-    }
-    */
-
     public function testAfterInitializingIsNotEmpty()
     {
         $this->getSut()->setInitialValue( new Value( 4 ) );
         $this->assertFalse( $this->getSut()->isEmpty() );
+    }
+
+    public function testAfterCreationHasAllPotentialValues()
+    {
+        $potentialValues = $this->getSut()->getPotentialValues();
     }
 }
