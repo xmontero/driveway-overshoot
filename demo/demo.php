@@ -18,7 +18,7 @@ $autoloader->setupAutoloader();
 
 $commandLineParser = new Helpers\CommandLineParser( $argv );
 
-$sudokuReader = new Helpers\SudokuReaderFileImplementation();
+$sudokuReader = new Helpers\SudokuLoaderFileImplementation();
 
 $ansi = new Helpers\AnsiColorCodesGenerator();
 $widgets = new Views\AnsiWidgets( $ansi );
