@@ -61,9 +61,10 @@ class TileTest extends \PHPUnit_Framework_TestCase
 
     public function testHasInitialValueAfterSettingAnInitialValue()
     {
-        $this->assertFalse( $this->getSut()->hasInitialValue() );
-        $this->getSut()->setInitialValue( new Value( 4 ) );
-        $this->assertTrue( $this->getSut()->hasInitialValue() );
+        $sut = $this->getSut();
+
+        $sut->setInitialValue( new Value( 4 ) );
+        $this->assertTrue( $sut->hasInitialValue() );
     }
 
     public function testHasNotInitialValueAfterRemoval()
@@ -77,13 +78,73 @@ class TileTest extends \PHPUnit_Framework_TestCase
 
     public function testGetInitialValueTrowsExceptionIfNotSet()
     {
-        $this->expectException( \TypeError::class );
+        $this->expectException( \LogicException::class );
         $this->getSut()->getInitialValue();
     }
 
     public function testGetInitialValueReturnsSetValue()
     {
-        $this->getSut()->setInitialValue( new Value(4) );
-        $this->assertTrue( $this->getSut()->getInitialValue()->equals( new Value(4) ) );
+        $sut = $this->getSut();
+
+        $sut->setInitialValue( new Value(4) );
+        $this->assertTrue( $sut->getInitialValue()->equals( new Value(4) ) );
+    }
+
+    //-- Solution values --------------------------------------------------//
+
+    public function testHasNotSolutionValueAfterCreation()
+    {
+        $this->assertFalse( $this->getSut()->hasSolutionValue() );
+    }
+
+    public function testHasSolutionValueAfterSettingASolutionValue()
+    {
+        $sut = $this->getSut();
+
+        $sut->setSolutionValue( new Value( 4 ) );
+        $this->assertTrue( $sut->hasSolutionValue() );
+    }
+
+    public function testHasNotSolutionValueAfterRemoval()
+    {
+        $sut = $this->getSut();
+
+        $sut->setSolutionValue( new Value( 4 ) );
+        $sut->removeSolutionValue();
+        $this->assertFalse( $sut->hasSolutionValue() );
+    }
+
+    public function testGetSolutionValueTrowsExceptionIfNotSet()
+    {
+        $this->expectException( \LogicException::class );
+        $this->getSut()->getSolutionValue();
+    }
+
+    public function testGetSolutionValueReturnsSetValue()
+    {
+        $sut = $this->getSut();
+
+        $sut->setSolutionValue( new Value( 7 ) );
+        $this->assertTrue( $sut->getSolutionValue()->equals( new Value( 7 ) ) );
+    }
+
+    //-- Initial and solution values interaction --------------------------//
+
+    public function testSetSolutionValueThrowsExceptionIfInitialValueIsSet()
+    {
+        $sut = $this->getSut();
+
+        $this->expectException( \LogicException::class );
+        $sut->setInitialValue( new Value( 5 ) );
+        $sut->setSolutionValue( new Value( 5 ) );
+    }
+
+    public function testSetInitialValueThrowsExceptionIfSolutionValueIsSet()
+    {
+        $sut = $this->getSut();
+
+        $this->expectException( \LogicException::class );
+        $sut->setSolutionValue( new Value( 5 ) );
+        $sut->setInitialValue( new Value( 5 ) );
     }
 }
