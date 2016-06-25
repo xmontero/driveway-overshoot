@@ -80,4 +80,35 @@ class Tile
     {
         return ( ! is_null( $this->solutionValue ) );
     }
+
+    //-- Generic Value Wrapper --------------------------------------------//
+
+    public function getValue() : Value
+    {
+        if( $this->hasInitialValue() )
+        {
+            $result = $this->initialValue;
+        }
+        else
+        {
+            if( $this->hasSolutionValue() )
+            {
+                $result = $this->solutionValue;
+            }
+            else
+            {
+                throw new \LogicException( "Can't get the value if neither the initial or the solution were set. Check hasValue() first." );
+            }
+        }
+
+        return $result;
+    }
+
+    public function hasValue() : bool
+    {
+        $hasInitialValue = $this->hasInitialValue();
+        $hasSolutionValue = $this->hasSolutionValue();
+
+        return ( $hasInitialValue || $hasSolutionValue );
+    }
 }

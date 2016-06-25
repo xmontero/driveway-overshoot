@@ -147,4 +147,60 @@ class TileTest extends \PHPUnit_Framework_TestCase
         $sut->setSolutionValue( new Value( 5 ) );
         $sut->setInitialValue( new Value( 5 ) );
     }
+
+    //-- Generic value wrapper --------------------------------------------//
+
+    public function testHasNotValueAfterCreation()
+    {
+        $this->assertFalse( $this->getSut()->hasValue() );
+    }
+
+    public function testHasValueAfterSettingAnInitialValue()
+    {
+        $sut = $this->getSut();
+
+        $sut->setInitialValue( new Value( 4 ) );
+        $this->assertTrue( $sut->hasValue() );
+    }
+
+    public function testHasValueAfterSettingASolutionValue()
+    {
+        $sut = $this->getSut();
+
+        $sut->setSolutionValue( new Value( 4 ) );
+        $this->assertTrue( $sut->hasValue() );
+    }
+
+    public function testHasNotValueAfterRemoval()
+    {
+        $sut = $this->getSut();
+
+        $sut->setInitialValue( new Value( 4 ) );
+        $sut->removeInitialValue();
+        $sut->setSolutionValue( new Value( 7 ) );
+        $sut->removeSolutionValue();
+        $this->assertFalse( $sut->hasValue() );
+    }
+
+    public function testGetValueTrowsExceptionIfNotSet()
+    {
+        $this->expectException( \LogicException::class );
+        $this->getSut()->getValue();
+    }
+
+    public function testGetValueReturnsInitialValue()
+    {
+        $sut = $this->getSut();
+
+        $sut->setInitialValue( new Value( 4 ) );
+        $this->assertTrue( $sut->getValue()->equals( new Value( 4 ) ) );
+    }
+
+    public function testGetValueReturnsSolutionValue()
+    {
+        $sut = $this->getSut();
+
+        $sut->setSolutionValue( new Value( 4 ) );
+        $this->assertTrue( $sut->getValue()->equals( new Value( 4 ) ) );
+    }
 }
