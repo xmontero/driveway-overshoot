@@ -18,7 +18,7 @@ $autoloader->setupAutoloader();
 
 $commandLineParser = new Helpers\CommandLineParser( $argv );
 
-$sudokuReader = new Helpers\SudokuLoaderFileImplementation();
+$sudokuLoader = new Helpers\SudokuLoaderFileImplementation();
 
 $ansi = new Helpers\AnsiColorCodesGenerator();
 $widgets = new Views\AnsiWidgets( $ansi );
@@ -30,5 +30,5 @@ $viewRenderers = [ 'success' => $successViewRenderer, 'error' => $errorViewRende
 // Create the controller injecting services, and run it.                   //
 //-------------------------------------------------------------------------//
 
-$controller = new Controllers\DefaultController( $commandLineParser, $sudokuReader, $viewRenderers );
+$controller = new Controllers\DefaultController( $commandLineParser, $sudokuLoader, $viewRenderers );
 $controller->run();

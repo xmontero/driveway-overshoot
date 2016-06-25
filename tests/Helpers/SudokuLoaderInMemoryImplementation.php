@@ -5,10 +5,9 @@ namespace XaviMontero\DrivewayOvershoot\Tests\Helpers;
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\Sudoku;
 use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
-use XaviMontero\DrivewayOvershoot\SudokuSaverInterface;
 use XaviMontero\DrivewayOvershoot\Value;
 
-class SudokuPersisterInMemoryImplementation implements SudokuLoaderInterface, SudokuSaverInterface
+class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
 {
     public $callCountLoad = 0;
     public $callCountSave = 0;
@@ -60,10 +59,5 @@ class SudokuPersisterInMemoryImplementation implements SudokuLoaderInterface, Su
                 throw new \DomainException( "Game not found '" . $gameId . "'" );
                 break;
         }
-    }
-
-    public function save( string $gameId, Sudoku $sudoku )
-    {
-        //$this->callCountSave++;
     }
 }

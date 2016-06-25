@@ -14,7 +14,7 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->loader = new Helpers\SudokuPersisterInMemoryImplementation();
+        $this->loader = new Helpers\SudokuLoaderInMemoryImplementation();
         $this->saver = $this->loader;
 
         $this->sut = new Sudoku();

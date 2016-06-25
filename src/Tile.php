@@ -20,4 +20,14 @@ class Tile
     {
         $this->initialValue = $value;
     }
+
+    public function hasInitialValue() : bool
+    {
+        return ( ! is_null( $this->initialValue ) );
+    }
+
+    public function getInitialValue() : Value
+    {
+        return $this->initialValue;
+    }
 }

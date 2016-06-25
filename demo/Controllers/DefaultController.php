@@ -2,18 +2,25 @@
 
 namespace XaviMontero\DrivewayOvershoot\Demo\Controllers;
 
+use XaviMontero\DrivewayOvershoot\Coordinates;
+use XaviMontero\DrivewayOvershoot\Demo\Helpers\CommandLineParser;
+use XaviMontero\DrivewayOvershoot\Sudoku;
+use XaviMontero\DrivewayOvershoot\SudokuFactory;
+use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
+use XaviMontero\DrivewayOvershoot\Value;
+
 class DefaultController
 {
     private $commandLineParser;
-    private $sudokuReader;
+    private $sudokuLoader;
     private $viewRenderers;
     private $command;
     private $gameId;
 
-    public function __construct( $commandLineParser, $sudokuReader, $viewRenderers )
+    public function __construct( CommandLineParser $commandLineParser, SudokuLoaderInterface $sudokuLoader, array $viewRenderers )
     {
         $this->commandLineParser = $commandLineParser;
-        $this->sudokuReader = $sudokuReader;
+        $this->sudokuLoader = $sudokuLoader;
         $this->viewRenderers = $viewRenderers;
 
         $this->command = $commandLineParser->getcommand();
@@ -57,7 +64,7 @@ class DefaultController
 
     public function assertGameIdExists()
     {
-        $gameExists = $this->sudokuReader->gameExists( $this->gameId );
+        $gameExists = $this->sudokuLoader->gameExists( $this->gameId );
         if( ! $gameExists )
         {
             $errorMessage = $this->viewRenderers[ 'error' ]->renderGameIdDoesNotExist( $this->command, $this->gameId );
@@ -67,26 +74,31 @@ class DefaultController
 
     private function cleanRun()
     {
-        /*
-a) gets access to the MODEL,
-b) operates it (ie: controls it),
-c) gets its resulting data,
-d) transforms the data into a DTO suitable for the VIEW, and
-e) renders the view.
-        */
+        $sudoku = $this->getSudokuModel();
+        $sudoku = $this->operateSudokuModel( $sudoku );
+        $view = $this->renderTheViewWithSudoku( $sudoku );
 
-        $this->printPage( $this->renderTheView() );
+        $this->printPage( $view );
     }
 
-    private function renderTheView()
+    private function getSudokuModel() : Sudoku
     {
-        $viewData = new \stdClass();
-        $viewData->name = 'world';
-
-        return $this->viewRenderers[ 'success' ]->render( $viewData );
+        $sudokuFactory = new SudokuFactory( $this->sudokuLoader );
+        return $sudokuFactory->createSudoku( $this->gameId );
     }
 
-    private function printPage( $page )
+    private function operateSudokuModel( Sudoku $sudoku ) : Sudoku
+    {
+        $sudoku->getTile( new Coordinates( 2, 2 ) )->setInitialValue( new Value( 4 ) );
+        return $sudoku;
+    }
+
+    private function renderTheViewWithSudoku( Sudoku $sudoku ) : string
+    {
+        return $this->viewRenderers[ 'success' ]->render( $sudoku );
+    }
+
+    private function printPage( string $page )
     {
         echo( $page );
     }

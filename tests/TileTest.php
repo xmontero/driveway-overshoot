@@ -24,10 +24,14 @@ class TileTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Tile', $this->getSut() );
     }
 
+    //-- State ------------------------------------------------------------//
+
     public function testAfterCreationIsEmpty()
     {
         $this->assertTrue( $this->getSut()->isEmpty() );
     }
+
+    //-- Potential values -------------------------------------------------//
 
     public function testPotentialValuesIsOfProperClass()
     {
@@ -43,6 +47,28 @@ class TileTest extends \PHPUnit_Framework_TestCase
 
     public function testAfterCreationHasAllPotentialValues()
     {
+        $this->markTestIncomplete();
         $potentialValues = $this->getSut()->getPotentialValues();
+    }
+
+    //-- Initial values ---------------------------------------------------//
+
+    public function testHasInitialValue()
+    {
+        $this->assertFalse( $this->getSut()->hasInitialValue() );
+        $this->getSut()->setInitialValue( new Value( 4 ) );
+        $this->assertTrue( $this->getSut()->hasInitialValue() );
+    }
+
+    public function testGetInitialValueTrowsExceptionIfNotSet()
+    {
+        $this->expectException( \TypeError::class );
+        $this->getSut()->getInitialValue();
+    }
+
+    public function testGetInitialValueReturnsSetValue()
+    {
+        $this->getSut()->setInitialValue( new Value( 4 ) );
+        $this->assertTrue( $this->getSut()->getInitialValue()->equals( new Value( 4 ) ) );
     }
 }

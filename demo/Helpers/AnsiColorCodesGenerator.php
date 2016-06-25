@@ -28,4 +28,9 @@ class AnsiColorCodesGenerator
     {
         return "\033[1;34m";
     }
+
+    public function darkBlue()
+    {
+        return "\033[34m";
+    }
 }

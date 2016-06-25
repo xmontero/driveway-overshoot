@@ -7,9 +7,9 @@ class SudokuFactory
     private $reader;
     private $gameId;
 
-    public function __construct( SudokuLoaderInterface $reader, SudokuSaverInterface $writer )
+    public function __construct( SudokuLoaderInterface $loader )
     {
-        $this->reader = $reader;
+        $this->loader = $loader;
     }
 
     public function createSudoku( string $gameId ) : Sudoku
@@ -17,7 +17,7 @@ class SudokuFactory
         $this->gameId = $gameId;
 
         $sudoku = new Sudoku();
-        $this->reader->load( $gameId, $sudoku );
+        $this->loader->load( $gameId, $sudoku );
         return $sudoku;
     }
 }

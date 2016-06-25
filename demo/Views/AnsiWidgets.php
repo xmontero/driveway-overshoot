@@ -2,6 +2,10 @@
 
 namespace XaviMontero\DrivewayOvershoot\Demo\Views;
 
+use XaviMontero\DrivewayOvershoot\Coordinates;
+use XaviMontero\DrivewayOvershoot\Sudoku;
+use XaviMontero\DrivewayOvershoot\Tile;
+
 class AnsiWidgets
 {
     private $ansi;
@@ -11,7 +15,7 @@ class AnsiWidgets
         $this->ansi = $ansi;
     }
 
-    public function header()
+    public function header() : string
     {
         $reset = $this->ansi->reset();
         $green = $this->ansi->green();
@@ -25,7 +29,7 @@ class AnsiWidgets
         return $message;
     }
 
-    public function error( $errorMessage, $expected, $actual )
+    public function error( string $errorMessage, string $expected, string $actual ) : string
     {
         $reset = $this->ansi->reset();
         $red = $this->ansi->red();
@@ -38,7 +42,7 @@ class AnsiWidgets
         return $widget;
     }
 
-    public function usage( $command )
+    public function usage( string $command ) : string
     {
         $synopsisContent = "        php $command gameId" . PHP_EOL;
         $widget = $this->block( 'SYNOPSIS', $synopsisContent );
@@ -56,7 +60,7 @@ class AnsiWidgets
         return $widget;
     }
 
-    public function block( $title, $content )
+    public function block( string $title, string $content ) : string
     {
         $reset = $this->ansi->reset();
         $blue = $this->ansi->blue();
@@ -64,6 +68,76 @@ class AnsiWidgets
         $widget = $blue . $title . $reset . PHP_EOL;
         $widget .= $content;
         $widget .= PHP_EOL;
+
+        return $widget;
+    }
+
+    public function sudoku( string $mode, Sudoku $sudoku ) : string
+    {
+        $darkBlue = $this->ansi->darkBlue();
+        $reset = $this->ansi->reset();
+
+        $widget = '        ' . $darkBlue . "╔═══╤═══╤═══╦═══╤═══╤═══╦═══╤═══╤═══╗" . $reset . PHP_EOL;
+        $widget .= '        ' . $this->sudokuRow( $mode, 1, $sudoku ) . PHP_EOL;
+        $widget .= '        ' . $darkBlue . "╟───┼───┼───╫───┼───┼───╫───┼───┼───╢" . $reset . PHP_EOL;
+        $widget .= '        ' . $this->sudokuRow( $mode, 2, $sudoku ) . PHP_EOL;
+        $widget .= '        ' . $darkBlue . "╟───┼───┼───╫───┼───┼───╫───┼───┼───╢" . $reset . PHP_EOL;
+        $widget .= '        ' . $this->sudokuRow( $mode, 3, $sudoku ) . PHP_EOL;
+        $widget .= '        ' . $darkBlue . "╠═══╪═══╪═══╬═══╪═══╪═══╬═══╪═══╪═══╣" . $reset . PHP_EOL;
+        $widget .= '        ' . $this->sudokuRow( $mode, 4, $sudoku ) . PHP_EOL;
+        $widget .= '        ' . $darkBlue . "╟───┼───┼───╫───┼───┼───╫───┼───┼───╢" . $reset . PHP_EOL;
+        $widget .= '        ' . $this->sudokuRow( $mode, 5, $sudoku ) . PHP_EOL;
+        $widget .= '        ' . $darkBlue . "╟───┼───┼───╫───┼───┼───╫───┼───┼───╢" . $reset . PHP_EOL;
+        $widget .= '        ' . $this->sudokuRow( $mode, 6, $sudoku ) . PHP_EOL;
+        $widget .= '        ' . $darkBlue . "╠═══╪═══╪═══╬═══╪═══╪═══╬═══╪═══╪═══╣" . $reset . PHP_EOL;
+        $widget .= '        ' . $this->sudokuRow( $mode, 7, $sudoku ) . PHP_EOL;
+        $widget .= '        ' . $darkBlue . "╟───┼───┼───╫───┼───┼───╫───┼───┼───╢" . $reset . PHP_EOL;
+        $widget .= '        ' . $this->sudokuRow( $mode, 8, $sudoku ) . PHP_EOL;
+        $widget .= '        ' . $darkBlue . "╟───┼───┼───╫───┼───┼───╫───┼───┼───╢" . $reset . PHP_EOL;
+        $widget .= '        ' . $this->sudokuRow( $mode, 9, $sudoku ) . PHP_EOL;
+        $widget .= '        ' . $darkBlue . "╚═══╧═══╧═══╩═══╧═══╧═══╩═══╧═══╧═══╝" . $reset . PHP_EOL;
+
+        return $widget;
+    }
+
+    private function sudokuRow( string $mode, int $row, Sudoku $sudoku ) : string
+    {
+        $darkBlue = $this->ansi->darkBlue();
+        $reset = $this->ansi->reset();
+
+        $widget = $darkBlue . '║';
+        $widget .= $this->sudokuRowTriad( $mode, 1, 2, 3, $row, $sudoku );
+        $widget .= $this->sudokuRowTriad( $mode, 4, 5, 6, $row, $sudoku );
+        $widget .= $this->sudokuRowTriad( $mode, 7, 8, 9, $row, $sudoku );
+        $widget .= $reset;
+
+        return $widget;
+    }
+
+    private function sudokuRowTriad( string $mode, int $x1, int $x2, int $x3, int $y, Sudoku $sudoku ) : string
+    {
+        $widget = $this->sudokuCellFromSudoku( $mode, $x1, $y, $sudoku, '│' );
+        $widget .= $this->sudokuCellFromSudoku( $mode, $x2, $y, $sudoku, '│' );
+        $widget .= $this->sudokuCellFromSudoku( $mode, $x3, $y, $sudoku, '║' );
+
+        return $widget;
+    }
+
+    private function sudokuCellFromSudoku( string $mode, int $x, int $y, Sudoku $sudoku, $cellEnding ) : string
+    {
+        $tile = $sudoku->getTile( new Coordinates( $x, $y ) );
+        return $this->sudokuCellFromTile( $mode, $tile, $cellEnding );
+    }
+
+    private function sudokuCellFromTile( string $mode, Tile $tile, $cellEnding ) : string
+    {
+        $reset = $this->ansi->reset();
+        $cyan = $this->ansi->red();
+        $darkBlue = $this->ansi->darkBlue();
+
+        $value = $tile->hasInitialValue() ? $tile->getInitialValue()->getValue() : ' ';
+
+        $widget = $reset . ' ' . $cyan . $value . $reset . ' ' . $darkBlue . $cellEnding;
 
         return $widget;
     }

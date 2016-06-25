@@ -2,6 +2,8 @@
 
 namespace XaviMontero\DrivewayOvershoot\Demo\Views;
 
+use XaviMontero\DrivewayOvershoot\Sudoku;
+
 class SuccessView
 {
     private $widgets;
@@ -11,7 +13,7 @@ class SuccessView
         $this->widgets = $widgets;
     }
 
-    public function render( $data )
+    public function render( Sudoku $sudoku ) : string
     {
         $page = $this->widgets->header();
 
@@ -29,8 +31,9 @@ class SuccessView
             e) renders the view." . PHP_EOL;
         $page .= $this->widgets->block( 'HOW IT WORKS', $howItWorksContent );
 
-        $executionContent = "        Hello, $data->name!" . PHP_EOL;
-        $page .= $this->widgets->block( 'EXECUTION', $executionContent );
+        $page .= $this->widgets->block( 'PROBLEM', $this->widgets->sudoku( 'problem', $sudoku ) );
+
+        $page .= $this->widgets->block( 'SOLUTION', $this->widgets->sudoku( 'solution', $sudoku ) );
 
         return $page;
     }
