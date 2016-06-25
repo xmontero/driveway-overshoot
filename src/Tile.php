@@ -16,18 +16,25 @@ class Tile
         return new PotentialValues;
     }
 
+    //-- Initial Value ----------------------------------------------------//
+
     public function setInitialValue( Value $value )
     {
         $this->initialValue = $value;
     }
 
-    public function hasInitialValue() : bool
+    public function removeInitialValue()
     {
-        return ( ! is_null( $this->initialValue ) );
+        $this->initialValue = null;
     }
 
     public function getInitialValue() : Value
     {
         return $this->initialValue;
+    }
+
+    public function hasInitialValue() : bool
+    {
+        return ( ! is_null( $this->initialValue ) );
     }
 }

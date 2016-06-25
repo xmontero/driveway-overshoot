@@ -54,11 +54,25 @@ class TileTest extends \PHPUnit_Framework_TestCase
 
     //-- Initial values ---------------------------------------------------//
 
-    public function testHasInitialValue()
+    public function testHasNotInitialValueAfterCreation()
+    {
+        $this->assertFalse( $this->getSut()->hasInitialValue() );
+    }
+
+    public function testHasInitialValueAfterSettingAnInitialValue()
     {
         $this->assertFalse( $this->getSut()->hasInitialValue() );
         $this->getSut()->setInitialValue( new Value( 4 ) );
         $this->assertTrue( $this->getSut()->hasInitialValue() );
+    }
+
+    public function testHasNotInitialValueAfterRemoval()
+    {
+        $sut = $this->getSut();
+
+        $sut->setInitialValue( new Value( 4 ) );
+        $sut->removeInitialValue();
+        $this->assertFalse( $sut->hasInitialValue() );
     }
 
     public function testGetInitialValueTrowsExceptionIfNotSet()
@@ -69,15 +83,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
 
     public function testGetInitialValueReturnsSetValue()
     {
-        $this->getSut()->setInitialValue( new Value( 4 ) );
-        $this->assertTrue( $this->getSut()->getInitialValue()->equals( new Value( 4 ) ) );
-    }
-
-    //-- States -----------------------------------------------------------//
-
-    public function testInitialStateIsEmptyCompatible()
-    {
-        //$state = $this->getSut()->getState();
-        //$this->assertEquals( TileState::EmptyCompatible(), $state );
+        $this->getSut()->setInitialValue( new Value(4) );
+        $this->assertTrue( $this->getSut()->getInitialValue()->equals( new Value(4) ) );
     }
 }
