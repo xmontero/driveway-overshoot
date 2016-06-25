@@ -4,6 +4,7 @@ namespace XaviMontero\DrivewayOvershoot\Tests;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\Sudoku;
+use XaviMontero\DrivewayOvershoot\SudokuState;
 use XaviMontero\DrivewayOvershoot\Value;
 
 class SudokuTest extends \PHPUnit_Framework_TestCase
@@ -44,13 +45,69 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
     public function testIsNotEmptyAfterSettingValues()
     {
         $this->sut->getTile( new Coordinates( 4, 4 ) )->setInitialValue( new Value( 9 ) );
-        $this->assertFalse( $this->sut->isEmpty() );
+        $this->assertFalse( $this->getSut()->isEmpty() );
     }
 
     public function testProperValueAfterLoadingNonEmptyValues()
     {
         $this->loader->load( 'easy1', $this->sut );
-        $this->assertFalse( $this->sut->isEmpty() );
-        $this->assertTrue( $this->sut->getTile( new Coordinates( 2, 3 ) )->isEmpty() );
+        $this->assertFalse( $this->getSut()->isEmpty() );
+        $this->assertTrue( $this->getSut()->getTile( new Coordinates( 2, 3 ) )->isEmpty() );
+    }
+
+    //-- Editable ---------------------------------------------------------//
+
+    public function testIsEditableAfterCreation()
+    {
+        $sut = $this->getSut();
+
+        $this->assertTrue( $sut->isEditable() );
+        $this->assertEquals( SudokuState::Editable(), $sut->getState() );
+    }
+
+    public function testChangeEditableMultipleTimes()
+    {
+        $sut = $this->getSut();
+
+        $sut->setEditable( false );
+        $this->assertFalse( $sut->isEditable() );
+        $this->assertNotEquals( SudokuState::Editable(), $sut->getState() );
+
+        $sut->setEditable( true );
+        $this->assertTrue( $sut->isEditable() );
+        $this->assertEquals( SudokuState::Editable(), $sut->getState() );
+    }
+
+    public function testChangeEditableOnceTriggersEventOnce()
+    {
+        $sudokuObserver = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\SudokuObserverInterface' )
+            ->setMethods( array( 'onEditableChanged' ) )
+            ->getMock();
+
+        $sudokuObserver->expects( $this->once() )
+            ->method( 'onEditableChanged' )
+            ->with( $this->equalTo( false ) );
+
+        $sut = $this->getSut();
+        $sut->addObserver( $sudokuObserver );
+
+        $sut->setEditable( false );
+    }
+
+    public function testChangeEditableTwiceWithSameValueTriggersEventOnce()
+    {
+        $sudokuObserver = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\SudokuObserverInterface' )
+            ->setMethods( array( 'onEditableChanged' ) )
+            ->getMock();
+
+        $sudokuObserver->expects( $this->once() )
+            ->method( 'onEditableChanged' )
+            ->with( $this->equalTo( false ) );
+
+        $sut = $this->getSut();
+        $sut->addObserver( $sudokuObserver );
+
+        $sut->setEditable( false );
+        $sut->setEditable( false );
     }
 }

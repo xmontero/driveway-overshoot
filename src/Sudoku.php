@@ -4,6 +4,8 @@ namespace XaviMontero\DrivewayOvershoot;
 
 class Sudoku
 {
+    private $observers = array();
+    private $editable = true;
     private $tiles;
 
     public function __construct()
@@ -39,8 +41,45 @@ class Sudoku
         return $empty;
     }
 
-    public function getTile( Coordinates $coordinates )
+    public function getTile( Coordinates $coordinates ) : Tile
     {
         return $this->tiles[ $coordinates->getY() ][ $coordinates->getX() ];
+    }
+
+    public function isEditable() : bool
+    {
+        return $this->editable;
+    }
+
+    public function setEditable( bool $editable )
+    {
+        if( $this->editable != $editable )
+        {
+            $this->editable = $editable;
+            $this->raiseOnEditableChanged( $this->editable );
+        }
+    }
+
+    public function getState() : SudokuState
+    {
+        $result = $this->editable ? SudokuState::Editable() : SudokuState::Resolved();
+        return $result;
+    }
+
+    public function addObserver( SudokuObserverInterface $observer )
+    {
+        $this->observers[] = $observer;
+    }
+
+    //---------------------------------------------------------------------//
+    // Private                                                             //
+    //---------------------------------------------------------------------//
+
+    private function raiseOnEditableChanged( bool $editable )
+    {
+        foreach( $this->observers as $observer )
+        {
+            $observer->onEditableChanged( $editable );
+        }
     }
 }
