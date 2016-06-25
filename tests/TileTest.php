@@ -2,6 +2,7 @@
 
 namespace XaviMontero\DrivewayOvershoot\Tests;
 
+use XaviMontero\DrivewayOvershoot\PotentialValuesState;
 use XaviMontero\DrivewayOvershoot\Tile;
 use XaviMontero\DrivewayOvershoot\Value;
 
@@ -47,8 +48,8 @@ class TileTest extends \PHPUnit_Framework_TestCase
 
     public function testAfterCreationHasAllPotentialValues()
     {
-        $this->markTestIncomplete();
         $potentialValues = $this->getSut()->getPotentialValues();
+        $this->assertEquals( PotentialValuesState::Full(), $potentialValues->getState() );
     }
 
     //-- Initial values ---------------------------------------------------//
@@ -70,5 +71,13 @@ class TileTest extends \PHPUnit_Framework_TestCase
     {
         $this->getSut()->setInitialValue( new Value( 4 ) );
         $this->assertTrue( $this->getSut()->getInitialValue()->equals( new Value( 4 ) ) );
+    }
+
+    //-- States -----------------------------------------------------------//
+
+    public function testInitialStateIsEmptyCompatible()
+    {
+        //$state = $this->getSut()->getState();
+        //$this->assertEquals( TileState::EmptyCompatible(), $state );
     }
 }
