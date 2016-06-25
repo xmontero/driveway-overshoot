@@ -132,12 +132,27 @@ class AnsiWidgets
     private function sudokuCellFromTile( string $mode, Tile $tile, $cellEnding ) : string
     {
         $reset = $this->ansi->reset();
-        $cyan = $this->ansi->red();
+        $red = $this->ansi->red();
+        $white = $this->ansi->white();
         $darkBlue = $this->ansi->darkBlue();
 
-        $value = $tile->hasInitialValue() ? $tile->getInitialValue()->getValue() : ' ';
+        if( $tile->hasInitialValue() )
+        {
+            $content = $red . $tile->getInitialValue()->getValue() . $reset;
+        }
+        else
+        {
+            if( ( $tile->hasSolutionValue() ) && ( $mode == 'solution' ) )
+            {
+                $content = $white . $tile->getSolutionValue()->getValue() . $reset;
+            }
+            else
+            {
+                $content = ' ';
+            }
+        }
 
-        $widget = $reset . ' ' . $cyan . $value . $reset . ' ' . $darkBlue . $cellEnding;
+        $widget = $reset . ' ' . $content . ' ' . $darkBlue . $cellEnding;
 
         return $widget;
     }

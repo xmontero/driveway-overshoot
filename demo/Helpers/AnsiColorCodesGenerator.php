@@ -29,6 +29,11 @@ class AnsiColorCodesGenerator
         return "\033[1;34m";
     }
 
+    public function white()
+    {
+        return "\033[1;37m";
+    }
+
     public function darkBlue()
     {
         return "\033[34m";
