@@ -132,28 +132,79 @@ class AnsiWidgets
     private function sudokuCellFromTile( string $mode, Tile $tile, $cellEnding ) : string
     {
         $reset = $this->ansi->reset();
-        $red = $this->ansi->red();
-        $white = $this->ansi->white();
         $darkBlue = $this->ansi->darkBlue();
 
-        if( $tile->hasInitialValue() )
+        $dto = $this->sudokuCellFromTileDto( $mode, $tile );
+
+        $color = $dto[ 'color' ];
+        $value = $dto[ 'value' ];
+
+        $widget = $reset . $color . ' ' . $value . ' ' . $reset . $darkBlue . $cellEnding;
+
+        return $widget;
+    }
+
+    private function sudokuCellFromTileDto( string $mode, Tile $tile ) : array
+    {
+        switch( $mode )
         {
-            $content = $red . $tile->getInitialValue()->getValue() . $reset;
+            case 'problem':
+
+                $dto = $this->sudokuCellFromTileProblemDto( $tile );
+                break;
+
+            case 'solution':
+
+                $dto = $this->sudokuCellFromTileSolutionDto( $tile );
+                break;
+
+            default:
+
+                throw new \DomainException( "mode must be 'problem' or 'solution', $mode found." );
+        }
+
+        return $dto;
+    }
+
+    private function sudokuCellFromTileProblemDto( Tile $tile ) : array
+    {
+        $red = $this->ansi->red();
+
+        $dto = [];
+
+        $dto[ 'color' ] = $red;
+        $dto[ 'value' ] = $tile->hasInitialValue() ? $tile->getInitialValue()->getValue() : ' ';
+
+        return $dto;
+    }
+
+    private function sudokuCellFromTileSolutionDto( Tile $tile ) : array
+    {
+        $invertedRed = $this->ansi->invertedRed();
+        $red = $this->ansi->red();
+        $white = $this->ansi->white();
+        $green = $this->ansi->green();
+
+        $dto = [];
+
+        $dto[ 'value' ] = $tile->hasValue() ? $tile->getValue()->getValue() : ' ';
+
+        if( $tile->hasIncompatibleValue() )
+        {
+            $dto[ 'color' ] = $invertedRed;
         }
         else
         {
-            if( ( $tile->hasSolutionValue() ) && ( $mode == 'solution' ) )
+            if( $tile->hasInitialValue() )
             {
-                $content = $white . $tile->getSolutionValue()->getValue() . $reset;
+                $dto[ 'color' ] = $red;
             }
             else
             {
-                $content = ' ';
+                $dto[ 'color' ] = $white;
             }
         }
 
-        $widget = $reset . ' ' . $content . ' ' . $darkBlue . $cellEnding;
-
-        return $widget;
+        return $dto;
     }
 }

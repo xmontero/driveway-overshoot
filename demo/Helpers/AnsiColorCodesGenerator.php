@@ -38,4 +38,9 @@ class AnsiColorCodesGenerator
     {
         return "\033[34m";
     }
+
+    public function invertedRed()
+    {
+        return "\033[30;41m";
+    }
 }

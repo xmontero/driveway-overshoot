@@ -4,8 +4,16 @@ namespace XaviMontero\DrivewayOvershoot;
 
 class Tile
 {
+    private $coordinates;
+    private $sudoku;
     private $initialValue = null;
     private $solutionValue = null;
+
+    public function __construct( Sudoku $sudoku, Coordinates $coordinates )
+    {
+        $this->coordinates = $coordinates;
+        $this->sudoku = $sudoku;
+    }
 
     public function isEmpty() : bool
     {
@@ -110,5 +118,10 @@ class Tile
         $hasSolutionValue = $this->hasSolutionValue();
 
         return ( $hasInitialValue || $hasSolutionValue );
+    }
+
+    public function hasIncompatibleValue() : bool
+    {
+        return $this->sudoku->checkIncompatibility( $this->coordinates );
     }
 }

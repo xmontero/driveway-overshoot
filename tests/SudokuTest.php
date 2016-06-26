@@ -110,4 +110,13 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
         $sut->setEditable( false );
         $sut->setEditable( false );
     }
+
+    //-- Check incompatibility --------------------------------------------//
+
+    public function testCheckIncompatibility()
+    {
+        $sut = $this->getSut();
+
+        $this->assertFalse( $sut->checkIncompatibility( new Coordinates( 1, 1 ) ) );
+    }
 }

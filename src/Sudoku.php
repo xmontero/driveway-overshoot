@@ -16,7 +16,7 @@ class Sudoku
             $this->tiles[ $y ] = [];
             for( $x = 1; $x <= 9; $x++ )
             {
-                $this->tiles[ $y ][ $x ] = new Tile();
+                $this->tiles[ $y ][ $x ] = new Tile( $this, new Coordinates( $x, $y ) );
             }
         }
     }
@@ -69,6 +69,15 @@ class Sudoku
     public function addObserver( SudokuObserverInterface $observer )
     {
         $this->observers[] = $observer;
+    }
+
+    //-- Incompatibility --------------------------------------------------//
+
+    public function checkIncompatibility( Coordinates $coordinates )
+    {
+        $result = ( ( $coordinates->getX() == 5 ) && ( $coordinates->getY() == 4 ) );
+
+        return $result;
     }
 
     //---------------------------------------------------------------------//

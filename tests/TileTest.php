@@ -2,17 +2,26 @@
 
 namespace XaviMontero\DrivewayOvershoot\Tests;
 
+use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\PotentialValuesState;
 use XaviMontero\DrivewayOvershoot\Tile;
 use XaviMontero\DrivewayOvershoot\Value;
 
 class TileTest extends \PHPUnit_Framework_TestCase
 {
+    private $tileCoordinates;
+    private $sudokuMock;
     private $sut;
 
     protected function setUp()
     {
-        $this->sut = new Tile();
+        $this->tileCoordinates = new Coordinates( 3, 5 );
+
+        $this->sudokuMock = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\Sudoku' )
+            ->setMethods( array( 'checkIncompatibility' ) )
+            ->getMock();
+
+        $this->sut = new Tile( $this->sudokuMock, $this->tileCoordinates );
     }
 
     private function getSut() : Tile
@@ -202,5 +211,31 @@ class TileTest extends \PHPUnit_Framework_TestCase
 
         $sut->setSolutionValue( new Value( 4 ) );
         $this->assertTrue( $sut->getValue()->equals( new Value( 4 ) ) );
+    }
+
+    //-- Flagged as error -------------------------------------------------//
+
+    public function testHasIncompatibleInitialValueCallsCallback()
+    {
+        $this->sudokuMock->expects( $this->once() )
+            ->method( 'checkIncompatibility' )
+            ->with( $this->tileCoordinates )
+            ->willReturn( false );
+
+        $this->getSut()->hasIncompatibleValue();
+    }
+
+    public function testHasNotIncompatibleValue()
+    {
+        $this->sudokuMock->method( 'checkIncompatibility' )->willReturn( false );
+
+        $this->assertFalse( $this->getSut()->hasIncompatibleValue() );
+    }
+
+    public function testHasIncompatibleValue()
+    {
+        $this->sudokuMock->method( 'checkIncompatibility' )->willReturn( true );
+
+        $this->assertTrue( $this->getSut()->hasIncompatibleValue() );
     }
 }
