@@ -119,4 +119,29 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse( $sut->checkIncompatibility( new Coordinates( 1, 1 ) ) );
     }
+
+    public function testHasNotIncompatibleInitialValues()
+    {
+        $this->loader->load( 'easy1', $this->sut );
+        $this->assertFalse( $this->getSut()->hasIncompatibleInitialValues() );
+    }
+
+    /**
+     * @dataProvider hasIncompatibleInitialValuesProvider
+     */
+    public function testHasIncompatibleInitialValues( $sudokuName )
+    {
+        $this->loader->load( $sudokuName, $this->sut );
+        $this->assertTrue( $this->getSut()->hasIncompatibleInitialValues() );
+    }
+
+    public function hasIncompatibleInitialValuesProvider()
+    {
+        return
+        [
+            [ 'incompatibleInitialValuesRow' ],
+            [ 'incompatibleInitialValuesColumn' ],
+            [ 'incompatibleInitialValuesSquare' ],
+        ];
+    }
 }
