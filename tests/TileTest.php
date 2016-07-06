@@ -238,4 +238,26 @@ class TileTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue( $this->getSut()->hasIncompatibleValue() );
     }
+
+    //-- Get coordinates --------------------------------------------------//
+
+    /**
+     * @dataProvider getCoordinatesProvider
+     */
+    public function testGetCoordinates( $x, $y )
+    {
+        $tileCoordinates = new Coordinates( $x, $y );
+        $sut = new Tile( $this->sudokuMock, $tileCoordinates );
+
+        $this->assertEquals( $tileCoordinates, $sut->getCoordinates() );
+    }
+
+    public function getCoordinatesProvider()
+    {
+        return
+        [
+            [ 3, 8 ],
+            [ 1, 7 ],
+        ];
+    }
 }

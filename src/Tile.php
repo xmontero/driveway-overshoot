@@ -124,4 +124,11 @@ class Tile
     {
         return $this->sudoku->checkIncompatibility( $this->coordinates );
     }
+
+    //-- Coordinates ------------------------------------------------------//
+
+    public function getCoordinates() : Coordinates
+    {
+        return new Coordinates( $this->coordinates->getX() , $this->coordinates->getY() );
+    }
 }
