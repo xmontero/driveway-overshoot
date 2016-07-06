@@ -85,4 +85,24 @@ class SudokuBlock
 
         return $result;
     }
+
+    //-- Tile management --------------------------------------------------//
+
+    public function hasTile( Tile $checkedTile )
+    {
+        $found = false;
+
+        for( $tileIndex = 1; $tileIndex <= 9; $tileIndex++ )
+        {
+            $exploredTile = $this->tiles[ $tileIndex ];
+
+            if( $exploredTile === $checkedTile )
+            {
+                $found = true;
+                break;
+            }
+        }
+
+        return $found;
+    }
 }

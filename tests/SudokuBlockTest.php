@@ -113,17 +113,33 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
             ];
     }
 
+    //-- Tile management --------------------------------------------------//
+
+    public function testHasTile()
+    {
+        $x = 5;
+        $y = 7;
+
+        $emptyTilesYes = $this->getEmptyTiles( 'row', $y );
+        $emptyTilesNo = $this->getEmptyTiles( 'row', $y + 1 );
+
+        $row = $this->getSudokuBlockFromTiles( $emptyTilesYes );
+
+        $this->assertTrue( $row->hasTile( $emptyTilesYes[ $x ] ) );
+        $this->assertFalse( $row->hasTile( $emptyTilesNo[ $x ] ) );
+    }
+
     //-- Private ----------------------------------------------------------//
 
-    private function getSudokuBlockFromTileDefinition( array $initialValues, array $solutionValues, string $blockType, int $blockId )
+    private function getSudokuBlockFromTileDefinition( array $initialValues, array $solutionValues, string $blockType, int $blockId ) : SudokuBlock
     {
         $tiles = $this->getTiles( $initialValues, $solutionValues, $blockType, $blockId );
-        $sudokuBlock = new SudokuBlock( $tiles[ 1 ], $tiles[ 2 ], $tiles[ 3 ], $tiles[ 4 ], $tiles[ 5 ], $tiles[ 6 ], $tiles[ 7 ], $tiles[ 8 ], $tiles[ 9 ] );
+        $sudokuBlock = $this->getSudokuBlockFromTiles( $tiles );
 
         return $sudokuBlock;
     }
 
-    private function getTiles( array $initialValues, array $solutionValues, string $blockType, int $blockId )
+    private function getTiles( array $initialValues, array $solutionValues, string $blockType, int $blockId ) : array
     {
         $tiles = $this->getEmptyTiles( $blockType, $blockId );
 
@@ -147,7 +163,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         return $tiles;
     }
 
-    private function getCoordinates( int $positionInsideBlock, string $blockType, int $blockId )
+    private function getCoordinates( int $positionInsideBlock, string $blockType, int $blockId ) : Coordinates
     {
         switch( $blockType )
         {
@@ -198,4 +214,12 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
             }
         }
     }
+
+    private function getSudokuBlockFromTiles( array $tiles ) : SudokuBlock
+    {
+        $sudokuBlock = new SudokuBlock( $tiles[ 1 ], $tiles[ 2 ], $tiles[ 3 ], $tiles[ 4 ], $tiles[ 5 ], $tiles[ 6 ], $tiles[ 7 ], $tiles[ 8 ], $tiles[ 9 ] );
+
+        return $sudokuBlock;
+    }
+
 }
