@@ -4,6 +4,7 @@ namespace XaviMontero\DrivewayOvershoot\Demo\Controllers;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\Demo\Helpers\CommandLineParser;
+use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Sudoku;
 use XaviMontero\DrivewayOvershoot\SudokuFactory;
 use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
@@ -89,7 +90,7 @@ class DefaultController
 
     private function operateSudokuModel( Sudoku $sudoku ) : Sudoku
     {
-        $sudoku->getTile( new Coordinates( 2, 1 ) )->setSolutionValue( new Value( 5 ) );
+        $sudoku->getTile( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 1 ) ) )->setSolutionValue( new Value( 5 ) );
         return $sudoku;
     }
 

@@ -94,12 +94,10 @@ class Sudoku
         return $hasIncompatibleInitialValues;
     }
 
-    /*
     public function getRowBlockByTile( Tile $tile ) : SudokuBlock
     {
-        return $this->getRowBlock( $tile->getCoordinates()->getY() );
+        return $this->getRowBlock( $tile->getCoordinates()->getRow()->getValue() );
     }
-    */
 
     public function getRowBlock( int $y ) : SudokuBlock
     {

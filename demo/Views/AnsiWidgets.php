@@ -3,6 +3,7 @@
 namespace XaviMontero\DrivewayOvershoot\Demo\Views;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
+use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Sudoku;
 use XaviMontero\DrivewayOvershoot\Tile;
 
@@ -125,7 +126,7 @@ class AnsiWidgets
 
     private function sudokuCellFromSudoku( string $mode, int $x, int $y, Sudoku $sudoku, $cellEnding ) : string
     {
-        $tile = $sudoku->getTile( new Coordinates( $x, $y ) );
+        $tile = $sudoku->getTile( new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) ) );
         return $this->sudokuCellFromTile( $mode, $tile, $cellEnding );
     }
 

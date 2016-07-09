@@ -184,14 +184,13 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRowBlockByTile()
     {
-        $this->markTestIncomplete( "First we need a method for playing with the tiles" );
         $this->loader->load( 'easy1', $this->sut );
 
         $sut = $this->getSut();
 
-        $tile = $sut->getTile( new Coordinates( 2, 8 ) );
+        $tile = $sut->getTile( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 8 ) ) );
         $row = $sut->getRowBlockByTile( $tile );
 
-        $this->assertTrue( $row->containsTile( $tile ) );
+        $this->assertTrue( $row->hasTile( $tile ) );
     }
 }
