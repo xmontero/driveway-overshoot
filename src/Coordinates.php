@@ -6,29 +6,36 @@ namespace XaviMontero\DrivewayOvershoot;
 
 class Coordinates
 {
-    const Min = 1;
-    const Max = 9;
+    private $column;
+    private $row;
 
-    private $x;
-    private $y;
-
-    public function __construct( int $x, int $y )
+    public function __construct( OneToNineValue $column, OneToNineValue $row )
     {
-        $this->assertInRange( 'x', $x );
-        $this->assertInRange( 'y', $y );
-
-        $this->x = $x;
-        $this->y = $y;
+        $this->column = $column;
+        $this->row = $row;
     }
 
-    public function getX() : int
+    public function getColumn() : OneToNineValue
     {
-        return $this->x;
+        return $this->column;
     }
 
-    public function getY() : int
+    public function getRow() : OneToNineValue
     {
-        return $this->y;
+        return $this->row;
+    }
+
+    public function getSquare() : OneToNineValue
+    {
+        $x = $this->getColumn()->getValue();
+        $y = $this->getRow()->getValue();
+
+        $squareX = intdiv( $x - 1, 3 ) + 1;
+        $squareY = intdiv( $y - 1, 3 );
+
+        $squareId = $squareX + $squareY * 3;
+
+        return new OneToNineValue( $squareId );
     }
 
     private function assertInRange( string $coordinateName, int $value )

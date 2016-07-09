@@ -3,6 +3,7 @@
 namespace XaviMontero\DrivewayOvershoot\Tests;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
+use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\PotentialValuesState;
 use XaviMontero\DrivewayOvershoot\Tile;
 use XaviMontero\DrivewayOvershoot\Value;
@@ -15,7 +16,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->tileCoordinates = new Coordinates( 3, 5 );
+        $this->tileCoordinates = new Coordinates( new OneToNineValue( 3 ), new OneToNineValue( 5 ) );
 
         $this->sudokuMock = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\Sudoku' )
             ->setMethods( array( 'checkIncompatibility' ) )
@@ -246,7 +247,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCoordinates( $x, $y )
     {
-        $tileCoordinates = new Coordinates( $x, $y );
+        $tileCoordinates = new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
         $sut = new Tile( $this->sudokuMock, $tileCoordinates );
 
         $this->assertEquals( $tileCoordinates, $sut->getCoordinates() );

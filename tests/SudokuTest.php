@@ -3,6 +3,7 @@
 namespace XaviMontero\DrivewayOvershoot\Tests;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
+use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Sudoku;
 use XaviMontero\DrivewayOvershoot\SudokuState;
 use XaviMontero\DrivewayOvershoot\Value;
@@ -38,13 +39,13 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
 
     public function testGetTileReturnsProperType()
     {
-        $tile = $this->getSut()->getTile( new Coordinates( 4, 4 ) );
+        $tile = $this->getSut()->getTile( new Coordinates( new OneToNineValue( 4 ), new OneToNineValue( 4 ) ) );
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Tile', $tile );
     }
 
     public function testIsNotEmptyAfterSettingValues()
     {
-        $this->sut->getTile( new Coordinates( 4, 4 ) )->setInitialValue( new Value( 9 ) );
+        $this->sut->getTile( new Coordinates( new OneToNineValue( 4 ), new OneToNineValue( 4 ) ) )->setInitialValue( new Value( 9 ) );
         $this->assertFalse( $this->getSut()->isEmpty() );
     }
 
@@ -52,7 +53,7 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
     {
         $this->loader->load( 'easy1', $this->sut );
         $this->assertFalse( $this->getSut()->isEmpty() );
-        $this->assertTrue( $this->getSut()->getTile( new Coordinates( 2, 3 ) )->isEmpty() );
+        $this->assertTrue( $this->getSut()->getTile( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 3 ) ) )->isEmpty() );
     }
 
     //-- Editable ---------------------------------------------------------//
@@ -113,11 +114,45 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
 
     //-- Check incompatibility --------------------------------------------//
 
-    public function testCheckIncompatibility()
+    /**
+     * @dataProvider checkIncompatibilityProvider
+     */
+    public function testCheckIncompatibility( $sudokuName, $x, $y, $expected )
     {
-        $sut = $this->getSut();
+        $this->markTestIncomplete( "First we need a method for obtanining the square id from the tile coordinates" );
+        $this->loader->load( $sudokuName, $this->sut );
+        $this->assertEquals( $expected, $this->getSut()->checkIncompatibility( new Coordinates( $x, $y ) ) );
+    }
 
-        $this->assertFalse( $sut->checkIncompatibility( new Coordinates( 1, 1 ) ) );
+    public function checkIncompatibilityProvider()
+    {
+        return
+            [
+                [ 'easy1', 3, 4, false ],
+                [ 'easy1', 9, 9, false ],
+                [ 'incompatibleInitialValuesRow', 8, 8, false ],
+                [ 'incompatibleInitialValuesRow', 4, 3, false ],
+                [ 'incompatibleInitialValuesRow', 1, 4, true ],
+/*              [ 'incompatibleInitialValuesRow', 9, 4, true ],
+                [ 'incompatibleInitialValuesColumn', 1, 5, false ],
+                [ 'incompatibleInitialValuesColumn', 9, 9, false ],
+                [ 'incompatibleInitialValuesColumn', 6, 3, true ],
+                [ 'incompatibleInitialValuesColumn', 6, 8, true ],
+                [ 'incompatibleInitialValuesSquare', 3, 9, false ],
+                [ 'incompatibleInitialValuesSquare', 2, 5, false ],
+                [ 'incompatibleInitialValuesSquare', 4, 1, true ],
+                [ 'incompatibleInitialValuesSquare', 6, 2, true ],
+                [ 'incompatibleInitialValuesHard', 6, 1, false ],
+                [ 'incompatibleInitialValuesHard', 3, 9, false ],
+                [ 'incompatibleInitialValuesHard', 5, 2, false ],
+                [ 'incompatibleInitialValuesHard', 6, 7, false ],
+                [ 'incompatibleInitialValuesHard', 1, 5, true ],
+                [ 'incompatibleInitialValuesHard', 8, 8, true ],
+                [ 'incompatibleInitialValuesHard', 3, 3, true ],
+                [ 'incompatibleInitialValuesHard', 9, 7, true ],
+                [ 'incompatibleInitialValuesHard', 9, 2, true ],
+                [ 'incompatibleInitialValuesHard', 3, 6, true ],
+*/            ];
     }
 
     public function testHasNotIncompatibleInitialValues()
@@ -142,6 +177,22 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
             [ 'incompatibleInitialValuesRow' ],
             [ 'incompatibleInitialValuesColumn' ],
             [ 'incompatibleInitialValuesSquare' ],
+            [ 'incompatibleInitialValuesHard' ],
         ];
+    }
+
+    //-- Coordinates and squares ------------------------------------------//
+
+    public function testGetRowBlockByTile()
+    {
+        $this->markTestIncomplete( "First we need a method for playing with the tiles" );
+        $this->loader->load( 'easy1', $this->sut );
+
+        $sut = $this->getSut();
+
+        $tile = $sut->getTile( new Coordinates( 2, 8 ) );
+        $row = $sut->getRowBlockByTile( $tile );
+
+        $this->assertTrue( $row->containsTile( $tile ) );
     }
 }

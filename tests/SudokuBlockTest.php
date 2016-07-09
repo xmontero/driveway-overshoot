@@ -3,6 +3,7 @@
 namespace XaviMontero\DrivewayOvershoot\Tests;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
+use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\SudokuBlock;
 use XaviMontero\DrivewayOvershoot\Tile;
 use XaviMontero\DrivewayOvershoot\Value;
@@ -123,10 +124,51 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         $emptyTilesYes = $this->getEmptyTiles( 'row', $y );
         $emptyTilesNo = $this->getEmptyTiles( 'row', $y + 1 );
 
-        $row = $this->getSudokuBlockFromTiles( $emptyTilesYes );
+        $sut = $this->getSudokuBlockFromTiles( $emptyTilesYes );
 
-        $this->assertTrue( $row->hasTile( $emptyTilesYes[ $x ] ) );
-        $this->assertFalse( $row->hasTile( $emptyTilesNo[ $x ] ) );
+        $this->assertTrue( $sut->hasTile( $emptyTilesYes[ $x ] ) );
+        $this->assertFalse( $sut->hasTile( $emptyTilesNo[ $x ] ) );
+    }
+
+    //-- Specific tile incompatibility ------------------------------------//
+
+    public function testTileIsIncompatibleThrowsExceptionIfTileIsNotFound()
+    {
+        $x = 5;
+        $y = 7;
+
+        $emptyTilesYes = $this->getEmptyTiles( 'row', $y );
+        $emptyTilesNo = $this->getEmptyTiles( 'row', $y + 1 );
+
+        $sut = $this->getSudokuBlockFromTiles( $emptyTilesYes );
+
+        $this->expectException( \LogicException::class );
+        $sut->tileIsIncompatible( $emptyTilesNo[ $x ] );
+    }
+
+    /**
+     * @dataProvider tileIsIncompatibleProvider
+     */
+    public function testTileIsIncompatible( int $x, int $y, array $initialValues, array $solutionValues, string $blockType )
+    {
+        // TODO: ADD PROVIDER WITH POSITIVE AND NEGATIVE CASES TO MAKE THE METHOD FAIL.
+
+        $this->markTestIncomplete( "Will create a service to calculate coords" );
+
+        $blockId = $this->getBlockIdByCoordinatesAndBlockType( $x, $y, $blockType );
+
+        $tiles = $this->getTiles( $initialValues, $solutionValues, $blockType, $blockId );
+        $sut = $this->getSudokuBlockFromTiles( $tiles );
+
+        $this->assertFalse( $sut->tileIsIncompatible( $tiles[ $x ] ) );
+    }
+
+    public function tileIsIncompatibleProvider()
+    {
+        return
+            [
+                [ 5, 7, [ 0, 0, 0, 0, 0, 1, 0, 0, 0 ], [ 0, 0, 2, 0, 0, 0, 0, 0, 0 ], 'row' ],
+            ];
     }
 
     //-- Private ----------------------------------------------------------//
@@ -153,7 +195,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
 
     private function getEmptyTiles( string $blockType, int $blockId ) : array
     {
-        $tiles = [];
+        $tiles = [ ];
         for( $i = 1; $i <= 9; $i++ )
         {
             $coordinates = $this->getCoordinates( $i, $blockType, $blockId );
@@ -197,7 +239,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
                 break;
         }
 
-        return new Coordinates( $x, $y );
+        return new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
     }
 
     private function setTileValue( int $initialValue, int $solutionValue, Tile & $tile )
@@ -222,4 +264,24 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         return $sudokuBlock;
     }
 
+    private function getBlockIdByCoordinatesAndBlockType( int $x, int $y, string $blockType )
+    {
+        switch( $blockType )
+        {
+            case 'row':
+
+                $blockId = $y;
+                break;
+
+            case 'column':
+
+                $blockId = $x;
+                break;
+
+            case 'square':
+
+                $blockId = 33;
+                break;
+        }
+    }
 }

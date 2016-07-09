@@ -129,6 +129,6 @@ class Tile
 
     public function getCoordinates() : Coordinates
     {
-        return new Coordinates( $this->coordinates->getX() , $this->coordinates->getY() );
+        return $this->coordinates;
     }
 }

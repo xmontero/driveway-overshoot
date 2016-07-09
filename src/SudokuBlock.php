@@ -88,7 +88,7 @@ class SudokuBlock
 
     //-- Tile management --------------------------------------------------//
 
-    public function hasTile( Tile $checkedTile )
+    public function hasTile( Tile $desiredTile ) : bool
     {
         $found = false;
 
@@ -96,7 +96,7 @@ class SudokuBlock
         {
             $exploredTile = $this->tiles[ $tileIndex ];
 
-            if( $exploredTile === $checkedTile )
+            if( $exploredTile === $desiredTile )
             {
                 $found = true;
                 break;
@@ -104,5 +104,17 @@ class SudokuBlock
         }
 
         return $found;
+    }
+
+    //-- Specific tile incompatibility ------------------------------------//
+
+    public function tileIsIncompatible( Tile $tileUnderTest ) : bool
+    {
+        if( ! $this->hasTile( $tileUnderTest ) )
+        {
+            throw new \LogicException( "Can't check incompatibility of a tile that does not exist in the block." );
+        }
+
+        return false;
     }
 }

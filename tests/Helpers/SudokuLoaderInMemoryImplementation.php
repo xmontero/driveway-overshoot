@@ -3,6 +3,7 @@
 namespace XaviMontero\DrivewayOvershoot\Tests\Helpers;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
+use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Sudoku;
 use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
 use XaviMontero\DrivewayOvershoot\Value;
@@ -43,11 +44,11 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
                     [
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
-                        [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
+                        [ 0, 0, 0,   2, 0, 0,   0, 0, 0 ],
 
                         [ 1, 0, 0,   0, 0, 0,   0, 0, 1 ],
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
-                        [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
+                        [ 0, 0, 0,   0, 0, 3,   0, 0, 0 ],
 
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
@@ -60,7 +61,7 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
 
                 $values =
                     [
-                        [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
+                        [ 0, 0, 0,   1, 0, 0,   0, 0, 0 ],
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
                         [ 0, 0, 0,   0, 0, 3,   0, 0, 0 ],
 
@@ -70,7 +71,7 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
 
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
                         [ 0, 0, 0,   0, 0, 3,   0, 0, 0 ],
-                        [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
+                        [ 0, 0, 0,   0, 0, 0,   0, 0, 2 ],
                     ];
 
                 break;
@@ -84,11 +85,30 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
 
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
-                        [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
+                        [ 0, 2, 0,   0, 0, 0,   0, 0, 0 ],
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
 
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
+                        [ 0, 0, 0,   0, 0, 0,   0, 0, 3 ],
+                    ];
+
+                break;
+
+            case 'incompatibleInitialValuesHard':
+
+                $values =
+                    [
+                        [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
+                        [ 0, 0, 0,   0, 8, 0,   0, 0, 5 ],
+                        [ 0, 7, 3,   0, 0, 0,   8, 5, 0 ],
+
+                        [ 0, 6, 0,   0, 0, 0,   0, 0, 0 ],
+                        [ 1, 0, 0,   0, 1, 0,   0, 9, 0 ],
+                        [ 0, 0, 6,   0, 0, 0,   0, 0, 4 ],
+
+                        [ 0, 0, 7,   0, 0, 9,   0, 0, 4 ],
+                        [ 0, 0, 3,   0, 2, 0,   0, 2, 0 ],
                         [ 0, 0, 0,   0, 0, 0,   0, 0, 0 ],
                     ];
 
@@ -127,7 +147,7 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
 
                 if( $value != 0 )
                 {
-                    $coordinates = new Coordinates( $x, $y );
+                    $coordinates = new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
                     $sudoku->getTile( $coordinates )->setInitialValue( new Value( $value ) );
                 }
             }
