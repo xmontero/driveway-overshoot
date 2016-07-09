@@ -119,9 +119,8 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckIncompatibility( $sudokuName, $x, $y, $expected )
     {
-        $this->markTestIncomplete( "First we need a method for obtanining the square id from the tile coordinates" );
         $this->loader->load( $sudokuName, $this->sut );
-        $this->assertEquals( $expected, $this->getSut()->checkIncompatibility( new Coordinates( $x, $y ) ) );
+        $this->assertEquals( $expected, $this->getSut()->checkIncompatibility( new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) ) ) );
     }
 
     public function checkIncompatibilityProvider()

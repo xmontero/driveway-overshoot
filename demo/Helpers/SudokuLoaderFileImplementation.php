@@ -3,6 +3,7 @@
 namespace XaviMontero\DrivewayOvershoot\Demo\Helpers;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
+use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Sudoku;
 use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
 use XaviMontero\DrivewayOvershoot\Value;
@@ -28,7 +29,7 @@ class SudokuLoaderFileImplementation implements SudokuLoaderInterface
 
                 if( $initialValue > 0 )
                 {
-                    $coordinates = new Coordinates( $x, $y );
+                    $coordinates = new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
                     $tile = $sudoku->getTile( $coordinates );
                     $tile->setInitialValue( new Value( $initialValue ) );
                 }

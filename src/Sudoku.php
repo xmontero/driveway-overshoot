@@ -75,7 +75,10 @@ class Sudoku
 
     public function checkIncompatibility( Coordinates $coordinates ) : bool
     {
-        $result = ( ( $coordinates->getX() == 5 ) && ( $coordinates->getY() == 4 ) );
+        $column = $coordinates->getColumn();
+        $row = $coordinates->getRow();
+
+        $result = ( ( $coordinates->getColumn()->getValue() == 1 ) && ( $coordinates->getRow()->getValue() == 4 ) );
 
         return $result;
     }
@@ -91,10 +94,12 @@ class Sudoku
         return $hasIncompatibleInitialValues;
     }
 
+    /*
     public function getRowBlockByTile( Tile $tile ) : SudokuBlock
     {
         return $this->getRowBlock( $tile->getCoordinates()->getY() );
     }
+    */
 
     public function getRowBlock( int $y ) : SudokuBlock
     {

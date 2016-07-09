@@ -21,7 +21,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
 
     public function testCreationIsOfProperClass()
     {
-        $sut = $this->getSudokuBlockFromTileDefinition( [ 0, 0, 0, 0, 0, 1, 0, 0, 0 ], [ 0, 0, 2, 0, 0, 0, 0, 0, 0 ], 'row', 4 );
+        $sut = $this->getSudokuBlockFromTileDefinition( [ 0, 0, 0, 0, 0, 1, 0, 0, 0 ], [ 0, 0, 2, 0, 0, 0, 0, 0, 0 ], 'row', new OneToNineValue( 4 ) );
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuBlock', $sut );
     }
 
@@ -32,7 +32,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsEmpty( array $initialValues, array $solutionValues, string $blockType, int $blockId, bool $expected )
     {
-        $sut = $this->getSudokuBlockFromTileDefinition( $initialValues, $solutionValues, $blockType, $blockId );
+        $sut = $this->getSudokuBlockFromTileDefinition( $initialValues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
         $this->assertEquals( $expected, $sut->isEmpty() );
     }
 
@@ -61,7 +61,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasIncompatibleValues( array $initialValues, array $solutionValues, string $blockType, int $blockId, bool $expected )
     {
-        $sut = $this->getSudokuBlockFromTileDefinition( $initialValues, $solutionValues, $blockType, $blockId );
+        $sut = $this->getSudokuBlockFromTileDefinition( $initialValues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
         $this->assertEquals( $expected, $sut->hasIncompatibleValues() );
     }
 
@@ -96,7 +96,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsPerfect( array $initialValues, array $solutionValues, string $blockType, int $blockId, bool $expected )
     {
-        $sut = $this->getSudokuBlockFromTileDefinition( $initialValues, $solutionValues, $blockType, $blockId );
+        $sut = $this->getSudokuBlockFromTileDefinition( $initialValues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
         $this->assertEquals( $expected, $sut->isPerfect() );
     }
 
@@ -121,8 +121,8 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         $x = 5;
         $y = 7;
 
-        $emptyTilesYes = $this->getEmptyTiles( 'row', $y );
-        $emptyTilesNo = $this->getEmptyTiles( 'row', $y + 1 );
+        $emptyTilesYes = $this->getEmptyTiles( 'row', new OneToNineValue( $y ) );
+        $emptyTilesNo = $this->getEmptyTiles( 'row', new OneToNineValue( $y + 1 ) );
 
         $sut = $this->getSudokuBlockFromTiles( $emptyTilesYes );
 
@@ -137,8 +137,8 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         $x = 5;
         $y = 7;
 
-        $emptyTilesYes = $this->getEmptyTiles( 'row', $y );
-        $emptyTilesNo = $this->getEmptyTiles( 'row', $y + 1 );
+        $emptyTilesYes = $this->getEmptyTiles( 'row', new OneToNineValue( $y ) );
+        $emptyTilesNo = $this->getEmptyTiles( 'row', new OneToNineValue( $y + 1 ) );
 
         $sut = $this->getSudokuBlockFromTiles( $emptyTilesYes );
 
@@ -152,8 +152,6 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
     public function testTileIsIncompatible( int $x, int $y, array $initialValues, array $solutionValues, string $blockType )
     {
         // TODO: ADD PROVIDER WITH POSITIVE AND NEGATIVE CASES TO MAKE THE METHOD FAIL.
-
-        $this->markTestIncomplete( "Will create a service to calculate coords" );
 
         $blockId = $this->getBlockIdByCoordinatesAndBlockType( $x, $y, $blockType );
 
@@ -173,7 +171,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
 
     //-- Private ----------------------------------------------------------//
 
-    private function getSudokuBlockFromTileDefinition( array $initialValues, array $solutionValues, string $blockType, int $blockId ) : SudokuBlock
+    private function getSudokuBlockFromTileDefinition( array $initialValues, array $solutionValues, string $blockType, OneToNineValue $blockId ) : SudokuBlock
     {
         $tiles = $this->getTiles( $initialValues, $solutionValues, $blockType, $blockId );
         $sudokuBlock = $this->getSudokuBlockFromTiles( $tiles );
@@ -181,7 +179,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         return $sudokuBlock;
     }
 
-    private function getTiles( array $initialValues, array $solutionValues, string $blockType, int $blockId ) : array
+    private function getTiles( array $initialValues, array $solutionValues, string $blockType, OneToNineValue $blockId ) : array
     {
         $tiles = $this->getEmptyTiles( $blockType, $blockId );
 
@@ -193,43 +191,43 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         return $tiles;
     }
 
-    private function getEmptyTiles( string $blockType, int $blockId ) : array
+    private function getEmptyTiles( string $blockType, OneToNineValue $blockId ) : array
     {
         $tiles = [ ];
         for( $i = 1; $i <= 9; $i++ )
         {
-            $coordinates = $this->getCoordinates( $i, $blockType, $blockId );
+            $coordinates = $this->getCoordinates( new OneToNineValue( $i ), $blockType, $blockId );
             $tiles[ $i ] = new Tile( $this->sudokuMock, $coordinates );
         }
 
         return $tiles;
     }
 
-    private function getCoordinates( int $positionInsideBlock, string $blockType, int $blockId ) : Coordinates
+    private function getCoordinates( OneToNineValue $positionInsideBlock, string $blockType, OneToNineValue $blockId ) : Coordinates
     {
         switch( $blockType )
         {
             case 'row':
 
-                $x = $positionInsideBlock;
-                $y = $blockId;
+                $columnId = $positionInsideBlock;
+                $rowId = $blockId;
                 break;
 
             case 'column':
 
-                $x = $blockId;
-                $y = $positionInsideBlock;
+                $columnId = $blockId;
+                $rowId = $positionInsideBlock;
                 break;
 
             case 'square':
 
-                $xGross = ( ( $blockId - 1 ) % 3 );
-                $xFine = ( ( $positionInsideBlock - 1 ) % 3 );
-                $x = $xGross * 3 + $xFine + 1;
+                $xGross = ( ( $blockId->getValue() - 1 ) % 3 );
+                $xFine = ( ( $positionInsideBlock->getValue() - 1 ) % 3 );
+                $columnId = new OneToNineValue( $xGross * 3 + $xFine + 1 );
 
-                $yGross = intdiv( ( $blockId - 1 ), 3 );
-                $yFine = intdiv( ( $positionInsideBlock - 1 ), 3 );
-                $y = $yGross * 3 + $yFine + 1;
+                $yGross = intdiv( ( $blockId->getValue() - 1 ), 3 );
+                $yFine = intdiv( ( $positionInsideBlock->getValue() - 1 ), 3 );
+                $rowId = new OneToNineValue( $yGross * 3 + $yFine + 1 );
 
                 break;
 
@@ -239,7 +237,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
                 break;
         }
 
-        return new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
+        return new Coordinates( $columnId, $rowId );
     }
 
     private function setTileValue( int $initialValue, int $solutionValue, Tile & $tile )
@@ -270,18 +268,20 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         {
             case 'row':
 
-                $blockId = $y;
+                $blockId = new OneToNineValue( $y );
                 break;
 
             case 'column':
 
-                $blockId = $x;
+                $blockId = new OneToNineValue( $x );
                 break;
 
             case 'square':
 
-                $blockId = 33;
+                throw new \Exception( 'Not implemented' );
                 break;
         }
+
+        return $blockId;
     }
 }

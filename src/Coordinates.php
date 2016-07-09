@@ -37,12 +37,4 @@ class Coordinates
 
         return new OneToNineValue( $squareId );
     }
-
-    private function assertInRange( string $coordinateName, int $value )
-    {
-        if( ( $value < self::Min ) || ( $value > self::Max ) )
-        {
-            throw new \DomainException( "Range of '" . $coordinateName . "' must be between " . self::Min . ' and ' . self::Max . '.' );
-        }
-    }
 }
