@@ -22,6 +22,13 @@ class OneToNineValue
         return $this->value;
     }
 
+    public function equals( OneToNineValue $other )
+    {
+        return ( $this->getValue() === $other->getValue() );
+    }
+
+    //-- Private ----------------------------------------------------------//
+
     private function assertInRange( int $value )
     {
         if( ( $value < self::Min ) || ( $value > self::Max ) )

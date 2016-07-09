@@ -73,4 +73,14 @@ class OneToNineValueTest extends \PHPUnit_Framework_TestCase
                 [ 9 ],
             ];
     }
+
+    public function testEquals()
+    {
+        $sut = new OneToNineValue( 7 );
+        $otherNotEquals = new OneToNineValue( 8 );
+        $otherEquals = new OneToNineValue( 7 );
+
+        $this->assertFalse( $sut->equals( $otherNotEquals ) );
+        $this->assertTrue( $sut->equals( $otherEquals ) );
+    }
 }
