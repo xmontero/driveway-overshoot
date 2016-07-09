@@ -8,7 +8,6 @@ use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Sudoku;
 use XaviMontero\DrivewayOvershoot\SudokuFactory;
 use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
-use XaviMontero\DrivewayOvershoot\Value;
 
 class DefaultController
 {
@@ -90,7 +89,7 @@ class DefaultController
 
     private function operateSudokuModel( Sudoku $sudoku ) : Sudoku
     {
-        $sudoku->getTile( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 1 ) ) )->setSolutionValue( new Value( 5 ) );
+        $sudoku->getTile( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 1 ) ) )->setSolutionValue( new OneToNineValue( 5 ) );
         return $sudoku;
     }
 
