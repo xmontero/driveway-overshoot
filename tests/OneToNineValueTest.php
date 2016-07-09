@@ -23,7 +23,7 @@ class OneToNineValueTest extends \PHPUnit_Framework_TestCase
         new OneToNineValue( $value );
     }
 
-    public function creationThrowsDomainExceptionIfValueIsOutOfRangeProvider()
+    public function creationThrowsDomainExceptionIfValueIsOutOfRangeProvider() : array
     {
         return
             [
@@ -44,7 +44,7 @@ class OneToNineValueTest extends \PHPUnit_Framework_TestCase
         new OneToNineValue( $value );
     }
 
-    public function creationThrowsTypeExceptionIfValueIsOfWrongTypeProvider()
+    public function creationThrowsTypeExceptionIfValueIsOfWrongTypeProvider() : array
     {
         return
             [
@@ -63,7 +63,7 @@ class OneToNineValueTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( $value, $sut->getValue() );
     }
 
-    public function getValueReturnsCreationValueProvider()
+    public function getValueReturnsCreationValueProvider() : array
     {
         return
             [
