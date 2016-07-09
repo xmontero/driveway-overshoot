@@ -6,7 +6,6 @@ use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Sudoku;
 use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
-use XaviMontero\DrivewayOvershoot\Value;
 
 class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
 {
@@ -148,7 +147,7 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
                 if( $value != 0 )
                 {
                     $coordinates = new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
-                    $sudoku->getTile( $coordinates )->setInitialValue( new Value( $value ) );
+                    $sudoku->getTile( $coordinates )->setInitialValue( new OneToNineValue( $value ) );
                 }
             }
         }

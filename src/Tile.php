@@ -27,7 +27,7 @@ class Tile
 
     //-- Initial Value ----------------------------------------------------//
 
-    public function setInitialValue( Value $value )
+    public function setInitialValue( OneToNineValue $value )
     {
         if( $this->hasSolutionValue() )
         {
@@ -42,7 +42,7 @@ class Tile
         $this->initialValue = null;
     }
 
-    public function getInitialValue() : Value
+    public function getInitialValue() : OneToNineValue
     {
         if( ! $this->hasInitialValue() )
         {
@@ -59,7 +59,7 @@ class Tile
 
     //-- Solution Value ---------------------------------------------------//
 
-    public function setSolutionValue( Value $value )
+    public function setSolutionValue( OneToNineValue $value )
     {
         if( $this->hasInitialValue() )
         {
@@ -74,7 +74,7 @@ class Tile
         $this->solutionValue = null;
     }
 
-    public function getSolutionValue() : Value
+    public function getSolutionValue() : OneToNineValue
     {
         if( ! $this->hasSolutionValue() )
         {
@@ -91,7 +91,7 @@ class Tile
 
     //-- Generic Value Wrapper --------------------------------------------//
 
-    public function getValue() : Value
+    public function getValue() : OneToNineValue
     {
         if( $this->hasInitialValue() )
         {

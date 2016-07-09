@@ -4,7 +4,7 @@ namespace XaviMontero\DrivewayOvershoot\Tests;
 
 use XaviMontero\DrivewayOvershoot\PotentialValues;
 use XaviMontero\DrivewayOvershoot\PotentialValuesState;
-use XaviMontero\DrivewayOvershoot\Value;
+use XaviMontero\DrivewayOvershoot\OneToNineValue;
 
 class PotentialValuesTest extends \PHPUnit_Framework_TestCase
 {
@@ -90,13 +90,13 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
     {
         foreach( $kill as $killValue )
         {
-            $this->getSut()->killOption( new Value( $killValue ) );
+            $this->getSut()->killOption( new OneToNineValue( $killValue ) );
         }
 
         for( $i = 1; $i <= 9; $i++ )
         {
             $expected = ! in_array( $i, $kill );
-            $actual = $this->getSut()->isOption( new Value( $i ) );
+            $actual = $this->getSut()->isOption( new OneToNineValue( $i ) );
 
             $this->assertEquals( $expected, $actual );
         }
@@ -148,7 +148,7 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
     public function testGetSingleOptionReturnsNonKilledValue( $kill, $expected )
     {
         $this->killSutByArray( $kill );
-        $this->assertTrue( $this->getSut()->getSingleOption()->equals( new Value( $expected ) ) );
+        $this->assertTrue( $this->getSut()->getSingleOption()->equals( new OneToNineValue( $expected ) ) );
     }
 
     public function getSingleOptionReturnsNonKilledValue()
@@ -174,7 +174,7 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
     {
         foreach( $kill as $killValue )
         {
-            $this->getSut()->killOption( new Value( $killValue ) );
+            $this->getSut()->killOption( new OneToNineValue( $killValue ) );
         }
     }
 }

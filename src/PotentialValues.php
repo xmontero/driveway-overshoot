@@ -51,17 +51,17 @@ class PotentialValues
         return $result;
     }
 
-    public function isOption( Value $value ) : bool
+    public function isOption( OneToNineValue $value ) : bool
     {
         return $this->potential[ $value->getValue() ];
     }
 
-    public function killOption( Value $value )
+    public function killOption( OneToNineValue $value )
     {
         $this->potential[ $value->getValue() ] = false;
     }
 
-    public function getSingleOption() : Value
+    public function getSingleOption() : OneToNineValue
     {
         $state = $this->getState();
         if( $state != PotentialValuesState::Single() )
@@ -69,6 +69,6 @@ class PotentialValues
             throw new \LogicException( "getSingleValue can only be called when the state is PotentialValuesState::Single, state " . $state . " found." );
         }
 
-        return new Value( array_search( true, $this->potential ) );
+        return new OneToNineValue( array_search( true, $this->potential ) );
     }
 }

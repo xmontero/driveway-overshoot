@@ -6,7 +6,6 @@ use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\SudokuBlock;
 use XaviMontero\DrivewayOvershoot\Tile;
-use XaviMontero\DrivewayOvershoot\Value;
 
 class SudokuBlockTest extends \PHPUnit_Framework_TestCase
 {
@@ -244,13 +243,13 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
     {
         if( $initialValue > 0 )
         {
-            $tile->setInitialValue( new Value( $initialValue ) );
+            $tile->setInitialValue( new OneToNineValue( $initialValue ) );
         }
         else
         {
             if( $solutionValue > 0 )
             {
-                $tile->setSolutionValue( new Value( $solutionValue ) );
+                $tile->setSolutionValue( new OneToNineValue( $solutionValue ) );
             }
         }
     }

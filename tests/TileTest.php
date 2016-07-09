@@ -6,7 +6,6 @@ use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\PotentialValuesState;
 use XaviMontero\DrivewayOvershoot\Tile;
-use XaviMontero\DrivewayOvershoot\Value;
 
 class TileTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +18,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
         $this->tileCoordinates = new Coordinates( new OneToNineValue( 3 ), new OneToNineValue( 5 ) );
 
         $this->sudokuMock = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\Sudoku' )
-            ->setMethods( array( 'checkIncompatibility' ) )
+            ->setMethods( [ 'checkIncompatibility' ] )
             ->getMock();
 
         $this->sut = new Tile( $this->sudokuMock, $this->tileCoordinates );
@@ -52,7 +51,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
 
     public function testAfterInitializingIsNotEmpty()
     {
-        $this->getSut()->setInitialValue( new Value( 4 ) );
+        $this->getSut()->setInitialValue( new OneToNineValue( 4 ) );
         $this->assertFalse( $this->getSut()->isEmpty() );
     }
 
@@ -73,7 +72,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->getSut();
 
-        $sut->setInitialValue( new Value( 4 ) );
+        $sut->setInitialValue( new OneToNineValue( 4 ) );
         $this->assertTrue( $sut->hasInitialValue() );
     }
 
@@ -81,7 +80,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->getSut();
 
-        $sut->setInitialValue( new Value( 4 ) );
+        $sut->setInitialValue( new OneToNineValue( 4 ) );
         $sut->removeInitialValue();
         $this->assertFalse( $sut->hasInitialValue() );
     }
@@ -96,8 +95,8 @@ class TileTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->getSut();
 
-        $sut->setInitialValue( new Value(4) );
-        $this->assertTrue( $sut->getInitialValue()->equals( new Value(4) ) );
+        $sut->setInitialValue( new OneToNineValue( 4 ) );
+        $this->assertTrue( $sut->getInitialValue()->equals( new OneToNineValue( 4 ) ) );
     }
 
     //-- Solution values --------------------------------------------------//
@@ -111,7 +110,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->getSut();
 
-        $sut->setSolutionValue( new Value( 4 ) );
+        $sut->setSolutionValue( new OneToNineValue( 4 ) );
         $this->assertTrue( $sut->hasSolutionValue() );
     }
 
@@ -119,7 +118,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->getSut();
 
-        $sut->setSolutionValue( new Value( 4 ) );
+        $sut->setSolutionValue( new OneToNineValue( 4 ) );
         $sut->removeSolutionValue();
         $this->assertFalse( $sut->hasSolutionValue() );
     }
@@ -134,8 +133,8 @@ class TileTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->getSut();
 
-        $sut->setSolutionValue( new Value( 7 ) );
-        $this->assertTrue( $sut->getSolutionValue()->equals( new Value( 7 ) ) );
+        $sut->setSolutionValue( new OneToNineValue( 7 ) );
+        $this->assertTrue( $sut->getSolutionValue()->equals( new OneToNineValue( 7 ) ) );
     }
 
     //-- Initial and solution values interaction --------------------------//
@@ -145,8 +144,8 @@ class TileTest extends \PHPUnit_Framework_TestCase
         $sut = $this->getSut();
 
         $this->expectException( \LogicException::class );
-        $sut->setInitialValue( new Value( 5 ) );
-        $sut->setSolutionValue( new Value( 5 ) );
+        $sut->setInitialValue( new OneToNineValue( 5 ) );
+        $sut->setSolutionValue( new OneToNineValue( 5 ) );
     }
 
     public function testSetInitialValueThrowsExceptionIfSolutionValueIsSet()
@@ -154,8 +153,8 @@ class TileTest extends \PHPUnit_Framework_TestCase
         $sut = $this->getSut();
 
         $this->expectException( \LogicException::class );
-        $sut->setSolutionValue( new Value( 5 ) );
-        $sut->setInitialValue( new Value( 5 ) );
+        $sut->setSolutionValue( new OneToNineValue( 5 ) );
+        $sut->setInitialValue( new OneToNineValue( 5 ) );
     }
 
     //-- Generic value wrapper --------------------------------------------//
@@ -169,7 +168,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->getSut();
 
-        $sut->setInitialValue( new Value( 4 ) );
+        $sut->setInitialValue( new OneToNineValue( 4 ) );
         $this->assertTrue( $sut->hasValue() );
     }
 
@@ -177,7 +176,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->getSut();
 
-        $sut->setSolutionValue( new Value( 4 ) );
+        $sut->setSolutionValue( new OneToNineValue( 4 ) );
         $this->assertTrue( $sut->hasValue() );
     }
 
@@ -185,9 +184,9 @@ class TileTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->getSut();
 
-        $sut->setInitialValue( new Value( 4 ) );
+        $sut->setInitialValue( new OneToNineValue( 4 ) );
         $sut->removeInitialValue();
-        $sut->setSolutionValue( new Value( 7 ) );
+        $sut->setSolutionValue( new OneToNineValue( 7 ) );
         $sut->removeSolutionValue();
         $this->assertFalse( $sut->hasValue() );
     }
@@ -202,16 +201,16 @@ class TileTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->getSut();
 
-        $sut->setInitialValue( new Value( 4 ) );
-        $this->assertTrue( $sut->getValue()->equals( new Value( 4 ) ) );
+        $sut->setInitialValue( new OneToNineValue( 4 ) );
+        $this->assertTrue( $sut->getValue()->equals( new OneToNineValue( 4 ) ) );
     }
 
     public function testGetValueReturnsSolutionValue()
     {
         $sut = $this->getSut();
 
-        $sut->setSolutionValue( new Value( 4 ) );
-        $this->assertTrue( $sut->getValue()->equals( new Value( 4 ) ) );
+        $sut->setSolutionValue( new OneToNineValue( 4 ) );
+        $this->assertTrue( $sut->getValue()->equals( new OneToNineValue( 4 ) ) );
     }
 
     //-- Flagged as error -------------------------------------------------//
@@ -256,9 +255,9 @@ class TileTest extends \PHPUnit_Framework_TestCase
     public function getCoordinatesProvider()
     {
         return
-        [
-            [ 3, 8 ],
-            [ 1, 7 ],
-        ];
+            [
+                [ 3, 8 ],
+                [ 1, 7 ],
+            ];
     }
 }

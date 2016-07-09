@@ -6,7 +6,6 @@ use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Sudoku;
 use XaviMontero\DrivewayOvershoot\SudokuState;
-use XaviMontero\DrivewayOvershoot\Value;
 
 class SudokuTest extends \PHPUnit_Framework_TestCase
 {
@@ -45,7 +44,7 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
 
     public function testIsNotEmptyAfterSettingValues()
     {
-        $this->sut->getTile( new Coordinates( new OneToNineValue( 4 ), new OneToNineValue( 4 ) ) )->setInitialValue( new Value( 9 ) );
+        $this->sut->getTile( new Coordinates( new OneToNineValue( 4 ), new OneToNineValue( 4 ) ) )->setInitialValue( new OneToNineValue( 9 ) );
         $this->assertFalse( $this->getSut()->isEmpty() );
     }
 
