@@ -75,7 +75,7 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
 
                 break;
 
-            case 'incompatibleInitialValuesSquare':
+            case 'incompatibleInitialValuesBox':
 
                 $values =
                     [

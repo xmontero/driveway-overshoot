@@ -6,7 +6,7 @@ namespace XaviMontero\DrivewayOvershoot;
  * Entity that represents the set of possible values that a Tile may have as the solution.
  *
  * When the Tile is created without a problem value, this PotentialValues set is initialized with all the numbers from 1 to 9.
- * As soon as the Tile is contextualized inside a Sudoku, the neighbours with values in the same row, column and 3x3 square are killing
+ * As soon as the Tile is contextualized inside a Sudoku, the neighbours with values in the same row, column and 3x3 box are killing
  * values in the PotentialValues set.
  * If a Tile gets out of potential values, the Sudoku is incompatible.
  * If a Tile gets killed all the potential values except for one, then this only surviving value is assigned to the solution of the Tile.

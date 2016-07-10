@@ -136,10 +136,10 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
                 [ 'incompatibleInitialValuesColumn', 9, 9, false ],
                 [ 'incompatibleInitialValuesColumn', 6, 3, true ],
                 [ 'incompatibleInitialValuesColumn', 6, 8, true ],
-                [ 'incompatibleInitialValuesSquare', 3, 9, false ],
-                [ 'incompatibleInitialValuesSquare', 2, 5, false ],
-                [ 'incompatibleInitialValuesSquare', 4, 1, true ],
-                [ 'incompatibleInitialValuesSquare', 6, 2, true ],
+                [ 'incompatibleInitialValuesBox', 3, 9, false ],
+                [ 'incompatibleInitialValuesBox', 2, 5, false ],
+                [ 'incompatibleInitialValuesBox', 4, 1, true ],
+                [ 'incompatibleInitialValuesBox', 6, 2, true ],
                 [ 'incompatibleInitialValuesHard', 6, 1, false ],
                 [ 'incompatibleInitialValuesHard', 3, 9, false ],
                 [ 'incompatibleInitialValuesHard', 5, 2, false ],
@@ -174,12 +174,12 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
         [
             [ 'incompatibleInitialValuesRow' ],
             [ 'incompatibleInitialValuesColumn' ],
-            [ 'incompatibleInitialValuesSquare' ],
+            [ 'incompatibleInitialValuesBox' ],
             [ 'incompatibleInitialValuesHard' ],
         ];
     }
 
-    //-- Coordinates and squares ------------------------------------------//
+    //-- Coordinates and boxes ------------------------------------------//
 
     public function testGetRowBlockByTile()
     {
@@ -252,24 +252,24 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetSquareBlockIsOfProperClass()
+    public function testGetBoxBlockIsOfProperClass()
     {
         $sut = $this->getSut();
         $this->loader->load( 'easy1', $sut );
 
-        $squareId = new OneToNineValue( 4 );
-        $square = $sut->getSquareBlock( $squareId );
+        $boxId = new OneToNineValue( 4 );
+        $box = $sut->getBoxBlock( $boxId );
 
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuBlock', $square );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuBlock', $box );
     }
 
-    public function testGetSquareBlock()
+    public function testGetBoxBlock()
     {
         $sut = $this->getSut();
         $this->loader->load( 'easy1', $sut );
 
-        $squareId = new OneToNineValue( 7 );
-        $square = $sut->getSquareBlock( $squareId );
+        $boxId = new OneToNineValue( 7 );
+        $box = $sut->getBoxBlock( $boxId );
 
         $allExpectedCoordinates = [
             1 => [ 'column' => 1, 'row' => 7 ],
@@ -292,7 +292,7 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
             $rowId = new OneToNineValue( $expectedCoordinates[ 'row' ] );
 
             $expectedTile = $this->getSut()->getTile( new Coordinates( $columnId, $rowId ) );
-            $actualTile = $square->getTile( $positionId );
+            $actualTile = $box->getTile( $positionId );
 
             $this->assertSame( $expectedTile, $actualTile );
         }

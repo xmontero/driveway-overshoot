@@ -39,11 +39,11 @@ class Coordinates
     }
 
     /**
-     * Returns the id of the 3x3 square where the coordinates belong to.
-     * Squares are numbered 123 in the first three rows, 456 in the three middle rows and 789 in the last three rows.
+     * Returns the id of the 3x3 box where the coordinates belong to.
+     * Boxes are numbered 123 in the first three rows, 456 in the three middle rows and 789 in the last three rows.
      * @return OneToNineValue
      */
-    public function getSquareId() : OneToNineValue
+    public function getBoxId() : OneToNineValue
     {
         $tileXBaseOne = $this->getColumnId()->getValue();
         $tileYBaseOne = $this->getRowId()->getValue();
@@ -51,11 +51,11 @@ class Coordinates
         $tileXBaseZero = $tileXBaseOne - 1;
         $tileYBaseZero = $tileYBaseOne - 1;
 
-        $squareXBaseZero = intdiv( $tileXBaseZero, 3 );
-        $squareYBaseZero = intdiv( $tileYBaseZero, 3 );
+        $boxXBaseZero = intdiv( $tileXBaseZero, 3 );
+        $boxYBaseZero = intdiv( $tileYBaseZero, 3 );
 
-        $squareId = 1 + $squareXBaseZero + $squareYBaseZero * 3;
+        $boxId = 1 + $boxXBaseZero + $boxYBaseZero * 3;
 
-        return new OneToNineValue( $squareId );
+        return new OneToNineValue( $boxId );
     }
 }

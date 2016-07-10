@@ -96,9 +96,9 @@ class Sudoku
     {
         $hasIncompatibleInitialValuesRow = $this->hasIncompatibleInitialValuesRow();
         $hasIncompatibleInitialValuesColumn = $this->hasIncompatibleInitialValuesColumn();
-        $hasIncompatibleInitialValuesSquare = $this->hasIncompatibleInitialValuesSquare();
+        $hasIncompatibleInitialValuesBox = $this->hasIncompatibleInitialValuesBox();
 
-        $hasIncompatibleInitialValues = $hasIncompatibleInitialValuesRow || $hasIncompatibleInitialValuesColumn || $hasIncompatibleInitialValuesSquare;
+        $hasIncompatibleInitialValues = $hasIncompatibleInitialValuesRow || $hasIncompatibleInitialValuesColumn || $hasIncompatibleInitialValuesBox;
 
         return $hasIncompatibleInitialValues;
     }
@@ -136,10 +136,10 @@ class Sudoku
         return $block;
     }
 
-    public function getSquareBlock( OneToNineValue $blockId ) : SudokuBlock
+    public function getBoxBlock( OneToNineValue $blockId ) : SudokuBlock
     {
-        // Squares are numbered from rows top to bottom and, inside each row, from left to right, from 1 to 9.
-        // Below, the numbers represent the number of the square the tile belongs to.
+        // Boxes are numbered from rows top to bottom and, inside each row, from left to right, from 1 to 9.
+        // Below, the numbers represent the number of the box the tile belongs to.
         //
         // [ 1, 1, 1,   2, 2, 2,   3, 3, 3 ],
         // [ 1, 1, 1,   2, 2, 2,   3, 3, 3 ],
@@ -222,14 +222,14 @@ class Sudoku
         return $incompatible;
     }
 
-    private function hasIncompatibleInitialValuesSquare() : bool
+    private function hasIncompatibleInitialValuesBox() : bool
     {
         $incompatible = false;
 
         for( $i = 1; $i <= 9; $i++ )
         {
-            $square = $this->getSquareBlock( new OneToNineValue( $i ) );
-            if( $square->hasIncompatibleValues() )
+            $box = $this->getBoxBlock( new OneToNineValue( $i ) );
+            if( $box->hasIncompatibleValues() )
             {
                 $incompatible = true;
                 break;

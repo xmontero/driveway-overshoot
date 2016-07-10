@@ -8,7 +8,7 @@ namespace XaviMontero\DrivewayOvershoot;
  * Value object that represents an integer ranging from 1 to 9.
  *
  * It is identified by its value, which can be any integer from 1 to 9.
- * Useful for representing the possible values for a Tile, the id of a row, of a column, of a square, the position of a Tile inside a row, of a column, or inside a square, etc.
+ * Useful for representing the possible values for a Tile, the id of a row, of a column, of a box, the position of a Tile inside a row, of a column, or inside a box, etc.
  */
 class OneToNineValue
 {

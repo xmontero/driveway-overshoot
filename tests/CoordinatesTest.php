@@ -21,11 +21,11 @@ class CoordinatesTest extends \PHPUnit_Framework_TestCase
 
         $rowId = $sut->getRowId();
         $columnId = $sut->getColumnId();
-        $squareId = $sut->getSquareId();
+        $boxId = $sut->getBoxId();
 
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\OneToNineValue', $rowId );
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\OneToNineValue', $columnId );
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\OneToNineValue', $squareId );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\OneToNineValue', $boxId );
     }
 
     /**
@@ -59,17 +59,17 @@ class CoordinatesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getSquareReturnsProperValueProvider
+     * @dataProvider getBoxReturnsProperValueProvider
      */
-    public function testGetSquareReturnsProperValue( int $columnIdValue, int $rowIdValue, int $expectedSquareIdValue )
+    public function testGetBoxReturnsProperValue( int $columnIdValue, int $rowIdValue, int $expectedBoxIdValue )
     {
         $sut = new Coordinates( new OneToNineValue( $columnIdValue ), new OneToNineValue( $rowIdValue ) );
-        $squareId = $sut->getSquareId();
+        $boxId = $sut->getBoxId();
 
-        $this->assertEquals( $expectedSquareIdValue, $squareId->getValue() );
+        $this->assertEquals( $expectedBoxIdValue, $boxId->getValue() );
     }
 
-    public function getSquareReturnsProperValueProvider()
+    public function getBoxReturnsProperValueProvider()
     {
         return
             [

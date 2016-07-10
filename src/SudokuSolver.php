@@ -17,13 +17,13 @@ class SudokuSolver
 
             $rowBlock = $sudoku->getRowBlock( $positionId );
             $columnBlock = $sudoku->getColumnBlock( $positionId );
-            $squareBlock = $sudoku->getSquareBlock( $positionId );
+            $boxBlock = $sudoku->getBoxBlock( $positionId );
 
             $rowIsPerfect = $rowBlock->isPerfect();
             $columnIsPerfect = $columnBlock->isPerfect();
-            $squareIsPerfect = $squareBlock->isPerfect();
+            $boxIsPerfect = $boxBlock->isPerfect();
 
-            $solved = $solved && ( $rowIsPerfect && $columnIsPerfect && $squareIsPerfect );
+            $solved = $solved && ( $rowIsPerfect && $columnIsPerfect && $boxIsPerfect );
 
             if( ! $solved )
             {
