@@ -33,3 +33,9 @@ This model represents a sudoku solver.
     virtual$ php demo/demo.php 1
 
     // You can change the 1 by any other number provided there is a file in the demo/Games directory.
+
+## TODO:
+
+We should be coherent with the name of some sort of standard.
+For example, this one:
+https://en.wikipedia.org/wiki/Glossary_of_Sudoku
