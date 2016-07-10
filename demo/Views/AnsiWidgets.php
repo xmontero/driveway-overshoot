@@ -174,7 +174,7 @@ class AnsiWidgets
         $dto = [];
 
         $dto[ 'color' ] = $red;
-        $dto[ 'value' ] = $cell->hasInitialValue() ? $cell->getInitialValue()->getValue() : ' ';
+        $dto[ 'value' ] = $cell->hasClue() ? $cell->getClue()->getValue() : ' ';
 
         return $dto;
     }
@@ -196,7 +196,7 @@ class AnsiWidgets
         }
         else
         {
-            if( $cell->hasInitialValue() )
+            if( $cell->hasClue() )
             {
                 $dto[ 'color' ] = $red;
             }

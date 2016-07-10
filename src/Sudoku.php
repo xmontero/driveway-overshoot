@@ -92,15 +92,15 @@ class Sudoku
         return $result;
     }
 
-    public function hasIncompatibleInitialValues() : bool
+    public function hasIncompatibleClues() : bool
     {
-        $hasIncompatibleInitialValuesRow = $this->hasIncompatibleInitialValuesRow();
-        $hasIncompatibleInitialValuesColumn = $this->hasIncompatibleInitialValuesColumn();
-        $hasIncompatibleInitialValuesBox = $this->hasIncompatibleInitialValuesBox();
+        $hasIncompatibleCluesInRow = $this->hasIncompatibleCluesInRow();
+        $hasIncompatibleCluesInColumn = $this->hasIncompatibleCluesInColumn();
+        $hasIncompatibleCluesInBox = $this->hasIncompatibleCluesInBox();
 
-        $hasIncompatibleInitialValues = $hasIncompatibleInitialValuesRow || $hasIncompatibleInitialValuesColumn || $hasIncompatibleInitialValuesBox;
+        $hasIncompatibleClues = $hasIncompatibleCluesInRow || $hasIncompatibleCluesInColumn || $hasIncompatibleCluesInBox;
 
-        return $hasIncompatibleInitialValues;
+        return $hasIncompatibleClues;
     }
 
     public function getRowBlockByCell( Cell $cell ) : SudokuBlock
@@ -188,7 +188,7 @@ class Sudoku
         }
     }
 
-    private function hasIncompatibleInitialValuesRow() : bool
+    private function hasIncompatibleCluesInRow() : bool
     {
         $incompatible = false;
 
@@ -205,7 +205,7 @@ class Sudoku
         return $incompatible;
     }
 
-    private function hasIncompatibleInitialValuesColumn() : bool
+    private function hasIncompatibleCluesInColumn() : bool
     {
         $incompatible = false;
 
@@ -222,7 +222,7 @@ class Sudoku
         return $incompatible;
     }
 
-    private function hasIncompatibleInitialValuesBox() : bool
+    private function hasIncompatibleCluesInBox() : bool
     {
         $incompatible = false;
 

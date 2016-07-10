@@ -5,7 +5,7 @@ namespace XaviMontero\DrivewayOvershoot;
 /**
  * Factory service to create and load Sudoku objects.
  *
- * The loading takes place from an injected service implementing SudokuLoaderInterface which is able to provide data for the initial problem to be solved.
+ * The loading takes place from an injected service implementing SudokuLoaderInterface which is able to provide data for the clues of the problem to be solved.
  */
 class SudokuFactory
 {

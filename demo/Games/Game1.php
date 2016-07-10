@@ -4,7 +4,7 @@ namespace XaviMontero\DrivewayOvershoot\Demo\Games;
 
 class Game1
 {
-    function getInitialValues()
+    function getClues()
     {
         return
         [

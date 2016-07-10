@@ -11,7 +11,7 @@ class Cell
 {
     private $coordinates;
     private $sudoku;
-    private $initialValue = null;
+    private $clue = null;
     private $solutionValue = null;
 
     public function __construct( Sudoku $sudoku, Coordinates $coordinates )
@@ -22,7 +22,7 @@ class Cell
 
     public function isEmpty() : bool
     {
-        return is_null( $this->initialValue );
+        return is_null( $this->clue );
     }
 
     public function getPotentialValues() : PotentialValues
@@ -30,45 +30,45 @@ class Cell
         return new PotentialValues;
     }
 
-    //-- Initial Value ----------------------------------------------------//
+    //-- Clue -------------------------------------------------------------//
 
-    public function setInitialValue( OneToNineValue $value )
+    public function setClue( OneToNineValue $value )
     {
         if( $this->hasSolutionValue() )
         {
-            throw new \LogicException( "Can't set an initial value on a cell that already contains an solution value." );
+            throw new \LogicException( "Can't set an clue on a cell that already contains an solution value." );
         }
 
-        $this->initialValue = $value;
+        $this->clue = $value;
     }
 
-    public function removeInitialValue()
+    public function removeClue()
     {
-        $this->initialValue = null;
+        $this->clue = null;
     }
 
-    public function getInitialValue() : OneToNineValue
+    public function getClue() : OneToNineValue
     {
-        if( ! $this->hasInitialValue() )
+        if( ! $this->hasClue() )
         {
-            throw new \LogicException( "Can't get the initial value if it was not set. Check hasInitialValue() first." );
+            throw new \LogicException( "Can't get the clue if it was not set. Check hasClue() first." );
         }
 
-        return $this->initialValue;
+        return $this->clue;
     }
 
-    public function hasInitialValue() : bool
+    public function hasClue() : bool
     {
-        return ( ! is_null( $this->initialValue ) );
+        return ( ! is_null( $this->clue ) );
     }
 
     //-- Solution Value ---------------------------------------------------//
 
     public function setSolutionValue( OneToNineValue $value )
     {
-        if( $this->hasInitialValue() )
+        if( $this->hasClue() )
         {
-            throw new \LogicException( "Can't set a solution on a cell that already contains an initial value." );
+            throw new \LogicException( "Can't set a solution on a cell that already contains an clue." );
         }
 
         $this->solutionValue = $value;
@@ -98,9 +98,9 @@ class Cell
 
     public function getValue() : OneToNineValue
     {
-        if( $this->hasInitialValue() )
+        if( $this->hasClue() )
         {
-            $result = $this->initialValue;
+            $result = $this->clue;
         }
         else
         {
@@ -110,7 +110,7 @@ class Cell
             }
             else
             {
-                throw new \LogicException( "Can't get the value if neither the initial or the solution were set. Check hasValue() first." );
+                throw new \LogicException( "Can't get the value if neither the clue or the solution were set. Check hasValue() first." );
             }
         }
 
@@ -119,10 +119,10 @@ class Cell
 
     public function hasValue() : bool
     {
-        $hasInitialValue = $this->hasInitialValue();
+        $hasClue = $this->hasClue();
         $hasSolutionValue = $this->hasSolutionValue();
 
-        return ( $hasInitialValue || $hasSolutionValue );
+        return ( $hasClue || $hasSolutionValue );
     }
 
     public function hasIncompatibleValue() : bool

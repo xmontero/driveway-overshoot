@@ -49,9 +49,9 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\PotentialValues', $potentialValues );
     }
 
-    public function testAfterInitializingIsNotEmpty()
+    public function testAfterSettingClueIsNotEmpty()
     {
-        $this->getSut()->setInitialValue( new OneToNineValue( 4 ) );
+        $this->getSut()->setClue( new OneToNineValue( 4 ) );
         $this->assertFalse( $this->getSut()->isEmpty() );
     }
 
@@ -61,42 +61,42 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( PotentialValuesState::Full(), $potentialValues->getState() );
     }
 
-    //-- Initial values ---------------------------------------------------//
+    //-- Clues ------------------------------------------------------------//
 
-    public function testHasNotInitialValueAfterCreation()
+    public function testHasNotClueAfterCreation()
     {
-        $this->assertFalse( $this->getSut()->hasInitialValue() );
+        $this->assertFalse( $this->getSut()->hasClue() );
     }
 
-    public function testHasInitialValueAfterSettingAnInitialValue()
-    {
-        $sut = $this->getSut();
-
-        $sut->setInitialValue( new OneToNineValue( 4 ) );
-        $this->assertTrue( $sut->hasInitialValue() );
-    }
-
-    public function testHasNotInitialValueAfterRemoval()
+    public function testHasClueAfterSettingAnClue()
     {
         $sut = $this->getSut();
 
-        $sut->setInitialValue( new OneToNineValue( 4 ) );
-        $sut->removeInitialValue();
-        $this->assertFalse( $sut->hasInitialValue() );
+        $sut->setClue( new OneToNineValue( 4 ) );
+        $this->assertTrue( $sut->hasClue() );
     }
 
-    public function testGetInitialValueTrowsExceptionIfNotSet()
+    public function testHasNotClueAfterRemoval()
+    {
+        $sut = $this->getSut();
+
+        $sut->setClue( new OneToNineValue( 4 ) );
+        $sut->removeClue();
+        $this->assertFalse( $sut->hasClue() );
+    }
+
+    public function testGetClueTrowsExceptionIfNotSet()
     {
         $this->expectException( \LogicException::class );
-        $this->getSut()->getInitialValue();
+        $this->getSut()->getClue();
     }
 
-    public function testGetInitialValueReturnsSetValue()
+    public function testGetClueReturnsSetValue()
     {
         $sut = $this->getSut();
 
-        $sut->setInitialValue( new OneToNineValue( 4 ) );
-        $this->assertTrue( $sut->getInitialValue()->equals( new OneToNineValue( 4 ) ) );
+        $sut->setClue( new OneToNineValue( 4 ) );
+        $this->assertTrue( $sut->getClue()->equals( new OneToNineValue( 4 ) ) );
     }
 
     //-- Solution values --------------------------------------------------//
@@ -137,24 +137,24 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue( $sut->getSolutionValue()->equals( new OneToNineValue( 7 ) ) );
     }
 
-    //-- Initial and solution values interaction --------------------------//
+    //-- Clue and solution values interaction -----------------------------//
 
-    public function testSetSolutionValueThrowsExceptionIfInitialValueIsSet()
+    public function testSetSolutionValueThrowsExceptionIfClueIsSet()
     {
         $sut = $this->getSut();
 
         $this->expectException( \LogicException::class );
-        $sut->setInitialValue( new OneToNineValue( 5 ) );
+        $sut->setClue( new OneToNineValue( 5 ) );
         $sut->setSolutionValue( new OneToNineValue( 5 ) );
     }
 
-    public function testSetInitialValueThrowsExceptionIfSolutionValueIsSet()
+    public function testSetClueThrowsExceptionIfSolutionValueIsSet()
     {
         $sut = $this->getSut();
 
         $this->expectException( \LogicException::class );
         $sut->setSolutionValue( new OneToNineValue( 5 ) );
-        $sut->setInitialValue( new OneToNineValue( 5 ) );
+        $sut->setClue( new OneToNineValue( 5 ) );
     }
 
     //-- Generic value wrapper --------------------------------------------//
@@ -164,11 +164,11 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse( $this->getSut()->hasValue() );
     }
 
-    public function testHasValueAfterSettingAnInitialValue()
+    public function testHasValueAfterSettingAnClue()
     {
         $sut = $this->getSut();
 
-        $sut->setInitialValue( new OneToNineValue( 4 ) );
+        $sut->setClue( new OneToNineValue( 4 ) );
         $this->assertTrue( $sut->hasValue() );
     }
 
@@ -184,8 +184,8 @@ class CellTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->getSut();
 
-        $sut->setInitialValue( new OneToNineValue( 4 ) );
-        $sut->removeInitialValue();
+        $sut->setClue( new OneToNineValue( 4 ) );
+        $sut->removeClue();
         $sut->setSolutionValue( new OneToNineValue( 7 ) );
         $sut->removeSolutionValue();
         $this->assertFalse( $sut->hasValue() );
@@ -197,11 +197,11 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->getSut()->getValue();
     }
 
-    public function testGetValueReturnsInitialValue()
+    public function testGetValueReturnsClue()
     {
         $sut = $this->getSut();
 
-        $sut->setInitialValue( new OneToNineValue( 4 ) );
+        $sut->setClue( new OneToNineValue( 4 ) );
         $this->assertTrue( $sut->getValue()->equals( new OneToNineValue( 4 ) ) );
     }
 
@@ -215,7 +215,7 @@ class CellTest extends \PHPUnit_Framework_TestCase
 
     //-- Flagged as error -------------------------------------------------//
 
-    public function testHasIncompatibleInitialValueCallsCallback()
+    public function testHasIncompatibleClueCallsCallback()
     {
         $this->sudokuMock->expects( $this->once() )
             ->method( 'checkIncompatibility' )

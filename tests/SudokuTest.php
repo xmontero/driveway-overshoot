@@ -44,7 +44,7 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
 
     public function testIsNotEmptyAfterSettingValues()
     {
-        $this->sut->getCell( new Coordinates( new OneToNineValue( 4 ), new OneToNineValue( 4 ) ) )->setInitialValue( new OneToNineValue( 9 ) );
+        $this->sut->getCell( new Coordinates( new OneToNineValue( 4 ), new OneToNineValue( 4 ) ) )->setClue( new OneToNineValue( 9 ) );
         $this->assertFalse( $this->getSut()->isEmpty() );
     }
 
@@ -128,54 +128,54 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
             [
                 [ 'easy1', 3, 4, false ],
                 [ 'easy1', 9, 9, false ],
-                [ 'incompatibleInitialValuesRow', 8, 8, false ],
-                [ 'incompatibleInitialValuesRow', 4, 3, false ],
-                [ 'incompatibleInitialValuesRow', 1, 4, true ],
-/*              [ 'incompatibleInitialValuesRow', 9, 4, true ],
-                [ 'incompatibleInitialValuesColumn', 1, 5, false ],
-                [ 'incompatibleInitialValuesColumn', 9, 9, false ],
-                [ 'incompatibleInitialValuesColumn', 6, 3, true ],
-                [ 'incompatibleInitialValuesColumn', 6, 8, true ],
-                [ 'incompatibleInitialValuesBox', 3, 9, false ],
-                [ 'incompatibleInitialValuesBox', 2, 5, false ],
-                [ 'incompatibleInitialValuesBox', 4, 1, true ],
-                [ 'incompatibleInitialValuesBox', 6, 2, true ],
-                [ 'incompatibleInitialValuesHard', 6, 1, false ],
-                [ 'incompatibleInitialValuesHard', 3, 9, false ],
-                [ 'incompatibleInitialValuesHard', 5, 2, false ],
-                [ 'incompatibleInitialValuesHard', 6, 7, false ],
-                [ 'incompatibleInitialValuesHard', 1, 5, true ],
-                [ 'incompatibleInitialValuesHard', 8, 8, true ],
-                [ 'incompatibleInitialValuesHard', 3, 3, true ],
-                [ 'incompatibleInitialValuesHard', 9, 7, true ],
-                [ 'incompatibleInitialValuesHard', 9, 2, true ],
-                [ 'incompatibleInitialValuesHard', 3, 6, true ],
+                [ 'incompatibleCluesInRow', 8, 8, false ],
+                [ 'incompatibleCluesInRow', 4, 3, false ],
+                [ 'incompatibleCluesInRow', 1, 4, true ],
+/*              [ 'incompatibleCluesInRow', 9, 4, true ],
+                [ 'incompatibleCluesInColumn', 1, 5, false ],
+                [ 'incompatibleCluesInColumn', 9, 9, false ],
+                [ 'incompatibleCluesInColumn', 6, 3, true ],
+                [ 'incompatibleCluesInColumn', 6, 8, true ],
+                [ 'incompatibleCluesInBox', 3, 9, false ],
+                [ 'incompatibleCluesInBox', 2, 5, false ],
+                [ 'incompatibleCluesInBox', 4, 1, true ],
+                [ 'incompatibleCluesInBox', 6, 2, true ],
+                [ 'incompatibleCluesHard', 6, 1, false ],
+                [ 'incompatibleCluesHard', 3, 9, false ],
+                [ 'incompatibleCluesHard', 5, 2, false ],
+                [ 'incompatibleCluesHard', 6, 7, false ],
+                [ 'incompatibleCluesHard', 1, 5, true ],
+                [ 'incompatibleCluesHard', 8, 8, true ],
+                [ 'incompatibleCluesHard', 3, 3, true ],
+                [ 'incompatibleCluesHard', 9, 7, true ],
+                [ 'incompatibleCluesHard', 9, 2, true ],
+                [ 'incompatibleCluesHard', 3, 6, true ],
 */            ];
     }
 
-    public function testHasNotIncompatibleInitialValues()
+    public function testHasNotIncompatibleClues()
     {
         $this->loader->load( 'easy1', $this->sut );
-        $this->assertFalse( $this->getSut()->hasIncompatibleInitialValues() );
+        $this->assertFalse( $this->getSut()->hasIncompatibleClues() );
     }
 
     /**
-     * @dataProvider hasIncompatibleInitialValuesProvider
+     * @dataProvider hasIncompatibleCluesProvider
      */
-    public function testHasIncompatibleInitialValues( $sudokuName )
+    public function testHasIncompatibleClues( $sudokuName )
     {
         $this->loader->load( $sudokuName, $this->sut );
-        $this->assertTrue( $this->getSut()->hasIncompatibleInitialValues() );
+        $this->assertTrue( $this->getSut()->hasIncompatibleClues() );
     }
 
-    public function hasIncompatibleInitialValuesProvider()
+    public function hasIncompatibleCluesProvider()
     {
         return
         [
-            [ 'incompatibleInitialValuesRow' ],
-            [ 'incompatibleInitialValuesColumn' ],
-            [ 'incompatibleInitialValuesBox' ],
-            [ 'incompatibleInitialValuesHard' ],
+            [ 'incompatibleCluesInRow' ],
+            [ 'incompatibleCluesInColumn' ],
+            [ 'incompatibleCluesInBox' ],
+            [ 'incompatibleCluesHard' ],
         ];
     }
 

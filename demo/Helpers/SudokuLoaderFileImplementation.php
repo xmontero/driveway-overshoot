@@ -18,19 +18,19 @@ class SudokuLoaderFileImplementation implements SudokuLoaderInterface
     {
         $className = $this->getClassName( $gameId );
         $game = new $className();
-        $initialValues = $game->getInitialValues();
+        $clues = $game->getClues();
 
         for( $y = 1; $y <= 9; $y++ )
         {
             for( $x = 1; $x <= 9; $x++ )
             {
-                $initialValue = $initialValues[ $y - 1 ][ $x - 1 ];
+                $clue = $clues[ $y - 1 ][ $x - 1 ];
 
-                if( $initialValue > 0 )
+                if( $clue > 0 )
                 {
                     $coordinates = new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
                     $cell = $sudoku->getCell( $coordinates );
-                    $cell->setInitialValue( new OneToNineValue( $initialValue ) );
+                    $cell->setClue( new OneToNineValue( $clue ) );
                 }
             }
         }

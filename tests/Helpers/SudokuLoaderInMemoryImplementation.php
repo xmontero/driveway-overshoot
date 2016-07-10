@@ -37,7 +37,7 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
 
                 break;
 
-            case 'incompatibleInitialValuesRow':
+            case 'incompatibleCluesInRow':
 
                 $values =
                     [
@@ -56,7 +56,7 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
 
                 break;
 
-            case 'incompatibleInitialValuesColumn':
+            case 'incompatibleCluesInColumn':
 
                 $values =
                     [
@@ -75,7 +75,7 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
 
                 break;
 
-            case 'incompatibleInitialValuesBox':
+            case 'incompatibleCluesInBox':
 
                 $values =
                     [
@@ -94,7 +94,7 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
 
                 break;
 
-            case 'incompatibleInitialValuesHard':
+            case 'incompatibleCluesHard':
 
                 $values =
                     [
@@ -185,7 +185,7 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
                 if( $value != 0 )
                 {
                     $coordinates = new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
-                    $sudoku->getCell( $coordinates )->setInitialValue( new OneToNineValue( $value ) );
+                    $sudoku->getCell( $coordinates )->setClue( new OneToNineValue( $value ) );
                 }
             }
         }

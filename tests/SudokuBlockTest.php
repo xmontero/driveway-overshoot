@@ -44,9 +44,9 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider isEmptyProvider
      */
-    public function testIsEmpty( array $initialValues, array $solutionValues, string $blockType, int $blockId, bool $expected )
+    public function testIsEmpty( array $clues, array $solutionValues, string $blockType, int $blockId, bool $expected )
     {
-        $sut = $this->getSudokuBlockFromCellDefinition( $initialValues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
+        $sut = $this->getSudokuBlockFromCellDefinition( $clues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
         $this->assertEquals( $expected, $sut->isEmpty() );
     }
 
@@ -73,9 +73,9 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider hasIncompatibleValuesProvider
      */
-    public function testHasIncompatibleValues( array $initialValues, array $solutionValues, string $blockType, int $blockId, bool $expected )
+    public function testHasIncompatibleValues( array $clues, array $solutionValues, string $blockType, int $blockId, bool $expected )
     {
-        $sut = $this->getSudokuBlockFromCellDefinition( $initialValues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
+        $sut = $this->getSudokuBlockFromCellDefinition( $clues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
         $this->assertEquals( $expected, $sut->hasIncompatibleValues() );
     }
 
@@ -108,9 +108,9 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider isPerfectProvider
      */
-    public function testIsPerfect( array $initialValues, array $solutionValues, string $blockType, int $blockId, bool $expected )
+    public function testIsPerfect( array $clues, array $solutionValues, string $blockType, int $blockId, bool $expected )
     {
-        $sut = $this->getSudokuBlockFromCellDefinition( $initialValues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
+        $sut = $this->getSudokuBlockFromCellDefinition( $clues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
         $this->assertEquals( $expected, $sut->isPerfect() );
     }
 
@@ -163,13 +163,13 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider cellIsIncompatibleProvider
      */
-    public function testCellIsIncompatible( int $x, int $y, array $initialValues, array $solutionValues, string $blockType )
+    public function testCellIsIncompatible( int $x, int $y, array $clues, array $solutionValues, string $blockType )
     {
         // TODO: ADD PROVIDER WITH POSITIVE AND NEGATIVE CASES TO MAKE THE METHOD FAIL.
 
         $blockId = $this->getBlockIdByCoordinatesAndBlockType( $x, $y, $blockType );
 
-        $cells = $this->getCells( $initialValues, $solutionValues, $blockType, $blockId );
+        $cells = $this->getCells( $clues, $solutionValues, $blockType, $blockId );
         $sut = $this->getSudokuBlockFromCells( $cells );
 
         $this->assertFalse( $sut->cellIsIncompatible( $cells[ $x ] ) );
@@ -185,21 +185,21 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
 
     //-- Private ----------------------------------------------------------//
 
-    private function getSudokuBlockFromCellDefinition( array $initialValues, array $solutionValues, string $blockType, OneToNineValue $blockId ) : SudokuBlock
+    private function getSudokuBlockFromCellDefinition( array $clues, array $solutionValues, string $blockType, OneToNineValue $blockId ) : SudokuBlock
     {
-        $cells = $this->getCells( $initialValues, $solutionValues, $blockType, $blockId );
+        $cells = $this->getCells( $clues, $solutionValues, $blockType, $blockId );
         $sudokuBlock = $this->getSudokuBlockFromCells( $cells );
 
         return $sudokuBlock;
     }
 
-    private function getCells( array $initialValues, array $solutionValues, string $blockType, OneToNineValue $blockId ) : array
+    private function getCells( array $clues, array $solutionValues, string $blockType, OneToNineValue $blockId ) : array
     {
         $cells = $this->getEmptyCells( $blockType, $blockId );
 
         for( $i = 1; $i <= 9; $i++ )
         {
-            $this->setCellValue( $initialValues[ $i - 1 ], $solutionValues[ $i - 1 ], $cells[ $i ] );
+            $this->setCellValue( $clues[ $i - 1 ], $solutionValues[ $i - 1 ], $cells[ $i ] );
         }
 
         return $cells;
@@ -254,11 +254,11 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         return new Coordinates( $columnId, $rowId );
     }
 
-    private function setCellValue( int $initialValue, int $solutionValue, Cell & $cell )
+    private function setCellValue( int $clue, int $solutionValue, Cell & $cell )
     {
-        if( $initialValue > 0 )
+        if( $clue > 0 )
         {
-            $cell->setInitialValue( new OneToNineValue( $initialValue ) );
+            $cell->setClue( new OneToNineValue( $clue ) );
         }
         else
         {
