@@ -102,16 +102,16 @@ class Sudoku
 
     public function getRowBlockByTile( Tile $tile ) : SudokuBlock
     {
-        return $this->getRowBlock( $tile->getCoordinates()->getRow()->getValue() );
+        return $this->getRowBlock( $tile->getCoordinates()->getRow() );
     }
 
-    public function getRowBlock( int $y ) : SudokuBlock
+    public function getRowBlock( OneToNineValue $y ) : SudokuBlock
     {
         $tile = [];
 
         for( $x = 1; $x <= 9; $x++ )
         {
-            $tile[ $x ] = $this->getTile( new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) ) );
+            $tile[ $x ] = $this->getTile( new Coordinates( new OneToNineValue( $x ), $y ) );
         }
 
         $block = new SudokuBlock( $tile[ 1 ], $tile[ 2 ], $tile[ 3 ], $tile[ 4 ], $tile[ 5 ], $tile[ 6 ], $tile[ 7 ], $tile[ 8 ], $tile[ 9 ] );
@@ -119,13 +119,13 @@ class Sudoku
         return $block;
     }
 
-    public function getColumnBlock( int $x ) : SudokuBlock
+    public function getColumnBlock( OneToNineValue $x ) : SudokuBlock
     {
         $tile = [];
 
         for( $y = 1; $y <= 9; $y++ )
         {
-            $tile[ $y ] = $this->getTile( new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) ) );
+            $tile[ $y ] = $this->getTile( new Coordinates( $x, new OneToNineValue( $y ) ) );
         }
 
         $block = new SudokuBlock( $tile[ 1 ], $tile[ 2 ], $tile[ 3 ], $tile[ 4 ], $tile[ 5 ], $tile[ 6 ], $tile[ 7 ], $tile[ 8 ], $tile[ 9 ] );
@@ -133,7 +133,7 @@ class Sudoku
         return $block;
     }
 
-    public function getSquareBlock( int $blockNumber ) : SudokuBlock
+    public function getSquareBlock( OneToNineValue $blockId ) : SudokuBlock
     {
         // Squares are numbered from rows top to bottom and, inside each row, from left to right, from 1 to 9.
         // Below, the numbers represent the number of the square the tile belongs to.
@@ -150,8 +150,8 @@ class Sudoku
         // [ 7, 7, 7,   8, 8, 8,   9, 9, 9 ],
         // [ 7, 7, 7,   8, 8, 8,   9, 9, 9 ],
 
-        $blockRow = intdiv( $blockNumber - 1, 3 );
-        $blockColumn = ( $blockNumber - 1 ) % 3;
+        $blockRow = intdiv( $blockId->getValue() - 1, 3 );
+        $blockColumn = ( $blockId->getValue() - 1 ) % 3;
 
         $tile = [];
 
@@ -191,7 +191,7 @@ class Sudoku
 
         for( $y = 1; $y <= 9; $y++ )
         {
-            $row = $this->getRowBlock( $y );
+            $row = $this->getRowBlock( new OneToNineValue( $y ) );
             if( $row->hasIncompatibleValues() )
             {
                 $incompatible = true;
@@ -208,7 +208,7 @@ class Sudoku
 
         for( $x = 1; $x <= 9; $x++ )
         {
-            $column = $this->getColumnBlock( $x );
+            $column = $this->getColumnBlock( new OneToNineValue( $x ) );
             if( $column->hasIncompatibleValues() )
             {
                 $incompatible = true;
@@ -225,7 +225,7 @@ class Sudoku
 
         for( $i = 1; $i <= 9; $i++ )
         {
-            $square = $this->getSquareBlock( $i );
+            $square = $this->getSquareBlock( new OneToNineValue( $i ) );
             if( $square->hasIncompatibleValues() )
             {
                 $incompatible = true;
