@@ -36,15 +36,15 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue( $this->getSut()->isEmpty() );
     }
 
-    public function testGetTileReturnsProperType()
+    public function testGetCellReturnsProperType()
     {
-        $tile = $this->getSut()->getTile( new Coordinates( new OneToNineValue( 4 ), new OneToNineValue( 4 ) ) );
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Tile', $tile );
+        $cell = $this->getSut()->getCell( new Coordinates( new OneToNineValue( 4 ), new OneToNineValue( 4 ) ) );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Cell', $cell );
     }
 
     public function testIsNotEmptyAfterSettingValues()
     {
-        $this->sut->getTile( new Coordinates( new OneToNineValue( 4 ), new OneToNineValue( 4 ) ) )->setInitialValue( new OneToNineValue( 9 ) );
+        $this->sut->getCell( new Coordinates( new OneToNineValue( 4 ), new OneToNineValue( 4 ) ) )->setInitialValue( new OneToNineValue( 9 ) );
         $this->assertFalse( $this->getSut()->isEmpty() );
     }
 
@@ -52,7 +52,7 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
     {
         $this->loader->load( 'easy1', $this->sut );
         $this->assertFalse( $this->getSut()->isEmpty() );
-        $this->assertTrue( $this->getSut()->getTile( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 3 ) ) )->isEmpty() );
+        $this->assertTrue( $this->getSut()->getCell( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 3 ) ) )->isEmpty() );
     }
 
     //-- Editable ---------------------------------------------------------//
@@ -181,15 +181,15 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
 
     //-- Coordinates and boxes ------------------------------------------//
 
-    public function testGetRowBlockByTile()
+    public function testGetRowBlockByCell()
     {
         $sut = $this->getSut();
         $this->loader->load( 'easy1', $sut );
 
-        $tile = $sut->getTile( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 8 ) ) );
-        $row = $sut->getRowBlockByTile( $tile );
+        $cell = $sut->getCell( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 8 ) ) );
+        $row = $sut->getRowBlockByCell( $cell );
 
-        $this->assertTrue( $row->hasTile( $tile ) );
+        $this->assertTrue( $row->hasCell( $cell ) );
     }
 
     public function testGetRowBlockIsOfProperClass()
@@ -215,10 +215,10 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
         {
             $columnId = new OneToNineValue( $x );
 
-            $expectedTile = $this->getSut()->getTile( new Coordinates( $columnId, $rowId ) );
-            $actualTile = $row->getTile( $columnId );
+            $expectedCell = $this->getSut()->getCell( new Coordinates( $columnId, $rowId ) );
+            $actualCell = $row->getCell( $columnId );
 
-            $this->assertSame( $expectedTile, $actualTile );
+            $this->assertSame( $expectedCell, $actualCell );
         }
     }
 
@@ -245,10 +245,10 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
         {
             $rowId = new OneToNineValue( $y );
 
-            $expectedTile = $this->getSut()->getTile( new Coordinates( $columnId, $rowId ) );
-            $actualTile = $column->getTile( $rowId );
+            $expectedCell = $this->getSut()->getCell( new Coordinates( $columnId, $rowId ) );
+            $actualCell = $column->getCell( $rowId );
 
-            $this->assertSame( $expectedTile, $actualTile );
+            $this->assertSame( $expectedCell, $actualCell );
         }
     }
 
@@ -291,10 +291,10 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
             $columnId = new OneToNineValue( $expectedCoordinates[ 'column' ] );
             $rowId = new OneToNineValue( $expectedCoordinates[ 'row' ] );
 
-            $expectedTile = $this->getSut()->getTile( new Coordinates( $columnId, $rowId ) );
-            $actualTile = $box->getTile( $positionId );
+            $expectedCell = $this->getSut()->getCell( new Coordinates( $columnId, $rowId ) );
+            $actualCell = $box->getCell( $positionId );
 
-            $this->assertSame( $expectedTile, $actualTile );
+            $this->assertSame( $expectedCell, $actualCell );
         }
     }
 }

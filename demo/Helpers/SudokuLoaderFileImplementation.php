@@ -29,8 +29,8 @@ class SudokuLoaderFileImplementation implements SudokuLoaderInterface
                 if( $initialValue > 0 )
                 {
                     $coordinates = new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
-                    $tile = $sudoku->getTile( $coordinates );
-                    $tile->setInitialValue( new OneToNineValue( $initialValue ) );
+                    $cell = $sudoku->getCell( $coordinates );
+                    $cell->setInitialValue( new OneToNineValue( $initialValue ) );
                 }
             }
         }

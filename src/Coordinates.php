@@ -5,7 +5,7 @@ declare( strict_types = 1 );
 namespace XaviMontero\DrivewayOvershoot;
 
 /**
- * Value object that represents the coordinates of a Tile inside a 9x9 Sudoku.
+ * Value object that represents the coordinates of a Cell inside a 9x9 Sudoku.
  *
  * It is identified by the column and the row ids.
  */
@@ -45,14 +45,14 @@ class Coordinates
      */
     public function getBoxId() : OneToNineValue
     {
-        $tileXBaseOne = $this->getColumnId()->getValue();
-        $tileYBaseOne = $this->getRowId()->getValue();
+        $cellXBaseOne = $this->getColumnId()->getValue();
+        $cellYBaseOne = $this->getRowId()->getValue();
 
-        $tileXBaseZero = $tileXBaseOne - 1;
-        $tileYBaseZero = $tileYBaseOne - 1;
+        $cellXBaseZero = $cellXBaseOne - 1;
+        $cellYBaseZero = $cellYBaseOne - 1;
 
-        $boxXBaseZero = intdiv( $tileXBaseZero, 3 );
-        $boxYBaseZero = intdiv( $tileYBaseZero, 3 );
+        $boxXBaseZero = intdiv( $cellXBaseZero, 3 );
+        $boxYBaseZero = intdiv( $cellYBaseZero, 3 );
 
         $boxId = 1 + $boxXBaseZero + $boxYBaseZero * 3;
 

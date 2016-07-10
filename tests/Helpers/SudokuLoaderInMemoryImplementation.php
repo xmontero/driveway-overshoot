@@ -185,7 +185,7 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
                 if( $value != 0 )
                 {
                     $coordinates = new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
-                    $sudoku->getTile( $coordinates )->setInitialValue( new OneToNineValue( $value ) );
+                    $sudoku->getCell( $coordinates )->setInitialValue( new OneToNineValue( $value ) );
                 }
             }
         }

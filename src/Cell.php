@@ -3,11 +3,11 @@
 namespace XaviMontero\DrivewayOvershoot;
 
 /**
- * Entity that represents a tile inside the Sudoku board.
+ * Entity that represents a cell inside the Sudoku board.
  *
- * The Tile knows its own coordinates within the puzzle, and holds a changing state that evolves over time, from not solved to solved.
+ * The Cell knows its own coordinates within the puzzle, and holds a changing state that evolves over time, from not solved to solved.
  */
-class Tile
+class Cell
 {
     private $coordinates;
     private $sudoku;
@@ -36,7 +36,7 @@ class Tile
     {
         if( $this->hasSolutionValue() )
         {
-            throw new \LogicException( "Can't set an initial value on a tile that already contains an solution value." );
+            throw new \LogicException( "Can't set an initial value on a cell that already contains an solution value." );
         }
 
         $this->initialValue = $value;
@@ -68,7 +68,7 @@ class Tile
     {
         if( $this->hasInitialValue() )
         {
-            throw new \LogicException( "Can't set a solution on a tile that already contains an initial value." );
+            throw new \LogicException( "Can't set a solution on a cell that already contains an initial value." );
         }
 
         $this->solutionValue = $value;

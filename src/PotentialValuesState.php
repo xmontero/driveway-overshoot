@@ -10,12 +10,12 @@ use MyCLabs\Enum\Enum;
 class PotentialValuesState extends Enum
 {
     /**
-     * All the potential values in the set have been killed, so the Tile and therefore the Sudoku are incompatible.
+     * All the potential values in the set have been killed, so the Cell and therefore the Sudoku are incompatible.
      */
     const Empty = 0;
 
     /**
-     * The Tile has been solved, as there is only one single value present within the potential set.
+     * The Cell has been solved, as there is only one single value present within the potential set.
      */
     const Single = 1;
 
@@ -25,7 +25,7 @@ class PotentialValuesState extends Enum
     const Semi = 2;
 
     /**
-     * All potential values are present. The Tile has no clue on how to solve it.
+     * All potential values are present. The Cell has no clue on how to solve it.
      */
     const Full = 9;
 }

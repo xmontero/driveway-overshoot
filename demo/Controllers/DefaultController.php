@@ -89,7 +89,7 @@ class DefaultController
 
     private function operateSudokuModel( Sudoku $sudoku ) : Sudoku
     {
-        $sudoku->getTile( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 1 ) ) )->setSolutionValue( new OneToNineValue( 5 ) );
+        $sudoku->getCell( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 1 ) ) )->setSolutionValue( new OneToNineValue( 5 ) );
         return $sudoku;
     }
 

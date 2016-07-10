@@ -5,7 +5,7 @@ namespace XaviMontero\DrivewayOvershoot\Tests;
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\SudokuBlock;
-use XaviMontero\DrivewayOvershoot\Tile;
+use XaviMontero\DrivewayOvershoot\Cell;
 
 class SudokuBlockTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,23 +20,23 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
 
     public function testCreationIsOfProperClass()
     {
-        $sut = $this->getSudokuBlockFromTileDefinition( [ 0, 0, 0, 0, 0, 1, 0, 0, 0 ], [ 0, 0, 2, 0, 0, 0, 0, 0, 0 ], 'row', new OneToNineValue( 4 ) );
+        $sut = $this->getSudokuBlockFromCellDefinition( [ 0, 0, 0, 0, 0, 1, 0, 0, 0 ], [ 0, 0, 2, 0, 0, 0, 0, 0, 0 ], 'row', new OneToNineValue( 4 ) );
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuBlock', $sut );
     }
 
-    //-- Tile management --------------------------------------------------//
+    //-- Cell management --------------------------------------------------//
 
-    public function testGetTile()
+    public function testGetCell()
     {
-        $emptyTiles = $this->getEmptyTiles( 'row', new OneToNineValue( 6 ) );
+        $emptyCells = $this->getEmptyCells( 'row', new OneToNineValue( 6 ) );
 
-        $sut = $this->getSudokuBlockFromTiles( $emptyTiles );
+        $sut = $this->getSudokuBlockFromCells( $emptyCells );
 
         $columnId = 4;
-        $expectedTile = $emptyTiles[ $columnId ];
-        $actualTile = $sut->getTile( new OneToNineValue( $columnId ) );
+        $expectedCell = $emptyCells[ $columnId ];
+        $actualCell = $sut->getCell( new OneToNineValue( $columnId ) );
 
-        $this->assertSame( $expectedTile, $actualTile );
+        $this->assertSame( $expectedCell, $actualCell );
     }
 
     //-- Is Empty ---------------------------------------------------------//
@@ -46,7 +46,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsEmpty( array $initialValues, array $solutionValues, string $blockType, int $blockId, bool $expected )
     {
-        $sut = $this->getSudokuBlockFromTileDefinition( $initialValues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
+        $sut = $this->getSudokuBlockFromCellDefinition( $initialValues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
         $this->assertEquals( $expected, $sut->isEmpty() );
     }
 
@@ -75,7 +75,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasIncompatibleValues( array $initialValues, array $solutionValues, string $blockType, int $blockId, bool $expected )
     {
-        $sut = $this->getSudokuBlockFromTileDefinition( $initialValues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
+        $sut = $this->getSudokuBlockFromCellDefinition( $initialValues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
         $this->assertEquals( $expected, $sut->hasIncompatibleValues() );
     }
 
@@ -110,7 +110,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsPerfect( array $initialValues, array $solutionValues, string $blockType, int $blockId, bool $expected )
     {
-        $sut = $this->getSudokuBlockFromTileDefinition( $initialValues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
+        $sut = $this->getSudokuBlockFromCellDefinition( $initialValues, $solutionValues, $blockType, new OneToNineValue( $blockId ) );
         $this->assertEquals( $expected, $sut->isPerfect() );
     }
 
@@ -128,54 +128,54 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
             ];
     }
 
-    //-- Tile management --------------------------------------------------//
+    //-- Cell management --------------------------------------------------//
 
-    public function testHasTile()
+    public function testHasCell()
     {
         $x = 5;
         $y = 7;
 
-        $emptyTilesYes = $this->getEmptyTiles( 'row', new OneToNineValue( $y ) );
-        $emptyTilesNo = $this->getEmptyTiles( 'row', new OneToNineValue( $y + 1 ) );
+        $emptyCellsYes = $this->getEmptyCells( 'row', new OneToNineValue( $y ) );
+        $emptyCellsNo = $this->getEmptyCells( 'row', new OneToNineValue( $y + 1 ) );
 
-        $sut = $this->getSudokuBlockFromTiles( $emptyTilesYes );
+        $sut = $this->getSudokuBlockFromCells( $emptyCellsYes );
 
-        $this->assertTrue( $sut->hasTile( $emptyTilesYes[ $x ] ) );
-        $this->assertFalse( $sut->hasTile( $emptyTilesNo[ $x ] ) );
+        $this->assertTrue( $sut->hasCell( $emptyCellsYes[ $x ] ) );
+        $this->assertFalse( $sut->hasCell( $emptyCellsNo[ $x ] ) );
     }
 
-    //-- Specific tile incompatibility ------------------------------------//
+    //-- Specific cell incompatibility ------------------------------------//
 
-    public function testTileIsIncompatibleThrowsExceptionIfTileIsNotFound()
+    public function testCellIsIncompatibleThrowsExceptionIfCellIsNotFound()
     {
         $x = 5;
         $y = 7;
 
-        $emptyTilesYes = $this->getEmptyTiles( 'row', new OneToNineValue( $y ) );
-        $emptyTilesNo = $this->getEmptyTiles( 'row', new OneToNineValue( $y + 1 ) );
+        $emptyCellsYes = $this->getEmptyCells( 'row', new OneToNineValue( $y ) );
+        $emptyCellsNo = $this->getEmptyCells( 'row', new OneToNineValue( $y + 1 ) );
 
-        $sut = $this->getSudokuBlockFromTiles( $emptyTilesYes );
+        $sut = $this->getSudokuBlockFromCells( $emptyCellsYes );
 
         $this->expectException( \LogicException::class );
-        $sut->tileIsIncompatible( $emptyTilesNo[ $x ] );
+        $sut->cellIsIncompatible( $emptyCellsNo[ $x ] );
     }
 
     /**
-     * @dataProvider tileIsIncompatibleProvider
+     * @dataProvider cellIsIncompatibleProvider
      */
-    public function testTileIsIncompatible( int $x, int $y, array $initialValues, array $solutionValues, string $blockType )
+    public function testCellIsIncompatible( int $x, int $y, array $initialValues, array $solutionValues, string $blockType )
     {
         // TODO: ADD PROVIDER WITH POSITIVE AND NEGATIVE CASES TO MAKE THE METHOD FAIL.
 
         $blockId = $this->getBlockIdByCoordinatesAndBlockType( $x, $y, $blockType );
 
-        $tiles = $this->getTiles( $initialValues, $solutionValues, $blockType, $blockId );
-        $sut = $this->getSudokuBlockFromTiles( $tiles );
+        $cells = $this->getCells( $initialValues, $solutionValues, $blockType, $blockId );
+        $sut = $this->getSudokuBlockFromCells( $cells );
 
-        $this->assertFalse( $sut->tileIsIncompatible( $tiles[ $x ] ) );
+        $this->assertFalse( $sut->cellIsIncompatible( $cells[ $x ] ) );
     }
 
-    public function tileIsIncompatibleProvider()
+    public function cellIsIncompatibleProvider()
     {
         return
             [
@@ -185,36 +185,36 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
 
     //-- Private ----------------------------------------------------------//
 
-    private function getSudokuBlockFromTileDefinition( array $initialValues, array $solutionValues, string $blockType, OneToNineValue $blockId ) : SudokuBlock
+    private function getSudokuBlockFromCellDefinition( array $initialValues, array $solutionValues, string $blockType, OneToNineValue $blockId ) : SudokuBlock
     {
-        $tiles = $this->getTiles( $initialValues, $solutionValues, $blockType, $blockId );
-        $sudokuBlock = $this->getSudokuBlockFromTiles( $tiles );
+        $cells = $this->getCells( $initialValues, $solutionValues, $blockType, $blockId );
+        $sudokuBlock = $this->getSudokuBlockFromCells( $cells );
 
         return $sudokuBlock;
     }
 
-    private function getTiles( array $initialValues, array $solutionValues, string $blockType, OneToNineValue $blockId ) : array
+    private function getCells( array $initialValues, array $solutionValues, string $blockType, OneToNineValue $blockId ) : array
     {
-        $tiles = $this->getEmptyTiles( $blockType, $blockId );
+        $cells = $this->getEmptyCells( $blockType, $blockId );
 
         for( $i = 1; $i <= 9; $i++ )
         {
-            $this->setTileValue( $initialValues[ $i - 1 ], $solutionValues[ $i - 1 ], $tiles[ $i ] );
+            $this->setCellValue( $initialValues[ $i - 1 ], $solutionValues[ $i - 1 ], $cells[ $i ] );
         }
 
-        return $tiles;
+        return $cells;
     }
 
-    private function getEmptyTiles( string $blockType, OneToNineValue $blockId ) : array
+    private function getEmptyCells( string $blockType, OneToNineValue $blockId ) : array
     {
-        $tiles = [ ];
+        $cells = [ ];
         for( $i = 1; $i <= 9; $i++ )
         {
             $coordinates = $this->getCoordinates( new OneToNineValue( $i ), $blockType, $blockId );
-            $tiles[ $i ] = new Tile( $this->sudokuMock, $coordinates );
+            $cells[ $i ] = new Cell( $this->sudokuMock, $coordinates );
         }
 
-        return $tiles;
+        return $cells;
     }
 
     private function getCoordinates( OneToNineValue $positionInsideBlock, string $blockType, OneToNineValue $blockId ) : Coordinates
@@ -254,24 +254,24 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         return new Coordinates( $columnId, $rowId );
     }
 
-    private function setTileValue( int $initialValue, int $solutionValue, Tile & $tile )
+    private function setCellValue( int $initialValue, int $solutionValue, Cell & $cell )
     {
         if( $initialValue > 0 )
         {
-            $tile->setInitialValue( new OneToNineValue( $initialValue ) );
+            $cell->setInitialValue( new OneToNineValue( $initialValue ) );
         }
         else
         {
             if( $solutionValue > 0 )
             {
-                $tile->setSolutionValue( new OneToNineValue( $solutionValue ) );
+                $cell->setSolutionValue( new OneToNineValue( $solutionValue ) );
             }
         }
     }
 
-    private function getSudokuBlockFromTiles( array $tiles ) : SudokuBlock
+    private function getSudokuBlockFromCells( array $cells ) : SudokuBlock
     {
-        $sudokuBlock = new SudokuBlock( $tiles[ 1 ], $tiles[ 2 ], $tiles[ 3 ], $tiles[ 4 ], $tiles[ 5 ], $tiles[ 6 ], $tiles[ 7 ], $tiles[ 8 ], $tiles[ 9 ] );
+        $sudokuBlock = new SudokuBlock( $cells[ 1 ], $cells[ 2 ], $cells[ 3 ], $cells[ 4 ], $cells[ 5 ], $cells[ 6 ], $cells[ 7 ], $cells[ 8 ], $cells[ 9 ] );
 
         return $sudokuBlock;
     }

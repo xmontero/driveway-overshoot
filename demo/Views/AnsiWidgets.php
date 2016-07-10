@@ -5,7 +5,7 @@ namespace XaviMontero\DrivewayOvershoot\Demo\Views;
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Sudoku;
-use XaviMontero\DrivewayOvershoot\Tile;
+use XaviMontero\DrivewayOvershoot\Cell;
 
 class AnsiWidgets
 {
@@ -126,16 +126,16 @@ class AnsiWidgets
 
     private function sudokuCellFromSudoku( string $mode, int $x, int $y, Sudoku $sudoku, $cellEnding ) : string
     {
-        $tile = $sudoku->getTile( new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) ) );
-        return $this->sudokuCellFromTile( $mode, $tile, $cellEnding );
+        $cell = $sudoku->getCell( new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) ) );
+        return $this->sudokuCellFromCell( $mode, $cell, $cellEnding );
     }
 
-    private function sudokuCellFromTile( string $mode, Tile $tile, $cellEnding ) : string
+    private function sudokuCellFromCell( string $mode, Cell $cell, $cellEnding ) : string
     {
         $reset = $this->ansi->reset();
         $darkBlue = $this->ansi->darkBlue();
 
-        $dto = $this->sudokuCellFromTileDto( $mode, $tile );
+        $dto = $this->sudokuCellFromCellDto( $mode, $cell );
 
         $color = $dto[ 'color' ];
         $value = $dto[ 'value' ];
@@ -145,18 +145,18 @@ class AnsiWidgets
         return $widget;
     }
 
-    private function sudokuCellFromTileDto( string $mode, Tile $tile ) : array
+    private function sudokuCellFromCellDto( string $mode, Cell $cell ) : array
     {
         switch( $mode )
         {
             case 'problem':
 
-                $dto = $this->sudokuCellFromTileProblemDto( $tile );
+                $dto = $this->sudokuCellFromCellProblemDto( $cell );
                 break;
 
             case 'solution':
 
-                $dto = $this->sudokuCellFromTileSolutionDto( $tile );
+                $dto = $this->sudokuCellFromCellSolutionDto( $cell );
                 break;
 
             default:
@@ -167,19 +167,19 @@ class AnsiWidgets
         return $dto;
     }
 
-    private function sudokuCellFromTileProblemDto( Tile $tile ) : array
+    private function sudokuCellFromCellProblemDto( Cell $cell ) : array
     {
         $red = $this->ansi->red();
 
         $dto = [];
 
         $dto[ 'color' ] = $red;
-        $dto[ 'value' ] = $tile->hasInitialValue() ? $tile->getInitialValue()->getValue() : ' ';
+        $dto[ 'value' ] = $cell->hasInitialValue() ? $cell->getInitialValue()->getValue() : ' ';
 
         return $dto;
     }
 
-    private function sudokuCellFromTileSolutionDto( Tile $tile ) : array
+    private function sudokuCellFromCellSolutionDto( Cell $cell ) : array
     {
         $invertedRed = $this->ansi->invertedRed();
         $red = $this->ansi->red();
@@ -188,15 +188,15 @@ class AnsiWidgets
 
         $dto = [];
 
-        $dto[ 'value' ] = $tile->hasValue() ? $tile->getValue()->getValue() : ' ';
+        $dto[ 'value' ] = $cell->hasValue() ? $cell->getValue()->getValue() : ' ';
 
-        if( $tile->hasIncompatibleValue() )
+        if( $cell->hasIncompatibleValue() )
         {
             $dto[ 'color' ] = $invertedRed;
         }
         else
         {
-            if( $tile->hasInitialValue() )
+            if( $cell->hasInitialValue() )
             {
                 $dto[ 'color' ] = $red;
             }

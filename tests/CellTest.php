@@ -5,33 +5,33 @@ namespace XaviMontero\DrivewayOvershoot\Tests;
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\PotentialValuesState;
-use XaviMontero\DrivewayOvershoot\Tile;
+use XaviMontero\DrivewayOvershoot\Cell;
 
-class TileTest extends \PHPUnit_Framework_TestCase
+class CellTest extends \PHPUnit_Framework_TestCase
 {
-    private $tileCoordinates;
+    private $cellCoordinates;
     private $sudokuMock;
     private $sut;
 
     protected function setUp()
     {
-        $this->tileCoordinates = new Coordinates( new OneToNineValue( 3 ), new OneToNineValue( 5 ) );
+        $this->cellCoordinates = new Coordinates( new OneToNineValue( 3 ), new OneToNineValue( 5 ) );
 
         $this->sudokuMock = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\Sudoku' )
             ->setMethods( [ 'checkIncompatibility' ] )
             ->getMock();
 
-        $this->sut = new Tile( $this->sudokuMock, $this->tileCoordinates );
+        $this->sut = new Cell( $this->sudokuMock, $this->cellCoordinates );
     }
 
-    private function getSut() : Tile
+    private function getSut() : Cell
     {
         return $this->sut;
     }
 
     public function testCreationIsOfProperClass()
     {
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Tile', $this->getSut() );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Cell', $this->getSut() );
     }
 
     //-- State ------------------------------------------------------------//
@@ -219,7 +219,7 @@ class TileTest extends \PHPUnit_Framework_TestCase
     {
         $this->sudokuMock->expects( $this->once() )
             ->method( 'checkIncompatibility' )
-            ->with( $this->tileCoordinates )
+            ->with( $this->cellCoordinates )
             ->willReturn( false );
 
         $this->getSut()->hasIncompatibleValue();
@@ -246,10 +246,10 @@ class TileTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCoordinates( $x, $y )
     {
-        $tileCoordinates = new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
-        $sut = new Tile( $this->sudokuMock, $tileCoordinates );
+        $cellCoordinates = new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
+        $sut = new Cell( $this->sudokuMock, $cellCoordinates );
 
-        $this->assertEquals( $tileCoordinates, $sut->getCoordinates() );
+        $this->assertEquals( $cellCoordinates, $sut->getCoordinates() );
     }
 
     public function getCoordinatesProvider()

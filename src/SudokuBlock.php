@@ -3,28 +3,28 @@
 namespace XaviMontero\DrivewayOvershoot;
 
 /**
- * Value object that holds 9 references to tiles that can be a row, a column or a box.
+ * Value object that holds 9 references to cells that can be a row, a column or a box.
  *
  * It is identified by the held references, which point to entities, so the value can apparently change, but in fact it does not as the
  * reference points to the same object and therefore the reference itself has not changed.
  */
 class SudokuBlock
 {
-    private $tiles;
+    private $cells;
 
-    public function __construct( Tile $tile1, Tile $tile2, Tile $tile3, Tile $tile4, Tile $tile5, Tile $tile6, Tile $tile7, Tile $tile8, Tile $tile9 )
+    public function __construct( Cell $cell1, Cell $cell2, Cell $cell3, Cell $cell4, Cell $cell5, Cell $cell6, Cell $cell7, Cell $cell8, Cell $cell9 )
     {
-        $this->tiles =
+        $this->cells =
             [
-                1 => $tile1,
-                2 => $tile2,
-                3 => $tile3,
-                4 => $tile4,
-                5 => $tile5,
-                6 => $tile6,
-                7 => $tile7,
-                8 => $tile8,
-                9 => $tile9,
+                1 => $cell1,
+                2 => $cell2,
+                3 => $cell3,
+                4 => $cell4,
+                5 => $cell5,
+                6 => $cell6,
+                7 => $cell7,
+                8 => $cell8,
+                9 => $cell9,
             ];
     }
 
@@ -34,8 +34,8 @@ class SudokuBlock
 
         for( $i = 1; $i <= 9; $i++ )
         {
-            $tile = $this->tiles[ $i ];
-            if( $tile->hasValue() )
+            $cell = $this->cells[ $i ];
+            if( $cell->hasValue() )
             {
                 $empty = false;
                 break;
@@ -50,21 +50,21 @@ class SudokuBlock
         $valueIsPresentByIndex = array_fill( 1, 9, false );
         $result = false;
 
-        for( $tileIndex = 1; $tileIndex <= 9; $tileIndex++ )
+        for( $cellIndex = 1; $cellIndex <= 9; $cellIndex++ )
         {
-            $tile = $this->tiles[ $tileIndex ];
+            $cell = $this->cells[ $cellIndex ];
 
-            if( $tile->hasValue() )
+            if( $cell->hasValue() )
             {
-                $tileValue = $tile->getValue()->getValue();
-                if( $valueIsPresentByIndex[ $tileValue ] )
+                $cellValue = $cell->getValue()->getValue();
+                if( $valueIsPresentByIndex[ $cellValue ] )
                 {
                     $result = true;
                     break;
                 }
                 else
                 {
-                    $valueIsPresentByIndex[ $tileValue ] = true;
+                    $valueIsPresentByIndex[ $cellValue ] = true;
                 }
             }
         }
@@ -76,14 +76,14 @@ class SudokuBlock
     {
         $valueIsPresentByIndex = array_fill( 1, 9, false );
 
-        for( $tileIndex = 1; $tileIndex <= 9; $tileIndex++ )
+        for( $cellIndex = 1; $cellIndex <= 9; $cellIndex++ )
         {
-            $tile = $this->tiles[ $tileIndex ];
+            $cell = $this->cells[ $cellIndex ];
 
-            if( $tile->hasValue() )
+            if( $cell->hasValue() )
             {
-                $tileValue = $tile->getValue()->getValue();
-                $valueIsPresentByIndex[ $tileValue ] = true;
+                $cellValue = $cell->getValue()->getValue();
+                $valueIsPresentByIndex[ $cellValue ] = true;
             }
         }
 
@@ -92,17 +92,17 @@ class SudokuBlock
         return $result;
     }
 
-    //-- Tile management --------------------------------------------------//
+    //-- Cell management --------------------------------------------------//
 
-    public function hasTile( Tile $desiredTile ) : bool
+    public function hasCell( Cell $desiredCell ) : bool
     {
         $found = false;
 
-        for( $tileIndex = 1; $tileIndex <= 9; $tileIndex++ )
+        for( $cellIndex = 1; $cellIndex <= 9; $cellIndex++ )
         {
-            $exploredTile = $this->tiles[ $tileIndex ];
+            $exploredCell = $this->cells[ $cellIndex ];
 
-            if( $exploredTile === $desiredTile )
+            if( $exploredCell === $desiredCell )
             {
                 $found = true;
                 break;
@@ -112,18 +112,18 @@ class SudokuBlock
         return $found;
     }
 
-    public function getTile( OneToNineValue $position ) : Tile
+    public function getCell( OneToNineValue $position ) : Cell
     {
-        return $this->tiles[ $position->getValue() ];
+        return $this->cells[ $position->getValue() ];
     }
 
-    //-- Specific tile incompatibility ------------------------------------//
+    //-- Specific cell incompatibility ------------------------------------//
 
-    public function tileIsIncompatible( Tile $tileUnderTest ) : bool
+    public function cellIsIncompatible( Cell $cellUnderTest ) : bool
     {
-        if( ! $this->hasTile( $tileUnderTest ) )
+        if( ! $this->hasCell( $cellUnderTest ) )
         {
-            throw new \LogicException( "Can't check incompatibility of a tile that does not exist in the block." );
+            throw new \LogicException( "Can't check incompatibility of a cell that does not exist in the block." );
         }
 
         return false;
