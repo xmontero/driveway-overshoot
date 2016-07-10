@@ -36,7 +36,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         $expectedTile = $emptyTiles[ $columnId ];
         $actualTile = $sut->getTile( new OneToNineValue( $columnId ) );
 
-        $this->assertTrue( $actualTile === $expectedTile );
+        $this->assertSame( $expectedTile, $actualTile );
     }
 
     //-- Is Empty ---------------------------------------------------------//

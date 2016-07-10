@@ -218,7 +218,7 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
             $expectedTile = $this->getSut()->getTile( new Coordinates( $columnId, $rowId ) );
             $actualTile = $row->getTile( $columnId );
 
-            $this->assertEquals( $expectedTile, $actualTile );
+            $this->assertSame( $expectedTile, $actualTile );
         }
     }
 
@@ -248,7 +248,7 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
             $expectedTile = $this->getSut()->getTile( new Coordinates( $columnId, $rowId ) );
             $actualTile = $column->getTile( $rowId );
 
-            $this->assertEquals( $expectedTile, $actualTile );
+            $this->assertSame( $expectedTile, $actualTile );
         }
     }
 
@@ -294,7 +294,7 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
             $expectedTile = $this->getSut()->getTile( new Coordinates( $columnId, $rowId ) );
             $actualTile = $square->getTile( $positionId );
 
-            $this->assertEquals( $expectedTile, $actualTile );
+            $this->assertSame( $expectedTile, $actualTile );
         }
     }
 }

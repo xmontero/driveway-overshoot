@@ -112,7 +112,7 @@ class SudokuBlock
         return $found;
     }
 
-    public function getTile( OneToNineValue $position )
+    public function getTile( OneToNineValue $position ) : Tile
     {
         return $this->tiles[ $position->getValue() ];
     }
