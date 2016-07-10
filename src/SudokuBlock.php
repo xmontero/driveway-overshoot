@@ -112,6 +112,11 @@ class SudokuBlock
         return $found;
     }
 
+    public function getTile( OneToNineValue $position )
+    {
+        return $this->tiles[ $position->getValue() ];
+    }
+
     //-- Specific tile incompatibility ------------------------------------//
 
     public function tileIsIncompatible( Tile $tileUnderTest ) : bool

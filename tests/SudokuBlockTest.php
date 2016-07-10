@@ -24,6 +24,21 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuBlock', $sut );
     }
 
+    //-- Tile management --------------------------------------------------//
+
+    public function testGetTile()
+    {
+        $emptyTiles = $this->getEmptyTiles( 'row', new OneToNineValue( 6 ) );
+
+        $sut = $this->getSudokuBlockFromTiles( $emptyTiles );
+
+        $columnId = 4;
+        $expectedTile = $emptyTiles[ $columnId ];
+        $actualTile = $sut->getTile( new OneToNineValue( $columnId ) );
+
+        $this->assertTrue( $actualTile === $expectedTile );
+    }
+
     //-- Is Empty ---------------------------------------------------------//
 
     /**
