@@ -11,31 +11,31 @@ namespace XaviMontero\DrivewayOvershoot;
  */
 class Coordinates
 {
-    private $column;
-    private $row;
+    private $columnId;
+    private $rowId;
 
-    public function __construct( OneToNineValue $column, OneToNineValue $row )
+    public function __construct( OneToNineValue $columnId, OneToNineValue $rowId )
     {
-        $this->column = $column;
-        $this->row = $row;
+        $this->columnId = $columnId;
+        $this->rowId = $rowId;
     }
 
     /**
      * Returns the id of the column where coordinates belong to.
      * @return OneToNineValue
      */
-    public function getColumn() : OneToNineValue
+    public function getColumnId() : OneToNineValue
     {
-        return $this->column;
+        return $this->columnId;
     }
 
     /**
      * Returns the id of the row where coordinates belong to.
      * @return OneToNineValue
      */
-    public function getRow() : OneToNineValue
+    public function getRowId() : OneToNineValue
     {
-        return $this->row;
+        return $this->rowId;
     }
 
     /**
@@ -43,15 +43,18 @@ class Coordinates
      * Squares are numbered 123 in the first three rows, 456 in the three middle rows and 789 in the last three rows.
      * @return OneToNineValue
      */
-    public function getSquare() : OneToNineValue
+    public function getSquareId() : OneToNineValue
     {
-        $x = $this->getColumn()->getValue();
-        $y = $this->getRow()->getValue();
+        $tileXBaseOne = $this->getColumnId()->getValue();
+        $tileYBaseOne = $this->getRowId()->getValue();
 
-        $squareX = intdiv( $x - 1, 3 ) + 1;
-        $squareY = intdiv( $y - 1, 3 );
+        $tileXBaseZero = $tileXBaseOne - 1;
+        $tileYBaseZero = $tileYBaseOne - 1;
 
-        $squareId = $squareX + $squareY * 3;
+        $squareXBaseZero = intdiv( $tileXBaseZero, 3 );
+        $squareYBaseZero = intdiv( $tileYBaseZero, 3 );
+
+        $squareId = 1 + $squareXBaseZero + $squareYBaseZero * 3;
 
         return new OneToNineValue( $squareId );
     }

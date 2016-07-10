@@ -49,7 +49,10 @@ class Sudoku
 
     public function getTile( Coordinates $coordinates ) : Tile
     {
-        return $this->tiles[ $coordinates->getRow()->getValue() ][ $coordinates->getColumn()->getValue() ];
+        $columnId = $coordinates->getColumnId();
+        $rowId = $coordinates->getRowId();
+
+        return $this->tiles[ $rowId->getValue() ][ $columnId->getValue() ];
     }
 
     public function isEditable() : bool
@@ -81,10 +84,10 @@ class Sudoku
 
     public function checkIncompatibility( Coordinates $coordinates ) : bool
     {
-        $column = $coordinates->getColumn();
-        $row = $coordinates->getRow();
+        $columnId = $coordinates->getColumnId();
+        $rowId = $coordinates->getRowId();
 
-        $result = ( ( $coordinates->getColumn()->getValue() == 1 ) && ( $coordinates->getRow()->getValue() == 4 ) );
+        $result = ( ( $columnId->getValue() == 1 ) && ( $rowId->getValue() == 4 ) );
 
         return $result;
     }
@@ -102,7 +105,7 @@ class Sudoku
 
     public function getRowBlockByTile( Tile $tile ) : SudokuBlock
     {
-        return $this->getRowBlock( $tile->getCoordinates()->getRow() );
+        return $this->getRowBlock( $tile->getCoordinates()->getRowId() );
     }
 
     public function getRowBlock( OneToNineValue $y ) : SudokuBlock

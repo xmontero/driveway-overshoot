@@ -15,22 +15,34 @@ class CoordinatesTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Coordinates', $sut );
     }
 
-    /**
-     * @dataProvider getValueReturnsCreationValueProvider
-     */
-    public function testGetValueReturnsCreationValue( int $columnId, int $rowId )
+    public function testGetValueReturnsProperClass()
     {
-        $sut = new Coordinates( new OneToNineValue( $columnId ), new OneToNineValue( $rowId ) );
-        $row = $sut->getRow();
-        $column = $sut->getColumn();
+        $sut = new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 9 ) );
 
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\OneToNineValue', $row );
-        $this->assertEquals( $rowId, $row->getValue() );
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\OneToNineValue', $column );
-        $this->assertEquals( $columnId, $column->getValue() );
+        $rowId = $sut->getRowId();
+        $columnId = $sut->getColumnId();
+        $squareId = $sut->getSquareId();
+
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\OneToNineValue', $rowId );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\OneToNineValue', $columnId );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\OneToNineValue', $squareId );
     }
 
-    public function getValueReturnsCreationValueProvider()
+    /**
+     * @dataProvider getRowAndColumnReturnCreationValueProvider
+     */
+    public function testGetRowAndColumnReturnCreationValue( int $columnIdValue, int $rowIdValue )
+    {
+        $sut = new Coordinates( new OneToNineValue( $columnIdValue ), new OneToNineValue( $rowIdValue ) );
+
+        $rowId = $sut->getRowId();
+        $columnId = $sut->getColumnId();
+
+        $this->assertEquals( $rowIdValue, $rowId->getValue() );
+        $this->assertEquals( $columnIdValue, $columnId->getValue() );
+    }
+
+    public function getRowAndColumnReturnCreationValueProvider()
     {
         return
             [
@@ -46,23 +58,15 @@ class CoordinatesTest extends \PHPUnit_Framework_TestCase
             ];
     }
 
-    public function testGetSquareReturnsProperClass()
-    {
-        $sut = new Coordinates( new OneToNineValue( 3 ), new OneToNineValue( 3 ) );
-        $square = $sut->getSquare();
-
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\OneToNineValue', $square );
-    }
-
     /**
      * @dataProvider getSquareReturnsProperValueProvider
      */
-    public function testGetSquareReturnsProperValue( int $columnId, int $rowId, int $expectedSquareId )
+    public function testGetSquareReturnsProperValue( int $columnIdValue, int $rowIdValue, int $expectedSquareIdValue )
     {
-        $sut = new Coordinates( new OneToNineValue( $columnId ), new OneToNineValue( $rowId ) );
-        $square = $sut->getSquare();
+        $sut = new Coordinates( new OneToNineValue( $columnIdValue ), new OneToNineValue( $rowIdValue ) );
+        $squareId = $sut->getSquareId();
 
-        $this->assertEquals( $expectedSquareId, $square->getValue() );
+        $this->assertEquals( $expectedSquareIdValue, $squareId->getValue() );
     }
 
     public function getSquareReturnsProperValueProvider()
