@@ -5,9 +5,8 @@ declare( strict_types = 1 );
 namespace XaviMontero\DrivewayOvershoot;
 
 /**
- * Represents the position of a Tile inside a Sudoku.
+ * Value object that represents the coordinates of a Tile inside a 9x9 Sudoku.
  *
- * This is a value object that represents the coordinates inside a 9x9 Sudoku.
  * It is identified by the column and the row ids.
  */
 class Coordinates
@@ -23,7 +22,7 @@ class Coordinates
 
     /**
      * Returns the id of the column where coordinates belong to.
-     * @return \XaviMontero\DrivewayOvershoot\OneToNineValue
+     * @return OneToNineValue
      */
     public function getColumn() : OneToNineValue
     {
@@ -32,7 +31,7 @@ class Coordinates
 
     /**
      * Returns the id of the row where coordinates belong to.
-     * @return \XaviMontero\DrivewayOvershoot\OneToNineValue
+     * @return OneToNineValue
      */
     public function getRow() : OneToNineValue
     {
@@ -42,7 +41,7 @@ class Coordinates
     /**
      * Returns the id of the 3x3 square where the coordinates belong to.
      * Squares are numbered 123 in the first three rows, 456 in the three middle rows and 789 in the last three rows.
-     * @return \XaviMontero\DrivewayOvershoot\OneToNineValue
+     * @return OneToNineValue
      */
     public function getSquare() : OneToNineValue
     {
