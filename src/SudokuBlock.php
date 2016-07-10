@@ -2,6 +2,12 @@
 
 namespace XaviMontero\DrivewayOvershoot;
 
+/**
+ * Value object that holds 9 references to tiles that can be a row, a column or a square.
+ *
+ * It is identified by the held references, which point to entities, so the value can apparently change, but in fact it does not as the
+ * reference points to the same object and therefore the reference itself has not changed.
+ */
 class SudokuBlock
 {
     private $tiles;

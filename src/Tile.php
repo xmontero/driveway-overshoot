@@ -2,6 +2,11 @@
 
 namespace XaviMontero\DrivewayOvershoot;
 
+/**
+ * Entity that represents a tile inside the Sudoku board.
+ *
+ * The Tile knows its own coordinates within the puzzle, and holds a changing state that evolves over time, from not solved to solved.
+ */
 class Tile
 {
     private $coordinates;
