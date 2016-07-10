@@ -183,13 +183,118 @@ class SudokuTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRowBlockByTile()
     {
-        $this->loader->load( 'easy1', $this->sut );
-
         $sut = $this->getSut();
+        $this->loader->load( 'easy1', $sut );
 
         $tile = $sut->getTile( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 8 ) ) );
         $row = $sut->getRowBlockByTile( $tile );
 
         $this->assertTrue( $row->hasTile( $tile ) );
+    }
+
+    public function testGetRowBlockIsOfProperClass()
+    {
+        $sut = $this->getSut();
+        $this->loader->load( 'easy1', $sut );
+
+        $rowId = new OneToNineValue( 4 );
+        $row = $sut->getRowBlock( $rowId );
+
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuBlock', $row );
+    }
+
+    public function testGetRowBlock()
+    {
+        $sut = $this->getSut();
+        $this->loader->load( 'easy1', $sut );
+
+        $rowId = new OneToNineValue( 4 );
+        $row = $sut->getRowBlock( $rowId );
+
+        for( $x = 1; $x <= 9; $x++ )
+        {
+            $columnId = new OneToNineValue( $x );
+
+            $expectedTile = $this->getSut()->getTile( new Coordinates( $columnId, $rowId ) );
+            $actualTile = $row->getTile( $columnId );
+
+            $this->assertEquals( $expectedTile, $actualTile );
+        }
+    }
+
+    public function testGetColumnBlockIsOfProperClass()
+    {
+        $sut = $this->getSut();
+        $this->loader->load( 'easy1', $sut );
+
+        $columnId = new OneToNineValue( 4 );
+        $column = $sut->getColumnBlock( $columnId );
+
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuBlock', $column );
+    }
+
+    public function testGetColumnBlock()
+    {
+        $sut = $this->getSut();
+        $this->loader->load( 'easy1', $sut );
+
+        $columnId = new OneToNineValue( 7 );
+        $column = $sut->getColumnBlock( $columnId );
+
+        for( $y = 1; $y <= 9; $y++ )
+        {
+            $rowId = new OneToNineValue( $y );
+
+            $expectedTile = $this->getSut()->getTile( new Coordinates( $columnId, $rowId ) );
+            $actualTile = $column->getTile( $rowId );
+
+            $this->assertEquals( $expectedTile, $actualTile );
+        }
+    }
+
+    public function testGetSquareBlockIsOfProperClass()
+    {
+        $sut = $this->getSut();
+        $this->loader->load( 'easy1', $sut );
+
+        $squareId = new OneToNineValue( 4 );
+        $square = $sut->getSquareBlock( $squareId );
+
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuBlock', $square );
+    }
+
+    public function testGetSquareBlock()
+    {
+        $sut = $this->getSut();
+        $this->loader->load( 'easy1', $sut );
+
+        $squareId = new OneToNineValue( 7 );
+        $square = $sut->getSquareBlock( $squareId );
+
+        $allExpectedCoordinates = [
+            1 => [ 'column' => 1, 'row' => 7 ],
+            2 => [ 'column' => 2, 'row' => 7 ],
+            3 => [ 'column' => 3, 'row' => 7 ],
+            4 => [ 'column' => 1, 'row' => 8 ],
+            5 => [ 'column' => 2, 'row' => 8 ],
+            6 => [ 'column' => 3, 'row' => 8 ],
+            7 => [ 'column' => 1, 'row' => 9 ],
+            8 => [ 'column' => 2, 'row' => 9 ],
+            9 => [ 'column' => 3, 'row' => 9 ],
+        ];
+
+        for( $position = 1; $position <= 9; $position++ )
+        {
+            $positionId = new OneToNineValue( $position );
+
+            $expectedCoordinates = $allExpectedCoordinates[ $position ];
+            $columnId = new OneToNineValue( $expectedCoordinates[ 'column' ] );
+            $rowId = new OneToNineValue( $expectedCoordinates[ 'row' ] );
+
+            $expectedTile = $this->getSut()->getTile( new Coordinates( $columnId, $rowId ) );
+            $actualTile = $square->getTile( $positionId );
+
+            $this->assertEquals( $expectedTile, $actualTile );
+        }
     }
 }
