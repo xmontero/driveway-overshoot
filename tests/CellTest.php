@@ -11,113 +11,98 @@ class CellTest extends \PHPUnit_Framework_TestCase
 {
     private $cellCoordinates;
     private $sudokuMock;
-    private $sut;
 
     protected function setUp()
     {
         $this->cellCoordinates = new Coordinates( new OneToNineValue( 3 ), new OneToNineValue( 5 ) );
 
         $this->sudokuMock = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\Sudoku' )
+            ->disableOriginalConstructor()
             ->setMethods( [ 'checkIncompatibility' ] )
             ->getMock();
-
-        $this->sut = new Cell( $this->sudokuMock, $this->cellCoordinates );
     }
 
-    private function getSut() : Cell
-    {
-        return $this->sut;
-    }
+    //-- Creation ---------------------------------------------------------//
 
     public function testCreationIsOfProperClass()
     {
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Cell', $this->getSut() );
+        $sut = $this->getSutWithoutClue();
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Cell', $sut );
     }
 
-    //-- State ------------------------------------------------------------//
+    //-- Clues ------------------------------------------------------------//
 
-    public function testAfterCreationIsEmpty()
+    public function testItHasNotClueAfterCreationIfNoClueIsSet()
     {
-        $this->assertTrue( $this->getSut()->isEmpty() );
+        $sut = $this->getSutWithoutClue();
+        $this->assertFalse( $sut->hasClue() );
+    }
+
+    public function testItHasNotValueAfterCreationIfNoClueIsSet()
+    {
+        $sut = $this->getSutWithoutClue();
+        $this->assertFalse( $sut->hasValue() );
+    }
+
+    public function testItHasClueAfterCreationIfClueIsSet()
+    {
+        $sut = $this->getSutWithClue( 4 );
+        $this->assertTrue( $sut->hasClue() );
+    }
+
+    public function testItHasValueAfterCreationIfClueIsSet()
+    {
+        $sut = $this->getSutWithClue( 4 );
+        $this->assertTrue( $sut->hasValue() );
+    }
+
+    public function testGetClueTrowsExceptionIfNotSet()
+    {
+        $sut = $this->getSutWithoutClue();
+        $this->expectException( \LogicException::class );
+        $sut->getClue();
+    }
+
+    public function testGetClueReturnsSetValue()
+    {
+        $sut = $this->getSutWithClue( 4 );
+        $this->assertTrue( $sut->getClue()->equals( new OneToNineValue( 4 ) ) );
     }
 
     //-- Potential values -------------------------------------------------//
 
     public function testPotentialValuesIsOfProperClass()
     {
-        $potentialValues = $this->getSut()->getPotentialValues();
+        $sut = $this->getSutWithoutClue();
+        $potentialValues = $sut->getPotentialValues();
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\PotentialValues', $potentialValues );
-    }
-
-    public function testAfterSettingClueIsNotEmpty()
-    {
-        $this->getSut()->setClue( new OneToNineValue( 4 ) );
-        $this->assertFalse( $this->getSut()->isEmpty() );
     }
 
     public function testAfterCreationHasAllPotentialValues()
     {
-        $potentialValues = $this->getSut()->getPotentialValues();
+        $sut = $this->getSutWithoutClue();
+        $potentialValues = $sut->getPotentialValues();
         $this->assertEquals( PotentialValuesState::Full(), $potentialValues->getState() );
-    }
-
-    //-- Clues ------------------------------------------------------------//
-
-    public function testHasNotClueAfterCreation()
-    {
-        $this->assertFalse( $this->getSut()->hasClue() );
-    }
-
-    public function testHasClueAfterSettingAnClue()
-    {
-        $sut = $this->getSut();
-
-        $sut->setClue( new OneToNineValue( 4 ) );
-        $this->assertTrue( $sut->hasClue() );
-    }
-
-    public function testHasNotClueAfterRemoval()
-    {
-        $sut = $this->getSut();
-
-        $sut->setClue( new OneToNineValue( 4 ) );
-        $sut->removeClue();
-        $this->assertFalse( $sut->hasClue() );
-    }
-
-    public function testGetClueTrowsExceptionIfNotSet()
-    {
-        $this->expectException( \LogicException::class );
-        $this->getSut()->getClue();
-    }
-
-    public function testGetClueReturnsSetValue()
-    {
-        $sut = $this->getSut();
-
-        $sut->setClue( new OneToNineValue( 4 ) );
-        $this->assertTrue( $sut->getClue()->equals( new OneToNineValue( 4 ) ) );
     }
 
     //-- Solution values --------------------------------------------------//
 
     public function testHasNotSolutionValueAfterCreation()
     {
-        $this->assertFalse( $this->getSut()->hasSolutionValue() );
+        $sut = $this->getSutWithoutClue();
+        $this->assertFalse( $sut->hasSolutionValue() );
     }
 
     public function testHasSolutionValueAfterSettingASolutionValue()
     {
-        $sut = $this->getSut();
-
+        $sut = $this->getSutWithoutClue();
         $sut->setSolutionValue( new OneToNineValue( 4 ) );
         $this->assertTrue( $sut->hasSolutionValue() );
     }
 
     public function testHasNotSolutionValueAfterRemoval()
     {
-        $sut = $this->getSut();
-
+        $sut = $this->getSutWithoutClue();
         $sut->setSolutionValue( new OneToNineValue( 4 ) );
         $sut->removeSolutionValue();
         $this->assertFalse( $sut->hasSolutionValue() );
@@ -125,14 +110,14 @@ class CellTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSolutionValueTrowsExceptionIfNotSet()
     {
+        $sut = $this->getSutWithoutClue();
         $this->expectException( \LogicException::class );
-        $this->getSut()->getSolutionValue();
+        $sut->getSolutionValue();
     }
 
     public function testGetSolutionValueReturnsSetValue()
     {
-        $sut = $this->getSut();
-
+        $sut = $this->getSutWithoutClue();
         $sut->setSolutionValue( new OneToNineValue( 7 ) );
         $this->assertTrue( $sut->getSolutionValue()->equals( new OneToNineValue( 7 ) ) );
     }
@@ -141,51 +126,35 @@ class CellTest extends \PHPUnit_Framework_TestCase
 
     public function testSetSolutionValueThrowsExceptionIfClueIsSet()
     {
-        $sut = $this->getSut();
-
-        $this->expectException( \LogicException::class );
-        $sut->setClue( new OneToNineValue( 5 ) );
-        $sut->setSolutionValue( new OneToNineValue( 5 ) );
-    }
-
-    public function testSetClueThrowsExceptionIfSolutionValueIsSet()
-    {
-        $sut = $this->getSut();
-
+        $sut = $this->getSutWithClue( 5 );
         $this->expectException( \LogicException::class );
         $sut->setSolutionValue( new OneToNineValue( 5 ) );
-        $sut->setClue( new OneToNineValue( 5 ) );
     }
 
     //-- Generic value wrapper --------------------------------------------//
 
     public function testHasNotValueAfterCreation()
     {
-        $this->assertFalse( $this->getSut()->hasValue() );
+        $sut = $this->getSutWithoutClue();
+        $this->assertFalse( $sut->hasValue() );
     }
 
     public function testHasValueAfterSettingAnClue()
     {
-        $sut = $this->getSut();
-
-        $sut->setClue( new OneToNineValue( 4 ) );
+        $sut = $this->getSutWithClue( 5 );
         $this->assertTrue( $sut->hasValue() );
     }
 
     public function testHasValueAfterSettingASolutionValue()
     {
-        $sut = $this->getSut();
-
+        $sut = $this->getSutWithoutClue();
         $sut->setSolutionValue( new OneToNineValue( 4 ) );
         $this->assertTrue( $sut->hasValue() );
     }
 
     public function testHasNotValueAfterRemoval()
     {
-        $sut = $this->getSut();
-
-        $sut->setClue( new OneToNineValue( 4 ) );
-        $sut->removeClue();
+        $sut = $this->getSutWithoutClue();
         $sut->setSolutionValue( new OneToNineValue( 7 ) );
         $sut->removeSolutionValue();
         $this->assertFalse( $sut->hasValue() );
@@ -193,22 +162,20 @@ class CellTest extends \PHPUnit_Framework_TestCase
 
     public function testGetValueTrowsExceptionIfNotSet()
     {
+        $sut = $this->getSutWithoutClue();
         $this->expectException( \LogicException::class );
-        $this->getSut()->getValue();
+        $sut->getValue();
     }
 
     public function testGetValueReturnsClue()
     {
-        $sut = $this->getSut();
-
-        $sut->setClue( new OneToNineValue( 4 ) );
-        $this->assertTrue( $sut->getValue()->equals( new OneToNineValue( 4 ) ) );
+        $sut = $this->getSutWithClue( 5 );
+        $this->assertTrue( $sut->getValue()->equals( new OneToNineValue( 5 ) ) );
     }
 
     public function testGetValueReturnsSolutionValue()
     {
-        $sut = $this->getSut();
-
+        $sut = $this->getSutWithoutClue();
         $sut->setSolutionValue( new OneToNineValue( 4 ) );
         $this->assertTrue( $sut->getValue()->equals( new OneToNineValue( 4 ) ) );
     }
@@ -222,21 +189,24 @@ class CellTest extends \PHPUnit_Framework_TestCase
             ->with( $this->cellCoordinates )
             ->willReturn( false );
 
-        $this->getSut()->hasIncompatibleValue();
+        $sut = $this->getSutWithoutClue();
+        $sut->hasIncompatibleValue();
     }
 
     public function testHasNotIncompatibleValue()
     {
         $this->sudokuMock->method( 'checkIncompatibility' )->willReturn( false );
 
-        $this->assertFalse( $this->getSut()->hasIncompatibleValue() );
+        $sut = $this->getSutWithoutClue();
+        $this->assertFalse( $sut->hasIncompatibleValue() );
     }
 
     public function testHasIncompatibleValue()
     {
         $this->sudokuMock->method( 'checkIncompatibility' )->willReturn( true );
 
-        $this->assertTrue( $this->getSut()->hasIncompatibleValue() );
+        $sut = $this->getSutWithoutClue();
+        $this->assertTrue( $sut->hasIncompatibleValue() );
     }
 
     //-- Get coordinates --------------------------------------------------//
@@ -259,5 +229,17 @@ class CellTest extends \PHPUnit_Framework_TestCase
                 [ 3, 8 ],
                 [ 1, 7 ],
             ];
+    }
+
+    //-- Private ----------------------------------------------------------//
+
+    private function getSutWithoutClue() : Cell
+    {
+        return new Cell( $this->sudokuMock, $this->cellCoordinates );
+    }
+
+    private function getSutWithClue( int $clue ) : Cell
+    {
+        return new Cell( $this->sudokuMock, $this->cellCoordinates, new OneToNineValue( $clue ) );
     }
 }

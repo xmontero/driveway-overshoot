@@ -83,8 +83,9 @@ class DefaultController
 
     private function getSudokuModel() : Sudoku
     {
+        $this->sudokuLoader->loadClues( $this->gameId );
         $sudokuFactory = new SudokuFactory( $this->sudokuLoader );
-        return $sudokuFactory->createSudoku( $this->gameId );
+        return $sudokuFactory->createSudoku();
     }
 
     private function operateSudokuModel( Sudoku $sudoku ) : Sudoku

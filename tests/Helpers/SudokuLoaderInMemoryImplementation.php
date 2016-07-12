@@ -4,17 +4,42 @@ namespace XaviMontero\DrivewayOvershoot\Tests\Helpers;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
-use XaviMontero\DrivewayOvershoot\Sudoku;
 use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
 
 class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
 {
-    public $callCountLoad = 0;
-    public $callCountSave = 0;
+    public $gameId;
+    public $allClueValues;
+    public $callCountHasClue = 0;
+    public $callCountGetClue = 0;
 
-    public function load( string $gameId, Sudoku $sudoku )
+    public function __construct( $gameId )
     {
-        $this->callCountLoad++;
+        $this->gameId = $gameId;
+        $this->allClueValues = $this->getAllClueValues( $gameId );
+    }
+
+    public function hasClue( Coordinates $coordinates ) : bool
+    {
+        $this->callCountHasClue++;
+        $clueValue = $this->getClueValue( $coordinates );
+        $hasClue = ( $clueValue != 0 );
+
+        return $hasClue;
+    }
+
+    public function getClue( Coordinates $coordinates ) : OneToNineValue
+    {
+        $this->callCountGetClue++;
+        $clueValue = $this->getClueValue( $coordinates );
+
+        return new OneToNineValue( $clueValue );
+    }
+
+    //-- Private ----------------------------------------------------------//
+
+    private function getAllClueValues( string $gameId )
+    {
 
         switch( $gameId )
         {
@@ -176,18 +201,16 @@ class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
                 break;
         }
 
-        for( $y = 1; $y <= 9; $y++ )
-        {
-            for( $x = 1; $x <= 9; $x++ )
-            {
-                $value = $values[ $y - 1 ][ $x - 1 ];
+        return $values;
+    }
 
-                if( $value != 0 )
-                {
-                    $coordinates = new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) );
-                    $sudoku->getCell( $coordinates )->setClue( new OneToNineValue( $value ) );
-                }
-            }
-        }
+    private function getClueValue( Coordinates $coordinates )
+    {
+        $x = $coordinates->getColumnId()->getValue();
+        $y = $coordinates->getRowId()->getValue();
+
+        $clueValue = $this->allClueValues[ $y - 1 ][ $x - 1 ];
+
+        return $clueValue;
     }
 }

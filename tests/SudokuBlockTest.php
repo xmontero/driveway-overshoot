@@ -14,6 +14,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
     public function setup()
     {
         $this->sudokuMock = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\Sudoku' )
+            ->disableOriginalConstructor()
             ->setMethods( array( 'checkIncompatibility' ) )
             ->getMock();
     }
@@ -195,11 +196,25 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
 
     private function getCells( array $clues, array $solutionValues, string $blockType, OneToNineValue $blockId ) : array
     {
-        $cells = $this->getEmptyCells( $blockType, $blockId );
+        $cells = [ ];
 
         for( $i = 1; $i <= 9; $i++ )
         {
-            $this->setCellValue( $clues[ $i - 1 ], $solutionValues[ $i - 1 ], $cells[ $i ] );
+            $coordinates = $this->getCoordinates( new OneToNineValue( $i ), $blockType, $blockId );
+
+            $clueValue = $clues[ $i - 1 ];
+            $solutionValue = $solutionValues[ $i - 1 ];
+
+            $clue = ( $clueValue == 0 ) ? null : new OneToNineValue( $clueValue );
+            $cell = new Cell( $this->sudokuMock, $coordinates, $clue );
+
+            if( $solutionValue > 0 )
+            {
+                $solution = new OneToNineValue( $solutionValue );
+                $cell->setSolutionValue( $solution );
+            }
+
+            $cells[ $i ] = $cell;
         }
 
         return $cells;
@@ -207,14 +222,10 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
 
     private function getEmptyCells( string $blockType, OneToNineValue $blockId ) : array
     {
-        $cells = [ ];
-        for( $i = 1; $i <= 9; $i++ )
-        {
-            $coordinates = $this->getCoordinates( new OneToNineValue( $i ), $blockType, $blockId );
-            $cells[ $i ] = new Cell( $this->sudokuMock, $coordinates );
-        }
+        $clues = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+        $solutionValues = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
 
-        return $cells;
+        return $this->getCells( $clues, $solutionValues, $blockType, $blockId );
     }
 
     private function getCoordinates( OneToNineValue $positionInsideBlock, string $blockType, OneToNineValue $blockId ) : Coordinates
@@ -252,21 +263,6 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         }
 
         return new Coordinates( $columnId, $rowId );
-    }
-
-    private function setCellValue( int $clue, int $solutionValue, Cell & $cell )
-    {
-        if( $clue > 0 )
-        {
-            $cell->setClue( new OneToNineValue( $clue ) );
-        }
-        else
-        {
-            if( $solutionValue > 0 )
-            {
-                $cell->setSolutionValue( new OneToNineValue( $solutionValue ) );
-            }
-        }
     }
 
     private function getSudokuBlockFromCells( array $cells ) : SudokuBlock

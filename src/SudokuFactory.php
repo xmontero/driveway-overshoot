@@ -9,20 +9,16 @@ namespace XaviMontero\DrivewayOvershoot;
  */
 class SudokuFactory
 {
-    private $reader;
-    private $gameId;
+    private $loader;
 
     public function __construct( SudokuLoaderInterface $loader )
     {
         $this->loader = $loader;
     }
 
-    public function createSudoku( string $gameId ) : Sudoku
+    public function createSudoku() : Sudoku
     {
-        $this->gameId = $gameId;
-
-        $sudoku = new Sudoku();
-        $this->loader->load( $gameId, $sudoku );
+        $sudoku = new Sudoku( $this->loader );
         return $sudoku;
     }
 }

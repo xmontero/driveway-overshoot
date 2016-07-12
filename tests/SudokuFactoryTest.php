@@ -2,47 +2,56 @@
 
 namespace XaviMontero\DrivewayOvershoot\Tests;
 
+use XaviMontero\DrivewayOvershoot\Coordinates;
+use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\SudokuFactory;
 
 class SudokuFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    private $persister;
-    private $sut;
-
-    protected function setUp()
-    {
-        $this->persister = new Helpers\SudokuLoaderInMemoryImplementation();
-        $this->sut = new SudokuFactory( $this->persister );
-    }
-
-    private function getSut() : SudokuFactory
-    {
-        return $this->sut;
-    }
-
     public function testCreationIsOfProperClass()
     {
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuFactory', $this->getSut() );
+        $persister = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
+        $sut = new SudokuFactory( $persister );
+
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuFactory', $sut );
     }
 
     public function testCreateSudokuReturnsProperType()
     {
-        $sudoku = $this->getSut()->createSudoku( 'easy1' );
+        $persister = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
+        $sut = new SudokuFactory( $persister );
+
+        $sudoku = $sut->createSudoku();
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Sudoku', $sudoku );
     }
 
     public function testCreationCallsTheReader()
     {
-        $this->getSut()->createSudoku( 'easy1' );
-        $this->assertEquals( 1, $this->persister->callCountLoad );
+        $persister = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
+        $sut = new SudokuFactory( $persister );
+
+        $sut->createSudoku();
+        $this->assertEquals( 81, $persister->callCountHasClue );
+        $this->assertEquals( 36, $persister->callCountGetClue );
     }
 
     public function testCreationDoesPredefinedResult()
     {
-        $sudoku = $this->getSut()->createSudoku( 'empty' );
-        $this->assertTrue( $sudoku->isEmpty() );
+        $coordinates = new Coordinates( new OneToNineValue( 7 ), new OneToNineValue( 3 ) );
 
-        $sudoku = $this->getSut()->createSudoku( 'easy1' );
-        $this->assertFalse( $sudoku->isEmpty() );
+        $persister = new Helpers\SudokuLoaderInMemoryImplementation( 'empty' );
+        $sut = new SudokuFactory( $persister );
+
+        $sudoku = $sut->createSudoku();
+
+        $this->assertFalse( $sudoku->getCell( $coordinates )->hasValue() );
+
+        $persister = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
+        $sut = new SudokuFactory( $persister );
+
+        $sudoku = $sut->createSudoku();
+
+        $this->assertTrue( $sudoku->getCell( $coordinates )->hasValue() );
+        $this->assertEquals( 4, $sudoku->getCell( $coordinates )->getValue()->getValue() );
     }
 }

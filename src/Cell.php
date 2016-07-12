@@ -14,15 +14,11 @@ class Cell
     private $clue = null;
     private $solutionValue = null;
 
-    public function __construct( Sudoku $sudoku, Coordinates $coordinates )
+    public function __construct( Sudoku $sudoku, Coordinates $coordinates, OneToNineValue $clue = null )
     {
-        $this->coordinates = $coordinates;
         $this->sudoku = $sudoku;
-    }
-
-    public function isEmpty() : bool
-    {
-        return is_null( $this->clue );
+        $this->coordinates = $coordinates;
+        $this->clue = $clue;
     }
 
     public function getPotentialValues() : PotentialValues
@@ -31,21 +27,6 @@ class Cell
     }
 
     //-- Clue -------------------------------------------------------------//
-
-    public function setClue( OneToNineValue $value )
-    {
-        if( $this->hasSolutionValue() )
-        {
-            throw new \LogicException( "Can't set an clue on a cell that already contains an solution value." );
-        }
-
-        $this->clue = $value;
-    }
-
-    public function removeClue()
-    {
-        $this->clue = null;
-    }
 
     public function getClue() : OneToNineValue
     {

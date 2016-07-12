@@ -2,9 +2,9 @@
 
 namespace XaviMontero\DrivewayOvershoot\Demo\Games;
 
-class Game1
+class Game1 implements GameInterface
 {
-    function getClues()
+    function getClues() : array
     {
         return
         [

@@ -7,5 +7,6 @@ namespace XaviMontero\DrivewayOvershoot;
  */
 interface SudokuLoaderInterface
 {
-    public function load( string $gameId, Sudoku $sudoku );
+    public function hasClue( Coordinates $coordinates ) : bool;
+    public function getClue( Coordinates $coordinates ) : OneToNineValue;
 }

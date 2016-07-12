@@ -2,22 +2,16 @@
 
 namespace XaviMontero\DrivewayOvershoot\Tests;
 
-use XaviMontero\DrivewayOvershoot\Coordinates;
-use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Sudoku;
 use XaviMontero\DrivewayOvershoot\SudokuSolver;
 
 class SudokuSolverTest extends \PHPUnit_Framework_TestCase
 {
-    private $loader;
     private $sudoku;
     private $sut;
 
     protected function setUp()
     {
-        $this->loader = new Helpers\SudokuLoaderInMemoryImplementation();
-
-        $this->sudoku = new Sudoku();
         $this->sut = new SudokuSolver();
     }
 
@@ -31,7 +25,8 @@ class SudokuSolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsSolved( string $gameId, bool $solved )
     {
-        $this->loader->load( $gameId, $this->sudoku );
+        $loader = new Helpers\SudokuLoaderInMemoryImplementation( $gameId );
+        $this->sudoku = new Sudoku( $loader );
 
         $this->assertEquals( $solved, $this->getSut()->isSolved( $this->sudoku ) );
     }

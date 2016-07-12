@@ -13,38 +13,28 @@ class Sudoku
     private $observers = array();
     private $editable = true;
     private $cells;
+    private $loader;
 
-    public function __construct()
+    public function __construct( SudokuLoaderInterface $loader )
     {
+        $this->loader = $loader;
+
         $this->cells = [];
         for( $y = 1; $y <= 9; $y++ )
         {
             $this->cells[ $y ] = [];
             for( $x = 1; $x <= 9; $x++ )
             {
-                $this->cells[ $y ][ $x ] = new Cell( $this, new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) ) );
+                $columnId = new OneToNineValue( $x );
+                $rowId = new OneToNineValue( $y );
+                $coordinates = new Coordinates( $columnId, $rowId );
+
+                $clue = $loader->hasClue( $coordinates ) ? $loader->getClue( $coordinates ) : null;
+
+                $cell = new Cell( $this, $coordinates, $clue );
+                $this->cells[ $y ][ $x ] = $cell;
             }
         }
-    }
-
-    public function isEmpty() : bool
-    {
-        $empty = true;
-
-        for( $y = 1; $y <= 9; $y++ )
-        {
-            for( $x = 1; $x <= 9; $x++ )
-            {
-                $cell = $this->cells[ $y ][ $x ];
-                if( ! $cell->isEmpty() )
-                {
-                    $empty = false;
-                    break;
-                }
-            }
-        }
-
-        return $empty;
     }
 
     public function getCell( Coordinates $coordinates ) : Cell
