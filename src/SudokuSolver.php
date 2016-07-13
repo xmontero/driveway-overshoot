@@ -7,7 +7,7 @@ namespace XaviMontero\DrivewayOvershoot;
  */
 class SudokuSolver
 {
-    public function isSolved( Sudoku $sudoku )
+    public function isSolved( SudokuGrid $sudoku )
     {
         $solved = true;
 

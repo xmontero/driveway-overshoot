@@ -5,7 +5,7 @@ namespace XaviMontero\DrivewayOvershoot\Demo\Helpers;
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\Demo\Games\GameInterface;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
-use XaviMontero\DrivewayOvershoot\Sudoku;
+use XaviMontero\DrivewayOvershoot\SudokuGrid;
 use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
 
 class SudokuLoaderFileImplementation implements SudokuLoaderInterface

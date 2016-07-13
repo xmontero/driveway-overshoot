@@ -2,7 +2,7 @@
 
 namespace XaviMontero\DrivewayOvershoot\Tests;
 
-use XaviMontero\DrivewayOvershoot\Sudoku;
+use XaviMontero\DrivewayOvershoot\SudokuGrid;
 use XaviMontero\DrivewayOvershoot\SudokuSolver;
 
 class SudokuSolverTest extends \PHPUnit_Framework_TestCase
@@ -26,7 +26,7 @@ class SudokuSolverTest extends \PHPUnit_Framework_TestCase
     public function testIsSolved( string $gameId, bool $solved )
     {
         $loader = new Helpers\SudokuLoaderInMemoryImplementation( $gameId );
-        $this->sudoku = new Sudoku( $loader );
+        $this->sudoku = new SudokuGrid( $loader );
 
         $this->assertEquals( $solved, $this->getSut()->isSolved( $this->sudoku ) );
     }

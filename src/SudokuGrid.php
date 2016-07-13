@@ -8,7 +8,7 @@ namespace XaviMontero\DrivewayOvershoot;
  * The cells can be prepared with problem numbers, or be empty.
  * The class holds intermediate states needed to solve the game, from the problem to the solution. For example, the cells can hold the potential values in function of the neighbours.
  */
-class Sudoku
+class SudokuGrid
 {
     private $observers = array();
     private $editable = true;

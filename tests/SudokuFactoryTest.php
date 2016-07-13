@@ -22,7 +22,7 @@ class SudokuFactoryTest extends \PHPUnit_Framework_TestCase
         $sut = new SudokuFactory( $persister );
 
         $sudoku = $sut->createSudoku();
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Sudoku', $sudoku );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuGrid', $sudoku );
     }
 
     public function testCreationCallsTheReader()

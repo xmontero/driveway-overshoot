@@ -13,7 +13,7 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $this->sudokuMock = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\Sudoku' )
+        $this->sudokuMock = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\SudokuGrid' )
             ->disableOriginalConstructor()
             ->setMethods( array( 'checkIncompatibility' ) )
             ->getMock();

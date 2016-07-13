@@ -5,7 +5,7 @@ namespace XaviMontero\DrivewayOvershoot\Demo\Controllers;
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\Demo\Helpers\CommandLineParser;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
-use XaviMontero\DrivewayOvershoot\Sudoku;
+use XaviMontero\DrivewayOvershoot\SudokuGrid;
 use XaviMontero\DrivewayOvershoot\SudokuFactory;
 use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
 
@@ -81,20 +81,20 @@ class DefaultController
         $this->printPage( $view );
     }
 
-    private function getSudokuModel() : Sudoku
+    private function getSudokuModel() : SudokuGrid
     {
         $this->sudokuLoader->loadClues( $this->gameId );
         $sudokuFactory = new SudokuFactory( $this->sudokuLoader );
         return $sudokuFactory->createSudoku();
     }
 
-    private function operateSudokuModel( Sudoku $sudoku ) : Sudoku
+    private function operateSudokuModel( SudokuGrid $sudoku ) : SudokuGrid
     {
         $sudoku->getCell( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 1 ) ) )->setSolutionValue( new OneToNineValue( 5 ) );
         return $sudoku;
     }
 
-    private function renderTheViewWithSudoku( Sudoku $sudoku ) : string
+    private function renderTheViewWithSudoku( SudokuGrid $sudoku ) : string
     {
         return $this->viewRenderers[ 'success' ]->render( $sudoku );
     }

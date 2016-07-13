@@ -16,9 +16,9 @@ class SudokuFactory
         $this->loader = $loader;
     }
 
-    public function createSudoku() : Sudoku
+    public function createSudoku() : SudokuGrid
     {
-        $sudoku = new Sudoku( $this->loader );
+        $sudoku = new SudokuGrid( $this->loader );
         return $sudoku;
     }
 }
