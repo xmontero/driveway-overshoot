@@ -4,7 +4,7 @@ namespace XaviMontero\DrivewayOvershoot\Tests;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
-use XaviMontero\DrivewayOvershoot\PotentialValuesState;
+use XaviMontero\DrivewayOvershoot\CandidatesState;
 use XaviMontero\DrivewayOvershoot\Cell;
 
 class CellTest extends \PHPUnit_Framework_TestCase
@@ -69,20 +69,20 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue( $sut->getClue()->equals( new OneToNineValue( 4 ) ) );
     }
 
-    //-- Potential values -------------------------------------------------//
+    //-- Candidates -------------------------------------------------------//
 
-    public function testPotentialValuesIsOfProperClass()
+    public function testCandidatesIsOfProperClass()
     {
         $sut = $this->getSutWithoutClue();
-        $potentialValues = $sut->getPotentialValues();
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\PotentialValues', $potentialValues );
+        $candidates = $sut->getCandidates();
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Candidates', $candidates );
     }
 
-    public function testAfterCreationHasAllPotentialValues()
+    public function testAfterCreationHasAllCandidates()
     {
         $sut = $this->getSutWithoutClue();
-        $potentialValues = $sut->getPotentialValues();
-        $this->assertEquals( PotentialValuesState::Full(), $potentialValues->getState() );
+        $candidates = $sut->getCandidates();
+        $this->assertEquals( CandidatesState::Full(), $candidates->getState() );
     }
 
     //-- Solution values --------------------------------------------------//

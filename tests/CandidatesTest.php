@@ -2,17 +2,17 @@
 
 namespace XaviMontero\DrivewayOvershoot\Tests;
 
-use XaviMontero\DrivewayOvershoot\PotentialValues;
-use XaviMontero\DrivewayOvershoot\PotentialValuesState;
+use XaviMontero\DrivewayOvershoot\Candidates;
+use XaviMontero\DrivewayOvershoot\CandidatesState;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
 
-class PotentialValuesTest extends \PHPUnit_Framework_TestCase
+class CandidatesTest extends \PHPUnit_Framework_TestCase
 {
     private $sut;
 
     protected function setUp()
     {
-        $this->sut = new PotentialValues();
+        $this->sut = new Candidates();
     }
 
     //---------------------------------------------------------------------//
@@ -21,7 +21,7 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
 
     public function testCreationIsOfProperClass()
     {
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\PotentialValues', $this->getSut() );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Candidates', $this->getSut() );
     }
 
     //-- States -----------------------------------------------------------//
@@ -29,7 +29,7 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
     public function testCreationLeavesAFullState()
     {
         $state = $this->getSut()->getState();
-        $this->assertEquals( PotentialValuesState::Full(), $state );
+        $this->assertEquals( CandidatesState::Full(), $state );
     }
 
     /**
@@ -39,7 +39,7 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
     {
         $this->killSutByArray( $kill );
         $state = $this->getSut()->getState();
-        $this->assertEquals( PotentialValuesState::Semi(), $state );
+        $this->assertEquals( CandidatesState::Semi(), $state );
     }
 
     public function killingSomeLeavesASemiStateProvider()
@@ -59,7 +59,7 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
     {
         $this->killSutByArray( $kill );
         $state = $this->getSut()->getState();
-        $this->assertEquals( PotentialValuesState::Single(), $state );
+        $this->assertEquals( CandidatesState::Single(), $state );
     }
 
     public function killingEightValuesLeavesASingleProvider()
@@ -78,7 +78,7 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
     {
         $this->killSutByArray( [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ] );
         $state = $this->getSut()->getState();
-        $this->assertEquals( PotentialValuesState::Empty(), $state );
+        $this->assertEquals( CandidatesState::Empty(), $state );
     }
 
     //-- Content ----------------------------------------------------------//
@@ -165,7 +165,7 @@ class PotentialValuesTest extends \PHPUnit_Framework_TestCase
     // Private                                                             //
     //---------------------------------------------------------------------//
 
-    private function getSut() : PotentialValues
+    private function getSut() : Candidates
     {
         return $this->sut;
     }

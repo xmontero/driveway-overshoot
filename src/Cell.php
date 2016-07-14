@@ -21,9 +21,9 @@ class Cell
         $this->clue = $clue;
     }
 
-    public function getPotentialValues() : PotentialValues
+    public function getCandidates() : Candidates
     {
-        return new PotentialValues;
+        return new Candidates;
     }
 
     //-- Clue -------------------------------------------------------------//

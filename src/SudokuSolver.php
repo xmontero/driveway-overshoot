@@ -43,6 +43,14 @@ class SudokuSolver
 
     public function solve()
     {
+        while( ! $this->isSolved() )
+        {
+            $this->scan();
+        }
+    }
+
+    public function scan()
+    {
         $solution =
             [
                 [ 7, 2, 3,   9, 4, 6,   8, 5, 1 ],
