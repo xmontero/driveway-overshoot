@@ -8,6 +8,7 @@ use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\SudokuGrid;
 use XaviMontero\DrivewayOvershoot\SudokuFactory;
 use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
+use XaviMontero\DrivewayOvershoot\SudokuSolver;
 
 class DefaultController
 {
@@ -26,6 +27,8 @@ class DefaultController
         $this->command = $commandLineParser->getcommand();
     }
 
+    //-- Public -----------------------------------------------------------//
+
     public function run()
     {
         try
@@ -42,7 +45,9 @@ class DefaultController
         }
     }
 
-    public function assertNumberOfCliArguments()
+    //-- Private ----------------------------------------------------------//
+
+    private function assertNumberOfCliArguments()
     {
         $numberOfCliArguments = $this->commandLineParser->getNumberOfArguments();
         if( $numberOfCliArguments != 1 )
@@ -52,7 +57,7 @@ class DefaultController
         }
     }
 
-    public function assertGameIdIsInteger()
+    private function assertGameIdIsInteger()
     {
         $this->gameId = $this->commandLineParser->getGameId();
         if( ! ctype_digit( $this->gameId ) )
@@ -62,7 +67,7 @@ class DefaultController
         }
     }
 
-    public function assertGameIdExists()
+    private function assertGameIdExists()
     {
         $gameExists = $this->sudokuLoader->gameExists( $this->gameId );
         if( ! $gameExists )
@@ -74,9 +79,9 @@ class DefaultController
 
     private function cleanRun()
     {
-        $sudoku = $this->getSudokuModel();
-        $sudoku = $this->operateSudokuModel( $sudoku );
-        $view = $this->renderTheViewWithSudoku( $sudoku );
+        $sudokuGrid = $this->getSudokuModel();
+        $sudokuGrid = $this->operateSudokuModel( $sudokuGrid );
+        $view = $this->renderTheViewWithSudoku( $sudokuGrid );
 
         $this->printPage( $view );
     }
@@ -88,15 +93,16 @@ class DefaultController
         return $sudokuFactory->createSudoku();
     }
 
-    private function operateSudokuModel( SudokuGrid $sudoku ) : SudokuGrid
+    private function operateSudokuModel( SudokuGrid $sudokuGrid ) : SudokuGrid
     {
-        $sudoku->getCell( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 1 ) ) )->setSolutionValue( new OneToNineValue( 5 ) );
-        return $sudoku;
+        $sudokuSolver = new SudokuSolver( $sudokuGrid );
+        $sudokuSolver->solve();
+        return $sudokuGrid;
     }
 
-    private function renderTheViewWithSudoku( SudokuGrid $sudoku ) : string
+    private function renderTheViewWithSudoku( SudokuGrid $sudokuGrid ) : string
     {
-        return $this->viewRenderers[ 'success' ]->render( $sudoku );
+        return $this->viewRenderers[ 'success' ]->render( $sudokuGrid );
     }
 
     private function printPage( string $page )

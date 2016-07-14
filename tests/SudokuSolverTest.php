@@ -7,17 +7,12 @@ use XaviMontero\DrivewayOvershoot\SudokuSolver;
 
 class SudokuSolverTest extends \PHPUnit_Framework_TestCase
 {
-    private $sudoku;
-    private $sut;
-
-    protected function setUp()
-    {
-        $this->sut = new SudokuSolver();
-    }
-
     public function testCreationIsOfProperClass()
     {
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuSolver', $this->getSut() );
+        $loader = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
+        $sudokuGrid = new SudokuGrid( $loader );
+        $sut = new SudokuSolver( $sudokuGrid );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuSolver', $sut );
     }
 
     /**
@@ -26,9 +21,10 @@ class SudokuSolverTest extends \PHPUnit_Framework_TestCase
     public function testIsSolved( string $gameId, bool $solved )
     {
         $loader = new Helpers\SudokuLoaderInMemoryImplementation( $gameId );
-        $this->sudoku = new SudokuGrid( $loader );
+        $sudokuGrid = new SudokuGrid( $loader );
+        $sut = new SudokuSolver( $sudokuGrid );
 
-        $this->assertEquals( $solved, $this->getSut()->isSolved( $this->sudoku ) );
+        $this->assertEquals( $solved, $sut->isSolved() );
     }
 
     public function isSolvedProvider()
@@ -38,13 +34,17 @@ class SudokuSolverTest extends \PHPUnit_Framework_TestCase
                 [ 'easy1', false ],
                 [ 'solved', true ],
                 [ 'nearlySolved', false ],
+                [ 'incompatibleSolved', false ],
             ];
     }
 
-    //-- Private ----------------------------------------------------------//
-
-    private function getSut() : SudokuSolver
+    public function testSolve()
     {
-        return $this->sut;
+        $loader = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
+        $sudokuGrid = new SudokuGrid( $loader );
+        $sut = new SudokuSolver( $sudokuGrid );
+
+        $sut->solve();
+        $this->assertTrue( $sut->isSolved() );
     }
 }

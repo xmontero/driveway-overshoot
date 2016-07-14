@@ -45,20 +45,6 @@ class SudokuGrid
         return $this->cells[ $rowId->getValue() ][ $columnId->getValue() ];
     }
 
-    public function isEditable() : bool
-    {
-        return $this->editable;
-    }
-
-    public function setEditable( bool $editable )
-    {
-        if( $this->editable != $editable )
-        {
-            $this->editable = $editable;
-            $this->raiseOnEditableChanged( $this->editable );
-        }
-    }
-
     public function getState() : SudokuState
     {
         $result = $this->editable ? SudokuState::Editable() : SudokuState::Resolved();

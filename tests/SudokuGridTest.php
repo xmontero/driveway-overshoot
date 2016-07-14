@@ -20,62 +20,6 @@ class SudokuGridTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Cell', $cell );
     }
 
-    //-- Editable ---------------------------------------------------------//
-
-    public function testIsEditableAfterCreation()
-    {
-        $sut = $this->getSut( 'empty' );
-
-        $this->assertTrue( $sut->isEditable() );
-        $this->assertEquals( SudokuState::Editable(), $sut->getState() );
-    }
-
-    public function testChangeEditableMultipleTimes()
-    {
-        $sut = $this->getSut( 'empty' );
-
-        $sut->setEditable( false );
-        $this->assertFalse( $sut->isEditable() );
-        $this->assertNotEquals( SudokuState::Editable(), $sut->getState() );
-
-        $sut->setEditable( true );
-        $this->assertTrue( $sut->isEditable() );
-        $this->assertEquals( SudokuState::Editable(), $sut->getState() );
-    }
-
-    public function testChangeEditableOnceTriggersEventOnce()
-    {
-        $sudokuObserver = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\SudokuObserverInterface' )
-            ->setMethods( array( 'onEditableChanged' ) )
-            ->getMock();
-
-        $sudokuObserver->expects( $this->once() )
-            ->method( 'onEditableChanged' )
-            ->with( $this->equalTo( false ) );
-
-        $sut = $this->getSut( 'empty' );
-        $sut->addObserver( $sudokuObserver );
-
-        $sut->setEditable( false );
-    }
-
-    public function testChangeEditableTwiceWithSameValueTriggersEventOnce()
-    {
-        $sudokuObserver = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\SudokuObserverInterface' )
-            ->setMethods( array( 'onEditableChanged' ) )
-            ->getMock();
-
-        $sudokuObserver->expects( $this->once() )
-            ->method( 'onEditableChanged' )
-            ->with( $this->equalTo( false ) );
-
-        $sut = $this->getSut( 'empty' );
-        $sut->addObserver( $sudokuObserver );
-
-        $sut->setEditable( false );
-        $sut->setEditable( false );
-    }
-
     //-- Check incompatibility --------------------------------------------//
 
     /**
