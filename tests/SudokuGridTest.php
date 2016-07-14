@@ -5,7 +5,6 @@ namespace XaviMontero\DrivewayOvershoot\Tests;
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\SudokuGrid;
-use XaviMontero\DrivewayOvershoot\SudokuState;
 
 class SudokuGridTest extends \PHPUnit_Framework_TestCase
 {

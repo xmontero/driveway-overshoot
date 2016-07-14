@@ -45,12 +45,6 @@ class SudokuGrid
         return $this->cells[ $rowId->getValue() ][ $columnId->getValue() ];
     }
 
-    public function getState() : SudokuState
-    {
-        $result = $this->editable ? SudokuState::Editable() : SudokuState::Resolved();
-        return $result;
-    }
-
     public function addObserver( SudokuObserverInterface $observer )
     {
         $this->observers[] = $observer;
