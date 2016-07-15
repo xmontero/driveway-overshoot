@@ -85,6 +85,21 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( CandidatesState::Full(), $candidates->getState() );
     }
 
+    public function testEditedCandidatesAreAccessibleFromAFutureCallToGetCandidates()
+    {
+        $killedValue = new OneToNineValue( 7 );
+
+        $sut = $this->getSutWithoutClue();
+
+        $candidates1 = $sut->getCandidates();
+        $this->assertTrue( $candidates1->isOption( $killedValue ) );
+        $candidates1->killOption( $killedValue );
+        $this->assertFalse( $candidates1->isOption( $killedValue ) );
+
+        $candidates2 = $sut->getCandidates();
+        $this->assertFalse( $candidates2->isOption( $killedValue ) );
+    }
+
     //-- Solution values --------------------------------------------------//
 
     public function testHasNotSolutionValueAfterCreation()

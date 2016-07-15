@@ -9,6 +9,7 @@ namespace XaviMontero\DrivewayOvershoot;
  */
 class Cell
 {
+    private $candidates;
     private $coordinates;
     private $sudoku;
     private $clue = null;
@@ -19,11 +20,12 @@ class Cell
         $this->sudoku = $sudoku;
         $this->coordinates = $coordinates;
         $this->clue = $clue;
+        $this->candidates = new Candidates;
     }
 
     public function getCandidates() : Candidates
     {
-        return new Candidates;
+        return $this->candidates;
     }
 
     //-- Clue -------------------------------------------------------------//
