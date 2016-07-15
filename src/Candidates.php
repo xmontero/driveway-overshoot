@@ -18,6 +18,15 @@ class Candidates
 
     public function __construct()
     {
+        $this->reset();
+    }
+
+    /**
+     * Resets all candidates as potential values to be used for the cell.
+     * @return void
+     */
+    public function reset()
+    {
         for( $i = 1; $i <= 9; $i++ )
         {
             $this->candidates[ $i ] = true;

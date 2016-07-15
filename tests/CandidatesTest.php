@@ -161,6 +161,19 @@ class CandidatesTest extends \PHPUnit_Framework_TestCase
             ];
     }
 
+    //-- Resetting --------------------------------------------------------//
+
+    public function testReset()
+    {
+        $sut = $this->getSut();
+
+        $this->killSutByArray( [ 4, 7 ] );
+        $this->assertEquals( CandidatesState::Semi(), $sut->getState() );
+
+        $sut->reset();
+        $this->assertEquals( CandidatesState::Full(), $sut->getState() );
+    }
+
     //---------------------------------------------------------------------//
     // Private                                                             //
     //---------------------------------------------------------------------//
