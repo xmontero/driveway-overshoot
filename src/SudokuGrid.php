@@ -78,13 +78,13 @@ class SudokuGrid
         return $this->getRowBlock( $cell->getCoordinates()->getRowId() );
     }
 
-    public function getRowBlock( OneToNineValue $y ) : SudokuBlock
+    public function getRowBlock( OneToNineValue $rowId ) : SudokuBlock
     {
         $cell = [];
 
-        for( $x = 1; $x <= 9; $x++ )
+        for( $columnIdValue = 1; $columnIdValue <= 9; $columnIdValue++ )
         {
-            $cell[ $x ] = $this->getCell( new Coordinates( new OneToNineValue( $x ), $y ) );
+            $cell[ $columnIdValue ] = $this->getCell( new Coordinates( new OneToNineValue( $columnIdValue ), $rowId ) );
         }
 
         $block = new SudokuBlock( $cell[ 1 ], $cell[ 2 ], $cell[ 3 ], $cell[ 4 ], $cell[ 5 ], $cell[ 6 ], $cell[ 7 ], $cell[ 8 ], $cell[ 9 ] );
@@ -92,13 +92,13 @@ class SudokuGrid
         return $block;
     }
 
-    public function getColumnBlock( OneToNineValue $x ) : SudokuBlock
+    public function getColumnBlock( OneToNineValue $rowId ) : SudokuBlock
     {
         $cell = [];
 
-        for( $y = 1; $y <= 9; $y++ )
+        for( $rowIdValue = 1; $rowIdValue <= 9; $rowIdValue++ )
         {
-            $cell[ $y ] = $this->getCell( new Coordinates( $x, new OneToNineValue( $y ) ) );
+            $cell[ $rowIdValue ] = $this->getCell( new Coordinates( $rowId, new OneToNineValue( $rowIdValue ) ) );
         }
 
         $block = new SudokuBlock( $cell[ 1 ], $cell[ 2 ], $cell[ 3 ], $cell[ 4 ], $cell[ 5 ], $cell[ 6 ], $cell[ 7 ], $cell[ 8 ], $cell[ 9 ] );
