@@ -23,6 +23,10 @@ class Cell
         $this->candidates = new Candidates;
     }
 
+    //---------------------------------------------------------------------//
+    // Public                                                              //
+    //---------------------------------------------------------------------//
+
     public function getCandidates() : Candidates
     {
         return $this->candidates;
@@ -47,19 +51,15 @@ class Cell
 
     //-- Solution Value ---------------------------------------------------//
 
-    public function setSolutionValue( OneToNineValue $value )
+    public function setSolutionFromSingleCandidateIfPossible()
     {
-        if( $this->hasClue() )
+        $candidates = $this->getCandidates();
+
+        if( $candidates->getState() == CandidatesState::Single() )
         {
-            throw new \LogicException( "Can't set a solution on a cell that already contains an clue." );
+            $candidateValue = $candidates->getSingleOption();
+            $this->setSolutionValue( $candidateValue );
         }
-
-        $this->solutionValue = $value;
-    }
-
-    public function removeSolutionValue()
-    {
-        $this->solutionValue = null;
     }
 
     public function getSolutionValue() : OneToNineValue
@@ -118,5 +118,19 @@ class Cell
     public function getCoordinates() : Coordinates
     {
         return $this->coordinates;
+    }
+
+    //---------------------------------------------------------------------//
+    // Private                                                             //
+    //---------------------------------------------------------------------//
+
+    private function setSolutionValue( OneToNineValue $value )
+    {
+        if( $this->hasClue() )
+        {
+            throw new \LogicException( "Can't set a solution on a cell that already contains an clue." );
+        }
+
+        $this->solutionValue = $value;
     }
 }

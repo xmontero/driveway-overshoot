@@ -6,6 +6,7 @@ use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\CandidatesState;
 use XaviMontero\DrivewayOvershoot\Cell;
+use XaviMontero\DrivewayOvershoot\Tests\Helpers\CandidateKiller;
 
 class CellTest extends \PHPUnit_Framework_TestCase
 {
@@ -111,16 +112,10 @@ class CellTest extends \PHPUnit_Framework_TestCase
     public function testHasSolutionValueAfterSettingASolutionValue()
     {
         $sut = $this->getSutWithoutClue();
-        $sut->setSolutionValue( new OneToNineValue( 4 ) );
-        $this->assertTrue( $sut->hasSolutionValue() );
-    }
+        CandidateKiller::killAllOptionsButSolutionFromCell( 4, $sut );
+        $sut->setSolutionFromSingleCandidateIfPossible();
 
-    public function testHasNotSolutionValueAfterRemoval()
-    {
-        $sut = $this->getSutWithoutClue();
-        $sut->setSolutionValue( new OneToNineValue( 4 ) );
-        $sut->removeSolutionValue();
-        $this->assertFalse( $sut->hasSolutionValue() );
+        $this->assertTrue( $sut->hasSolutionValue() );
     }
 
     public function testGetSolutionValueTrowsExceptionIfNotSet()
@@ -133,7 +128,9 @@ class CellTest extends \PHPUnit_Framework_TestCase
     public function testGetSolutionValueReturnsSetValue()
     {
         $sut = $this->getSutWithoutClue();
-        $sut->setSolutionValue( new OneToNineValue( 7 ) );
+        CandidateKiller::killAllOptionsButSolutionFromCell( 7, $sut );
+        $sut->setSolutionFromSingleCandidateIfPossible();
+
         $this->assertTrue( $sut->getSolutionValue()->equals( new OneToNineValue( 7 ) ) );
     }
 
@@ -143,7 +140,8 @@ class CellTest extends \PHPUnit_Framework_TestCase
     {
         $sut = $this->getSutWithClue( 5 );
         $this->expectException( \LogicException::class );
-        $sut->setSolutionValue( new OneToNineValue( 5 ) );
+        CandidateKiller::killAllOptionsButSolutionFromCell( 5, $sut );
+        $sut->setSolutionFromSingleCandidateIfPossible();
     }
 
     //-- Generic value wrapper --------------------------------------------//
@@ -163,16 +161,9 @@ class CellTest extends \PHPUnit_Framework_TestCase
     public function testHasValueAfterSettingASolutionValue()
     {
         $sut = $this->getSutWithoutClue();
-        $sut->setSolutionValue( new OneToNineValue( 4 ) );
+        CandidateKiller::killAllOptionsButSolutionFromCell( 4, $sut );
+        $sut->setSolutionFromSingleCandidateIfPossible();
         $this->assertTrue( $sut->hasValue() );
-    }
-
-    public function testHasNotValueAfterRemoval()
-    {
-        $sut = $this->getSutWithoutClue();
-        $sut->setSolutionValue( new OneToNineValue( 7 ) );
-        $sut->removeSolutionValue();
-        $this->assertFalse( $sut->hasValue() );
     }
 
     public function testGetValueTrowsExceptionIfNotSet()
@@ -191,7 +182,8 @@ class CellTest extends \PHPUnit_Framework_TestCase
     public function testGetValueReturnsSolutionValue()
     {
         $sut = $this->getSutWithoutClue();
-        $sut->setSolutionValue( new OneToNineValue( 4 ) );
+        CandidateKiller::killAllOptionsButSolutionFromCell( 4, $sut );
+        $sut->setSolutionFromSingleCandidateIfPossible();
         $this->assertTrue( $sut->getValue()->equals( new OneToNineValue( 4 ) ) );
     }
 
