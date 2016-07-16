@@ -4,7 +4,8 @@
         "psr-4":
         {
             "XaviMontero\\DrivewayOvershoot\\": "src/",
-            "XaviMontero\\DrivewayOvershoot\\Tests\\": "tests/"
+            "XaviMontero\\DrivewayOvershoot\\Tests\\": "tests/",
+            "XaviMontero\\DrivewayOvershoot\\Demo\\": "demo/"
         }
     },
     "require-dev":
