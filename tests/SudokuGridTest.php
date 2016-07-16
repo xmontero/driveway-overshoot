@@ -116,9 +116,9 @@ class SudokuGridTest extends \PHPUnit_Framework_TestCase
         $rowId = new OneToNineValue( 4 );
         $row = $sut->getRowBlock( $rowId );
 
-        for( $x = 1; $x <= 9; $x++ )
+        for( $columnIdValue = 1; $columnIdValue <= 9; $columnIdValue++ )
         {
-            $columnId = new OneToNineValue( $x );
+            $columnId = new OneToNineValue( $columnIdValue );
 
             $expectedCell = $sut->getCell( new Coordinates( $columnId, $rowId ) );
             $actualCell = $row->getCell( $columnId );
@@ -144,9 +144,9 @@ class SudokuGridTest extends \PHPUnit_Framework_TestCase
         $columnId = new OneToNineValue( 7 );
         $column = $sut->getColumnBlock( $columnId );
 
-        for( $y = 1; $y <= 9; $y++ )
+        for( $rowIdValue = 1; $rowIdValue <= 9; $rowIdValue++ )
         {
-            $rowId = new OneToNineValue( $y );
+            $rowId = new OneToNineValue( $rowIdValue );
 
             $expectedCell = $sut->getCell( new Coordinates( $columnId, $rowId ) );
             $actualCell = $column->getCell( $rowId );
