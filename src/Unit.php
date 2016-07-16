@@ -8,7 +8,7 @@ namespace XaviMontero\DrivewayOvershoot;
  * It is identified by the held references, which point to entities, so the value can apparently change, but in fact it does not as the
  * reference points to the same object and therefore the reference itself has not changed.
  */
-class SudokuBlock
+class Unit
 {
     private $cells;
 
@@ -135,7 +135,7 @@ class SudokuBlock
     {
         if( ! $this->hasCell( $cellUnderTest ) )
         {
-            throw new \LogicException( "Can't check incompatibility of a cell that does not exist in the block." );
+            throw new \LogicException( "Can't check incompatibility of a Cell that does not exist in the Unit." );
         }
 
         return false;

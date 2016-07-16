@@ -24,13 +24,13 @@ class SudokuSolver
         {
             $positionId = new OneToNineValue( $i );
 
-            $rowBlock = $this->sudokuGrid->getRowBlock( $positionId );
-            $columnBlock = $this->sudokuGrid->getColumnBlock( $positionId );
-            $boxBlock = $this->sudokuGrid->getBoxBlock( $positionId );
+            $rowUnit = $this->sudokuGrid->getRowUnit( $positionId );
+            $columnUnit = $this->sudokuGrid->getColumnUnit( $positionId );
+            $boxUnit = $this->sudokuGrid->getBoxUnit( $positionId );
 
-            $rowIsPerfect = $rowBlock->isPerfect();
-            $columnIsPerfect = $columnBlock->isPerfect();
-            $boxIsPerfect = $boxBlock->isPerfect();
+            $rowIsPerfect = $rowUnit->isPerfect();
+            $columnIsPerfect = $columnUnit->isPerfect();
+            $boxIsPerfect = $boxUnit->isPerfect();
 
             $solved = $solved && ( $rowIsPerfect && $columnIsPerfect && $boxIsPerfect );
 
@@ -105,25 +105,25 @@ class SudokuSolver
 
     private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingRow( OneToNineValue $rowId, Cell $exploredCell )
     {
-        $row = $this->sudokuGrid->getRowBlock( $rowId );
-        $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingBlock( $row, $exploredCell );
+        $row = $this->sudokuGrid->getRowUnit( $rowId );
+        $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingUnit( $row, $exploredCell );
     }
 
     private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingColumn( OneToNineValue $columnId, Cell $exploredCell )
     {
-        $column = $this->sudokuGrid->getColumnBlock( $columnId );
-        $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingBlock( $column, $exploredCell );
+        $column = $this->sudokuGrid->getColumnUnit( $columnId );
+        $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingUnit( $column, $exploredCell );
     }
 
     private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingBox( OneToNineValue $boxId, Cell $exploredCell )
     {
-        $box = $this->sudokuGrid->getBoxBlock( $boxId );
-        $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingBlock( $box, $exploredCell );
+        $box = $this->sudokuGrid->getBoxUnit( $boxId );
+        $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingUnit( $box, $exploredCell );
     }
 
-    private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingBlock( SudokuBlock $block, Cell $exploredCell )
+    private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingUnit( Unit $unit, Cell $exploredCell )
     {
-        foreach( $block->getCellsAsArray() as $conflictingCell )
+        foreach( $unit->getCellsAsArray() as $conflictingCell )
         {
             if( $conflictingCell !== $exploredCell )
             {
@@ -191,7 +191,7 @@ class SudokuSolver
 
     private function killAllOptionsButSolution( int $solutionValue, Cell $cell )
     {
-        // TODO: Remove duplication from CellTest and SudokuBlock.
+        // TODO: Remove duplication from CellTest.php and Unit?Test?.php
         $candidates = $cell->getCandidates();
 
         for( $v = 1; $v <= 9; $v++ )

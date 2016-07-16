@@ -89,32 +89,32 @@ class SudokuGridTest extends \PHPUnit_Framework_TestCase
 
     //-- Coordinates and boxes ------------------------------------------//
 
-    public function testGetRowBlockByCell()
+    public function testGetRowUnitByCell()
     {
         $sut = $this->getSut( 'easy1' );
 
         $cell = $sut->getCell( new Coordinates( new OneToNineValue( 2 ), new OneToNineValue( 8 ) ) );
-        $row = $sut->getRowBlockByCell( $cell );
+        $row = $sut->getRowUnitByCell( $cell );
 
         $this->assertTrue( $row->hasCell( $cell ) );
     }
 
-    public function testGetRowBlockIsOfProperClass()
+    public function testGetRowUnitIsOfProperClass()
     {
         $sut = $this->getSut( 'easy1' );
 
         $rowId = new OneToNineValue( 4 );
-        $row = $sut->getRowBlock( $rowId );
+        $row = $sut->getRowUnit( $rowId );
 
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuBlock', $row );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Unit', $row );
     }
 
-    public function testGetRowBlock()
+    public function testGetRowUnit()
     {
         $sut = $this->getSut( 'easy1' );
 
         $rowId = new OneToNineValue( 4 );
-        $row = $sut->getRowBlock( $rowId );
+        $row = $sut->getRowUnit( $rowId );
 
         for( $columnIdValue = 1; $columnIdValue <= 9; $columnIdValue++ )
         {
@@ -127,22 +127,22 @@ class SudokuGridTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetColumnBlockIsOfProperClass()
+    public function testGetColumnUnitIsOfProperClass()
     {
         $sut = $this->getSut( 'easy1' );
 
         $columnId = new OneToNineValue( 4 );
-        $column = $sut->getColumnBlock( $columnId );
+        $column = $sut->getColumnUnit( $columnId );
 
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuBlock', $column );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Unit', $column );
     }
 
-    public function testGetColumnBlock()
+    public function testGetColumnUnit()
     {
         $sut = $this->getSut( 'easy1' );
 
         $columnId = new OneToNineValue( 7 );
-        $column = $sut->getColumnBlock( $columnId );
+        $column = $sut->getColumnUnit( $columnId );
 
         for( $rowIdValue = 1; $rowIdValue <= 9; $rowIdValue++ )
         {
@@ -155,22 +155,22 @@ class SudokuGridTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetBoxBlockIsOfProperClass()
+    public function testGetBoxUnitIsOfProperClass()
     {
         $sut = $this->getSut( 'easy1' );
 
         $boxId = new OneToNineValue( 4 );
-        $box = $sut->getBoxBlock( $boxId );
+        $box = $sut->getBoxUnit( $boxId );
 
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuBlock', $box );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Unit', $box );
     }
 
-    public function testGetBoxBlock()
+    public function testGetBoxUnit()
     {
         $sut = $this->getSut( 'easy1' );
 
         $boxId = new OneToNineValue( 7 );
-        $box = $sut->getBoxBlock( $boxId );
+        $box = $sut->getBoxUnit( $boxId );
 
         $allExpectedCoordinates = [
             1 => [ 'column' => 1, 'row' => 7 ],

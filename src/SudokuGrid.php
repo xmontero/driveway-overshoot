@@ -73,12 +73,12 @@ class SudokuGrid
         return $hasIncompatibleClues;
     }
 
-    public function getRowBlockByCell( Cell $cell ) : SudokuBlock
+    public function getRowUnitByCell( Cell $cell ) : Unit
     {
-        return $this->getRowBlock( $cell->getCoordinates()->getRowId() );
+        return $this->getRowUnit( $cell->getCoordinates()->getRowId() );
     }
 
-    public function getRowBlock( OneToNineValue $rowId ) : SudokuBlock
+    public function getRowUnit( OneToNineValue $rowId ) : Unit
     {
         $cell = [];
 
@@ -87,12 +87,12 @@ class SudokuGrid
             $cell[ $columnIdValue ] = $this->getCell( new Coordinates( new OneToNineValue( $columnIdValue ), $rowId ) );
         }
 
-        $block = new SudokuBlock( $cell[ 1 ], $cell[ 2 ], $cell[ 3 ], $cell[ 4 ], $cell[ 5 ], $cell[ 6 ], $cell[ 7 ], $cell[ 8 ], $cell[ 9 ] );
+        $unit = new Unit( $cell[ 1 ], $cell[ 2 ], $cell[ 3 ], $cell[ 4 ], $cell[ 5 ], $cell[ 6 ], $cell[ 7 ], $cell[ 8 ], $cell[ 9 ] );
 
-        return $block;
+        return $unit;
     }
 
-    public function getColumnBlock( OneToNineValue $rowId ) : SudokuBlock
+    public function getColumnUnit( OneToNineValue $rowId ) : Unit
     {
         $cell = [];
 
@@ -101,12 +101,12 @@ class SudokuGrid
             $cell[ $rowIdValue ] = $this->getCell( new Coordinates( $rowId, new OneToNineValue( $rowIdValue ) ) );
         }
 
-        $block = new SudokuBlock( $cell[ 1 ], $cell[ 2 ], $cell[ 3 ], $cell[ 4 ], $cell[ 5 ], $cell[ 6 ], $cell[ 7 ], $cell[ 8 ], $cell[ 9 ] );
+        $unit = new Unit( $cell[ 1 ], $cell[ 2 ], $cell[ 3 ], $cell[ 4 ], $cell[ 5 ], $cell[ 6 ], $cell[ 7 ], $cell[ 8 ], $cell[ 9 ] );
 
-        return $block;
+        return $unit;
     }
 
-    public function getBoxBlock( OneToNineValue $blockId ) : SudokuBlock
+    public function getBoxUnit( OneToNineValue $unitId ) : Unit
     {
         // Boxes are numbered from rows top to bottom and, inside each row, from left to right, from 1 to 9.
         // Below, the numbers represent the number of the box the cell belongs to.
@@ -123,26 +123,26 @@ class SudokuGrid
         // [ 7, 7, 7,   8, 8, 8,   9, 9, 9 ],
         // [ 7, 7, 7,   8, 8, 8,   9, 9, 9 ],
 
-        $blockRow = intdiv( $blockId->getValue() - 1, 3 );
-        $blockColumn = ( $blockId->getValue() - 1 ) % 3;
+        $unitRow = intdiv( $unitId->getValue() - 1, 3 );
+        $unitColumn = ( $unitId->getValue() - 1 ) % 3;
 
         $cell = [];
 
-        for( $inBlockY = 0; $inBlockY < 3; $inBlockY++ )
+        for( $inUnitY = 0; $inUnitY < 3; $inUnitY++ )
         {
-            for( $inBlockX = 0; $inBlockX < 3; $inBlockX++ )
+            for( $inUnitX = 0; $inUnitX < 3; $inUnitX++ )
             {
-                $x = $blockColumn * 3 + $inBlockX + 1;
-                $y = $blockRow * 3 + $inBlockY + 1;
-                $positionInBlock = $inBlockY * 3 + $inBlockX + 1;
+                $x = $unitColumn * 3 + $inUnitX + 1;
+                $y = $unitRow * 3 + $inUnitY + 1;
+                $positionInUnit = $inUnitY * 3 + $inUnitX + 1;
 
-                $cell[ $positionInBlock ] = $this->getCell( new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) ) );
+                $cell[ $positionInUnit ] = $this->getCell( new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) ) );
             }
         }
 
-        $block = new SudokuBlock( $cell[ 1 ], $cell[ 2 ], $cell[ 3 ], $cell[ 4 ], $cell[ 5 ], $cell[ 6 ], $cell[ 7 ], $cell[ 8 ], $cell[ 9 ] );
+        $unit = new Unit( $cell[ 1 ], $cell[ 2 ], $cell[ 3 ], $cell[ 4 ], $cell[ 5 ], $cell[ 6 ], $cell[ 7 ], $cell[ 8 ], $cell[ 9 ] );
 
-        return $block;
+        return $unit;
     }
 
 
@@ -164,7 +164,7 @@ class SudokuGrid
 
         for( $y = 1; $y <= 9; $y++ )
         {
-            $row = $this->getRowBlock( new OneToNineValue( $y ) );
+            $row = $this->getRowUnit( new OneToNineValue( $y ) );
             if( $row->hasIncompatibleValues() )
             {
                 $incompatible = true;
@@ -181,7 +181,7 @@ class SudokuGrid
 
         for( $x = 1; $x <= 9; $x++ )
         {
-            $column = $this->getColumnBlock( new OneToNineValue( $x ) );
+            $column = $this->getColumnUnit( new OneToNineValue( $x ) );
             if( $column->hasIncompatibleValues() )
             {
                 $incompatible = true;
@@ -198,7 +198,7 @@ class SudokuGrid
 
         for( $i = 1; $i <= 9; $i++ )
         {
-            $box = $this->getBoxBlock( new OneToNineValue( $i ) );
+            $box = $this->getBoxUnit( new OneToNineValue( $i ) );
             if( $box->hasIncompatibleValues() )
             {
                 $incompatible = true;
