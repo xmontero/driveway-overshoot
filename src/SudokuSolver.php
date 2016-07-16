@@ -7,6 +7,8 @@ namespace XaviMontero\DrivewayOvershoot;
  */
 class SudokuSolver
 {
+    const MAX_ITERATIONS = 100;
+
     private $sudokuGrid;
 
     public function __construct( SudokuGrid $sudokuGrid )
@@ -43,74 +45,161 @@ class SudokuSolver
 
     public function solve()
     {
+        $ctr = 0;
         while( ! $this->isSolved() )
         {
             $this->scan();
+
+            $ctr++;
+            if( $ctr > self::MAX_ITERATIONS )
+            {
+                throw new \Exception( "Too many iterations in solver" );
+            }
         }
     }
 
     public function scan()
     {
-        $solution =
-            [
-                [ 7, 2, 3,   9, 4, 6,   8, 5, 1 ],
-                [ 5, 4, 6,   2, 1, 8,   3, 7, 9 ],
-                [ 9, 1, 8,   5, 3, 7,   4, 2, 6 ],
-
-                [ 1, 6, 9,   4, 5, 2,   7, 3, 8 ],
-                [ 2, 7, 5,   6, 8, 3,   1, 9, 4 ],
-                [ 3, 8, 4,   1, 7, 9,   2, 6, 5 ],
-
-                [ 4, 9, 7,   3, 6, 1,   5, 8, 2 ],
-                [ 6, 3, 1,   8, 2, 5,   9, 4, 7 ],
-                [ 8, 5, 2,   7, 9, 4,   6, 1, 3 ],
-            ];
-
-        $this->setSolution( $solution );
+        $this->resetAllCandidates();
+        $this->killAllCandidatesThatAppearAsValuesInConflictingCells();
+        $this->setValuesForCellsWithSingleCandidate();
     }
 
     //-- Private ----------------------------------------------------------//
 
-    private function setSolution( array $solutionArray )
+    private function resetAllCandidates()
     {
         for( $row = 1; $row <= 9; $row++ )
         {
             for( $column = 1; $column <= 9; $column++ )
             {
-                $this->setSolutionInCell( $solutionArray, $column, $row );
+                $cell = $this->sudokuGrid->getCell( new Coordinates( new OneToNineValue( $column ), new OneToNineValue( $row ) ) );
+                $candidates = $cell->getCandidates();
+                $candidates->reset();
             }
         }
-
-        //$this->printSudoku();
     }
 
-    private function setSolutionInCell( array $solutionArray, int $column, int $row )
+    private function killAllCandidatesThatAppearAsValuesInConflictingCells()
     {
-        $cell = $this->sudokuGrid->getCell( new Coordinates( new OneToNineValue( $column ), new OneToNineValue( $row ) ) );
-
-        if( ! $cell->hasClue() )
+        for( $rowIdValue = 1; $rowIdValue <= 9; $rowIdValue++ )
         {
-            $solutionValue = $solutionArray[ $row - 1 ][ $column - 1 ];
-            $cell->setSolutionValue( new OneToNineValue( $solutionValue ) );
+            for( $columnIdValue = 1; $columnIdValue <= 9; $columnIdValue++ )
+            {
+                $columnId = new OneToNineValue( $columnIdValue );
+                $rowId = new OneToNineValue( $rowIdValue );
+
+                $cell = $this->sudokuGrid->getCell( new Coordinates( $columnId, $rowId ) );
+                $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingRowColumnOrBox( $cell );
+            }
+        }
+    }
+
+    private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingRowColumnOrBox( Cell $cell )
+    {
+        $coordinates = $cell->getCoordinates();
+        $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingRow( $coordinates->getRowId(), $cell );
+        $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingColumn( $coordinates->getColumnId(), $cell );
+        $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingBox( $coordinates->getBoxId(), $cell );
+    }
+
+    private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingRow( OneToNineValue $rowId, Cell $exploredCell )
+    {
+        $row = $this->sudokuGrid->getRowBlock( $rowId );
+        $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingBlock( $row, $exploredCell );
+    }
+
+    private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingColumn( OneToNineValue $columnId, Cell $exploredCell )
+    {
+        $column = $this->sudokuGrid->getColumnBlock( $columnId );
+        $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingBlock( $column, $exploredCell );
+    }
+
+    private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingBox( OneToNineValue $boxId, Cell $exploredCell )
+    {
+        $box = $this->sudokuGrid->getBoxBlock( $boxId );
+        $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingBlock( $box, $exploredCell );
+    }
+
+    private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingBlock( SudokuBlock $block, Cell $exploredCell )
+    {
+        foreach( $block->getCellsAsArray() as $conflictingCell )
+        {
+            if( $conflictingCell !== $exploredCell )
+            {
+                if( $conflictingCell->hasValue() )
+                {
+                    $conflictingValue = $conflictingCell->getValue();
+                    $exploredCell->getCandidates()->killOption( $conflictingValue );
+                }
+            }
+        }
+    }
+
+    private function setValuesForCellsWithSingleCandidate()
+    {
+        for( $rowValue = 1; $rowValue <= 9; $rowValue++ )
+        {
+            for( $columnValue = 1; $columnValue <= 9; $columnValue++ )
+            {
+                $column = new OneToNineValue( $columnValue );
+                $row = new OneToNineValue( $rowValue );
+
+                $cell = $this->sudokuGrid->getCell( new Coordinates( $column, $row ) );
+
+                if( ! $cell->hasValue() )
+                {
+                    $cell->setSolutionFromSingleCandidateIfPossible();
+                }
+            }
         }
     }
 
     private function printSudoku()
     {
         echo PHP_EOL;
-        echo "---------------------------------" . PHP_EOL;
+        echo PHP_EOL . '+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+' . PHP_EOL;
 
         for( $row = 1; $row <= 9; $row++ )
         {
+            echo "| ";
             for( $column = 1; $column <= 9; $column++ )
             {
                 $cell = $this->sudokuGrid->getCell( new Coordinates( new OneToNineValue( $column ), new OneToNineValue( $row ) ) );
                 $value = $cell->hasValue() ? $cell->getValue()->getValue() : ".";
-                echo $value;
+                echo "    " . $value . "     | ";
             }
             echo PHP_EOL;
+
+            echo "| ";
+            for( $column = 1; $column <= 9; $column++ )
+            {
+                $cell = $this->sudokuGrid->getCell( new Coordinates( new OneToNineValue( $column ), new OneToNineValue( $row ) ) );
+                $candidates = $cell->getCandidates();
+
+                for( $candidateId = 1; $candidateId <= 9; $candidateId++ )
+                {
+                    echo $candidates->isOption( new OneToNineValue( $candidateId ) ) ? $candidateId : ".";
+                }
+
+                echo " | ";
+            }
+            echo PHP_EOL . '+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+' . PHP_EOL;
         }
 
-        echo "---------------------------------" . PHP_EOL;
+    }
+
+    private function killAllOptionsButSolution( int $solutionValue, Cell $cell )
+    {
+        // TODO: Remove duplication from CellTest and SudokuBlock.
+        $candidates = $cell->getCandidates();
+
+        for( $v = 1; $v <= 9; $v++ )
+        {
+            if( $v != $solutionValue )
+            {
+                $candidates->killOption( new OneToNineValue( $v ) );
+            }
+        }
     }
 }
