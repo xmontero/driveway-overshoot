@@ -221,8 +221,8 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
 
             if( $solutionValue > 0 )
             {
-                $solution = new OneToNineValue( $solutionValue );
-                $cell->setSolutionValue( $solution );
+                $this->killAllOptionsButSolution( $solutionValue, $cell );
+                $cell->setSolutionFromSingleCandidateIfPossible();
             }
 
             $cells[ $i ] = $cell;
@@ -304,5 +304,19 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
         }
 
         return $blockId;
+    }
+
+    private function killAllOptionsButSolution( int $solutionValue, Cell $cell )
+    {
+        // TODO: Remove duplication from CellTest.
+        $candidates = $cell->getCandidates();
+
+        for( $v = 1; $v <= 9; $v++ )
+        {
+            if( $v != $solutionValue )
+            {
+                $candidates->killOption( new OneToNineValue( $v ) );
+            }
+        }
     }
 }
