@@ -184,6 +184,17 @@ class SudokuBlockTest extends \PHPUnit_Framework_TestCase
             ];
     }
 
+    public function testGetCellsAsArray()
+    {
+        $cells = $this->getCells( [ 1, 2, 0, 4, 5, 9, 8, 0, 6 ], [ 0, 0, 3, 0, 0, 0, 0, 7, 0 ], 'box', new OneToNineValue( 4 ) );
+        $sut = $this->getSudokuBlockFromCells( $cells );
+
+        foreach( $sut->getCellsAsArray() as $cellId => $cell )
+        {
+            $this->assertSame( $cells[ $cellId ], $cell );
+        }
+    }
+
     //-- Private ----------------------------------------------------------//
 
     private function getSudokuBlockFromCellDefinition( array $clues, array $solutionValues, string $blockType, OneToNineValue $blockId ) : SudokuBlock

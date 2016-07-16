@@ -117,6 +117,18 @@ class SudokuBlock
         return $this->cells[ $position->getValue() ];
     }
 
+    public function getCellsAsArray() : array
+    {
+        $clonedArray = [];
+
+        foreach( $this->cells as $cellId => $cell )
+        {
+            $clonedArray[ $cellId ] = $cell;
+        }
+
+        return $clonedArray;
+    }
+
     //-- Specific cell incompatibility ------------------------------------//
 
     public function cellIsIncompatible( Cell $cellUnderTest ) : bool
