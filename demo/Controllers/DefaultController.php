@@ -8,7 +8,7 @@ use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Grid;
 use XaviMontero\DrivewayOvershoot\SudokuFactory;
 use XaviMontero\DrivewayOvershoot\GridLoaderInterface;
-use XaviMontero\DrivewayOvershoot\SudokuSolver;
+use XaviMontero\DrivewayOvershoot\Solver;
 
 class DefaultController
 {
@@ -95,8 +95,8 @@ class DefaultController
 
     private function operateSudokuModel( Grid $grid ) : Grid
     {
-        $sudokuSolver = new SudokuSolver( $grid );
-        $sudokuSolver->solve();
+        $solver = new Solver( $grid );
+        $solver->solve();
         return $grid;
     }
 

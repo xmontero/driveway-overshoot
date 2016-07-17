@@ -5,7 +5,7 @@ namespace XaviMontero\DrivewayOvershoot;
 /**
  * Service that represents the algorhythm to solve a Sudoku.
  */
-class SudokuSolver
+class Solver
 {
     const MAX_ITERATIONS = 100;
 
