@@ -4,7 +4,7 @@ namespace XaviMontero\DrivewayOvershoot\Demo\Views;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
-use XaviMontero\DrivewayOvershoot\SudokuGrid;
+use XaviMontero\DrivewayOvershoot\Grid;
 use XaviMontero\DrivewayOvershoot\Cell;
 
 class AnsiWidgets
@@ -73,7 +73,7 @@ class AnsiWidgets
         return $widget;
     }
 
-    public function sudoku( string $mode, SudokuGrid $sudoku ) : string
+    public function sudoku( string $mode, Grid $sudoku ) : string
     {
         $darkBlue = $this->ansi->darkBlue();
         $reset = $this->ansi->reset();
@@ -101,7 +101,7 @@ class AnsiWidgets
         return $widget;
     }
 
-    private function sudokuRow( string $mode, int $row, SudokuGrid $sudoku ) : string
+    private function sudokuRow( string $mode, int $row, Grid $sudoku ) : string
     {
         $darkBlue = $this->ansi->darkBlue();
         $reset = $this->ansi->reset();
@@ -115,7 +115,7 @@ class AnsiWidgets
         return $widget;
     }
 
-    private function sudokuRowTriad( string $mode, int $x1, int $x2, int $x3, int $y, SudokuGrid $sudoku ) : string
+    private function sudokuRowTriad( string $mode, int $x1, int $x2, int $x3, int $y, Grid $sudoku ) : string
     {
         $widget = $this->sudokuCellFromSudoku( $mode, $x1, $y, $sudoku, '│' );
         $widget .= $this->sudokuCellFromSudoku( $mode, $x2, $y, $sudoku, '│' );
@@ -124,7 +124,7 @@ class AnsiWidgets
         return $widget;
     }
 
-    private function sudokuCellFromSudoku( string $mode, int $x, int $y, SudokuGrid $sudoku, $cellEnding ) : string
+    private function sudokuCellFromSudoku( string $mode, int $x, int $y, Grid $sudoku, $cellEnding ) : string
     {
         $cell = $sudoku->getCell( new Coordinates( new OneToNineValue( $x ), new OneToNineValue( $y ) ) );
         return $this->sudokuCellFromCell( $mode, $cell, $cellEnding );

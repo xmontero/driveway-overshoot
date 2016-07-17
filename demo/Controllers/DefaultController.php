@@ -5,7 +5,7 @@ namespace XaviMontero\DrivewayOvershoot\Demo\Controllers;
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\Demo\Helpers\CommandLineParser;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
-use XaviMontero\DrivewayOvershoot\SudokuGrid;
+use XaviMontero\DrivewayOvershoot\Grid;
 use XaviMontero\DrivewayOvershoot\SudokuFactory;
 use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
 use XaviMontero\DrivewayOvershoot\SudokuSolver;
@@ -79,30 +79,30 @@ class DefaultController
 
     private function cleanRun()
     {
-        $sudokuGrid = $this->getSudokuModel();
-        $sudokuGrid = $this->operateSudokuModel( $sudokuGrid );
-        $view = $this->renderTheViewWithSudoku( $sudokuGrid );
+        $grid = $this->getSudokuModel();
+        $grid = $this->operateSudokuModel( $grid );
+        $view = $this->renderTheViewWithSudoku( $grid );
 
         $this->printPage( $view );
     }
 
-    private function getSudokuModel() : SudokuGrid
+    private function getSudokuModel() : Grid
     {
         $this->sudokuLoader->loadClues( $this->gameId );
         $sudokuFactory = new SudokuFactory( $this->sudokuLoader );
         return $sudokuFactory->createSudoku();
     }
 
-    private function operateSudokuModel( SudokuGrid $sudokuGrid ) : SudokuGrid
+    private function operateSudokuModel( Grid $grid ) : Grid
     {
-        $sudokuSolver = new SudokuSolver( $sudokuGrid );
+        $sudokuSolver = new SudokuSolver( $grid );
         $sudokuSolver->solve();
-        return $sudokuGrid;
+        return $grid;
     }
 
-    private function renderTheViewWithSudoku( SudokuGrid $sudokuGrid ) : string
+    private function renderTheViewWithSudoku( Grid $grid ) : string
     {
-        return $this->viewRenderers[ 'success' ]->render( $sudokuGrid );
+        return $this->viewRenderers[ 'success' ]->render( $grid );
     }
 
     private function printPage( string $page )

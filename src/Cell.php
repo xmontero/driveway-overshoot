@@ -15,7 +15,7 @@ class Cell
     private $clue = null;
     private $solutionValue = null;
 
-    public function __construct( SudokuGrid $sudoku, Coordinates $coordinates, OneToNineValue $clue = null )
+    public function __construct( Grid $sudoku, Coordinates $coordinates, OneToNineValue $clue = null )
     {
         $this->sudoku = $sudoku;
         $this->coordinates = $coordinates;

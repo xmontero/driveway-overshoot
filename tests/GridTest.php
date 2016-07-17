@@ -4,13 +4,13 @@ namespace XaviMontero\DrivewayOvershoot\Tests;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
-use XaviMontero\DrivewayOvershoot\SudokuGrid;
+use XaviMontero\DrivewayOvershoot\Grid;
 
-class SudokuGridTest extends \PHPUnit_Framework_TestCase
+class GridTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreationIsOfProperClass()
     {
-        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuGrid', $this->getSut( 'empty' ) );
+        $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\Grid', $this->getSut( 'empty' ) );
     }
 
     public function testGetCellReturnsProperType()
@@ -201,10 +201,10 @@ class SudokuGridTest extends \PHPUnit_Framework_TestCase
 
     //-- Private ----------------------------------------------------------//
 
-    private function getSut( string $gameId ) : SudokuGrid
+    private function getSut( string $gameId ) : Grid
     {
         $loader = new Helpers\SudokuLoaderInMemoryImplementation( $gameId );
-        $sut = new SudokuGrid( $loader );
+        $sut = new Grid( $loader );
 
         return $sut;
     }

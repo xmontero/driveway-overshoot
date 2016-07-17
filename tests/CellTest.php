@@ -17,7 +17,7 @@ class CellTest extends \PHPUnit_Framework_TestCase
     {
         $this->cellCoordinates = new Coordinates( new OneToNineValue( 3 ), new OneToNineValue( 5 ) );
 
-        $this->sudokuMock = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\SudokuGrid' )
+        $this->sudokuMock = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\Grid' )
             ->disableOriginalConstructor()
             ->setMethods( [ 'checkIncompatibility' ] )
             ->getMock();

@@ -13,7 +13,7 @@ class UnitTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $this->sudokuMock = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\SudokuGrid' )
+        $this->sudokuMock = $this->getMockBuilder( 'XaviMontero\DrivewayOvershoot\Grid' )
             ->disableOriginalConstructor()
             ->setMethods( array( 'checkIncompatibility' ) )
             ->getMock();

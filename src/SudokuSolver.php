@@ -9,11 +9,11 @@ class SudokuSolver
 {
     const MAX_ITERATIONS = 100;
 
-    private $sudokuGrid;
+    private $grid;
 
-    public function __construct( SudokuGrid $sudokuGrid )
+    public function __construct( Grid $grid )
     {
-        $this->sudokuGrid = $sudokuGrid;
+        $this->grid = $grid;
     }
 
     public function isSolved()
@@ -24,9 +24,9 @@ class SudokuSolver
         {
             $positionId = new OneToNineValue( $i );
 
-            $rowUnit = $this->sudokuGrid->getRowUnit( $positionId );
-            $columnUnit = $this->sudokuGrid->getColumnUnit( $positionId );
-            $boxUnit = $this->sudokuGrid->getBoxUnit( $positionId );
+            $rowUnit = $this->grid->getRowUnit( $positionId );
+            $columnUnit = $this->grid->getColumnUnit( $positionId );
+            $boxUnit = $this->grid->getBoxUnit( $positionId );
 
             $rowIsPerfect = $rowUnit->isPerfect();
             $columnIsPerfect = $columnUnit->isPerfect();
@@ -73,7 +73,7 @@ class SudokuSolver
         {
             for( $column = 1; $column <= 9; $column++ )
             {
-                $cell = $this->sudokuGrid->getCell( new Coordinates( new OneToNineValue( $column ), new OneToNineValue( $row ) ) );
+                $cell = $this->grid->getCell( new Coordinates( new OneToNineValue( $column ), new OneToNineValue( $row ) ) );
                 $candidates = $cell->getCandidates();
                 $candidates->reset();
             }
@@ -89,7 +89,7 @@ class SudokuSolver
                 $columnId = new OneToNineValue( $columnIdValue );
                 $rowId = new OneToNineValue( $rowIdValue );
 
-                $cell = $this->sudokuGrid->getCell( new Coordinates( $columnId, $rowId ) );
+                $cell = $this->grid->getCell( new Coordinates( $columnId, $rowId ) );
                 $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingRowColumnOrBox( $cell );
             }
         }
@@ -105,19 +105,19 @@ class SudokuSolver
 
     private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingRow( OneToNineValue $rowId, Cell $exploredCell )
     {
-        $row = $this->sudokuGrid->getRowUnit( $rowId );
+        $row = $this->grid->getRowUnit( $rowId );
         $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingUnit( $row, $exploredCell );
     }
 
     private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingColumn( OneToNineValue $columnId, Cell $exploredCell )
     {
-        $column = $this->sudokuGrid->getColumnUnit( $columnId );
+        $column = $this->grid->getColumnUnit( $columnId );
         $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingUnit( $column, $exploredCell );
     }
 
     private function killCandidatesOfGivenCellThatAppearAsValuesInConflictingBox( OneToNineValue $boxId, Cell $exploredCell )
     {
-        $box = $this->sudokuGrid->getBoxUnit( $boxId );
+        $box = $this->grid->getBoxUnit( $boxId );
         $this->killCandidatesOfGivenCellThatAppearAsValuesInConflictingUnit( $box, $exploredCell );
     }
 
@@ -145,7 +145,7 @@ class SudokuSolver
                 $column = new OneToNineValue( $columnValue );
                 $row = new OneToNineValue( $rowValue );
 
-                $cell = $this->sudokuGrid->getCell( new Coordinates( $column, $row ) );
+                $cell = $this->grid->getCell( new Coordinates( $column, $row ) );
 
                 if( ! $cell->hasValue() )
                 {
@@ -165,7 +165,7 @@ class SudokuSolver
             echo "| ";
             for( $column = 1; $column <= 9; $column++ )
             {
-                $cell = $this->sudokuGrid->getCell( new Coordinates( new OneToNineValue( $column ), new OneToNineValue( $row ) ) );
+                $cell = $this->grid->getCell( new Coordinates( new OneToNineValue( $column ), new OneToNineValue( $row ) ) );
                 $value = $cell->hasValue() ? $cell->getValue()->getValue() : ".";
                 echo "    " . $value . "     | ";
             }
@@ -174,7 +174,7 @@ class SudokuSolver
             echo "| ";
             for( $column = 1; $column <= 9; $column++ )
             {
-                $cell = $this->sudokuGrid->getCell( new Coordinates( new OneToNineValue( $column ), new OneToNineValue( $row ) ) );
+                $cell = $this->grid->getCell( new Coordinates( new OneToNineValue( $column ), new OneToNineValue( $row ) ) );
                 $candidates = $cell->getCandidates();
 
                 for( $candidateId = 1; $candidateId <= 9; $candidateId++ )

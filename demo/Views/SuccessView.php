@@ -2,7 +2,7 @@
 
 namespace XaviMontero\DrivewayOvershoot\Demo\Views;
 
-use XaviMontero\DrivewayOvershoot\SudokuGrid;
+use XaviMontero\DrivewayOvershoot\Grid;
 
 class SuccessView
 {
@@ -13,7 +13,7 @@ class SuccessView
         $this->widgets = $widgets;
     }
 
-    public function render( SudokuGrid $sudoku ) : string
+    public function render( Grid $sudoku ) : string
     {
         $page = $this->widgets->header();
 

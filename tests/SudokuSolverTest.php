@@ -2,7 +2,7 @@
 
 namespace XaviMontero\DrivewayOvershoot\Tests;
 
-use XaviMontero\DrivewayOvershoot\SudokuGrid;
+use XaviMontero\DrivewayOvershoot\Grid;
 use XaviMontero\DrivewayOvershoot\SudokuSolver;
 
 class SudokuSolverTest extends \PHPUnit_Framework_TestCase
@@ -10,8 +10,8 @@ class SudokuSolverTest extends \PHPUnit_Framework_TestCase
     public function testCreationIsOfProperClass()
     {
         $loader = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
-        $sudokuGrid = new SudokuGrid( $loader );
-        $sut = new SudokuSolver( $sudokuGrid );
+        $grid = new Grid( $loader );
+        $sut = new SudokuSolver( $grid );
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuSolver', $sut );
     }
 
@@ -21,8 +21,8 @@ class SudokuSolverTest extends \PHPUnit_Framework_TestCase
     public function testIsSolved( string $gameId, bool $solved )
     {
         $loader = new Helpers\SudokuLoaderInMemoryImplementation( $gameId );
-        $sudokuGrid = new SudokuGrid( $loader );
-        $sut = new SudokuSolver( $sudokuGrid );
+        $grid = new Grid( $loader );
+        $sut = new SudokuSolver( $grid );
 
         $this->assertEquals( $solved, $sut->isSolved() );
     }
@@ -41,8 +41,8 @@ class SudokuSolverTest extends \PHPUnit_Framework_TestCase
     public function testSolve()
     {
         $loader = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
-        $sudokuGrid = new SudokuGrid( $loader );
-        $sut = new SudokuSolver( $sudokuGrid );
+        $grid = new Grid( $loader );
+        $sut = new SudokuSolver( $grid );
 
         $sut->solve();
         $this->assertTrue( $sut->isSolved() );
