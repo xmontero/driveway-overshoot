@@ -45,7 +45,7 @@ class Grid
         return $this->cells[ $rowId->getValue() ][ $columnId->getValue() ];
     }
 
-    public function addObserver( SudokuObserverInterface $observer )
+    public function addObserver( GridObserverInterface $observer )
     {
         $this->observers[] = $observer;
     }
