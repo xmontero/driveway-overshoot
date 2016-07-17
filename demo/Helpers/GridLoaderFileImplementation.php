@@ -6,9 +6,9 @@ use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\Demo\Games\GameInterface;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Grid;
-use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
+use XaviMontero\DrivewayOvershoot\GridLoaderInterface;
 
-class SudokuLoaderFileImplementation implements SudokuLoaderInterface
+class GridLoaderFileImplementation implements GridLoaderInterface
 {
     private $clues;
 

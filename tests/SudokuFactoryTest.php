@@ -10,7 +10,7 @@ class SudokuFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreationIsOfProperClass()
     {
-        $persister = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
+        $persister = new Helpers\GridLoaderInMemoryImplementation( 'easy1' );
         $sut = new SudokuFactory( $persister );
 
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuFactory', $sut );
@@ -18,7 +18,7 @@ class SudokuFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateSudokuReturnsProperType()
     {
-        $persister = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
+        $persister = new Helpers\GridLoaderInMemoryImplementation( 'easy1' );
         $sut = new SudokuFactory( $persister );
 
         $sudoku = $sut->createSudoku();
@@ -27,7 +27,7 @@ class SudokuFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreationCallsTheReader()
     {
-        $persister = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
+        $persister = new Helpers\GridLoaderInMemoryImplementation( 'easy1' );
         $sut = new SudokuFactory( $persister );
 
         $sut->createSudoku();
@@ -39,14 +39,14 @@ class SudokuFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $coordinates = new Coordinates( new OneToNineValue( 7 ), new OneToNineValue( 3 ) );
 
-        $persister = new Helpers\SudokuLoaderInMemoryImplementation( 'empty' );
+        $persister = new Helpers\GridLoaderInMemoryImplementation( 'empty' );
         $sut = new SudokuFactory( $persister );
 
         $sudoku = $sut->createSudoku();
 
         $this->assertFalse( $sudoku->getCell( $coordinates )->hasValue() );
 
-        $persister = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
+        $persister = new Helpers\GridLoaderInMemoryImplementation( 'easy1' );
         $sut = new SudokuFactory( $persister );
 
         $sudoku = $sut->createSudoku();

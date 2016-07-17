@@ -15,7 +15,7 @@ class Grid
     private $cells;
     private $loader;
 
-    public function __construct( SudokuLoaderInterface $loader )
+    public function __construct( GridLoaderInterface $loader )
     {
         $this->loader = $loader;
 

@@ -4,9 +4,9 @@ namespace XaviMontero\DrivewayOvershoot\Tests\Helpers;
 
 use XaviMontero\DrivewayOvershoot\Coordinates;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
-use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
+use XaviMontero\DrivewayOvershoot\GridLoaderInterface;
 
-class SudokuLoaderInMemoryImplementation implements SudokuLoaderInterface
+class GridLoaderInMemoryImplementation implements GridLoaderInterface
 {
     public $gameId;
     public $allClueValues;

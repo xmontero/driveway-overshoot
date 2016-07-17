@@ -203,7 +203,7 @@ class GridTest extends \PHPUnit_Framework_TestCase
 
     private function getSut( string $gameId ) : Grid
     {
-        $loader = new Helpers\SudokuLoaderInMemoryImplementation( $gameId );
+        $loader = new Helpers\GridLoaderInMemoryImplementation( $gameId );
         $sut = new Grid( $loader );
 
         return $sut;

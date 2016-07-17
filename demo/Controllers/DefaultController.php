@@ -7,21 +7,21 @@ use XaviMontero\DrivewayOvershoot\Demo\Helpers\CommandLineParser;
 use XaviMontero\DrivewayOvershoot\OneToNineValue;
 use XaviMontero\DrivewayOvershoot\Grid;
 use XaviMontero\DrivewayOvershoot\SudokuFactory;
-use XaviMontero\DrivewayOvershoot\SudokuLoaderInterface;
+use XaviMontero\DrivewayOvershoot\GridLoaderInterface;
 use XaviMontero\DrivewayOvershoot\SudokuSolver;
 
 class DefaultController
 {
     private $commandLineParser;
-    private $sudokuLoader;
+    private $gridLoader;
     private $viewRenderers;
     private $command;
     private $gameId;
 
-    public function __construct( CommandLineParser $commandLineParser, SudokuLoaderInterface $sudokuLoader, array $viewRenderers )
+    public function __construct( CommandLineParser $commandLineParser, GridLoaderInterface $gridLoader, array $viewRenderers )
     {
         $this->commandLineParser = $commandLineParser;
-        $this->sudokuLoader = $sudokuLoader;
+        $this->gridLoader = $gridLoader;
         $this->viewRenderers = $viewRenderers;
 
         $this->command = $commandLineParser->getcommand();
@@ -69,7 +69,7 @@ class DefaultController
 
     private function assertGameIdExists()
     {
-        $gameExists = $this->sudokuLoader->gameExists( $this->gameId );
+        $gameExists = $this->gridLoader->gameExists( $this->gameId );
         if( ! $gameExists )
         {
             $errorMessage = $this->viewRenderers[ 'error' ]->renderGameIdDoesNotExist( $this->command, $this->gameId );
@@ -88,8 +88,8 @@ class DefaultController
 
     private function getSudokuModel() : Grid
     {
-        $this->sudokuLoader->loadClues( $this->gameId );
-        $sudokuFactory = new SudokuFactory( $this->sudokuLoader );
+        $this->gridLoader->loadClues( $this->gameId );
+        $sudokuFactory = new SudokuFactory( $this->gridLoader );
         return $sudokuFactory->createSudoku();
     }
 

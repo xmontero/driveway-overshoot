@@ -9,7 +9,7 @@ class SudokuSolverTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreationIsOfProperClass()
     {
-        $loader = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
+        $loader = new Helpers\GridLoaderInMemoryImplementation( 'easy1' );
         $grid = new Grid( $loader );
         $sut = new SudokuSolver( $grid );
         $this->assertInstanceOf( 'XaviMontero\\DrivewayOvershoot\\SudokuSolver', $sut );
@@ -20,7 +20,7 @@ class SudokuSolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsSolved( string $gameId, bool $solved )
     {
-        $loader = new Helpers\SudokuLoaderInMemoryImplementation( $gameId );
+        $loader = new Helpers\GridLoaderInMemoryImplementation( $gameId );
         $grid = new Grid( $loader );
         $sut = new SudokuSolver( $grid );
 
@@ -40,7 +40,7 @@ class SudokuSolverTest extends \PHPUnit_Framework_TestCase
 
     public function testSolve()
     {
-        $loader = new Helpers\SudokuLoaderInMemoryImplementation( 'easy1' );
+        $loader = new Helpers\GridLoaderInMemoryImplementation( 'easy1' );
         $grid = new Grid( $loader );
         $sut = new SudokuSolver( $grid );
 

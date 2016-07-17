@@ -17,7 +17,7 @@ require_once( __DIR__ . '/../vendor/autoload.php' );
 $commandLineParser = new Helpers\CommandLineParser( $argv );
 
 // Sudoku Loader service.
-$sudokuLoader = new Helpers\SudokuLoaderFileImplementation();
+$gridLoader = new Helpers\GridLoaderFileImplementation();
 
 // View Renderers services.
 $ansi = new Helpers\AnsiColorCodesGenerator();
@@ -30,5 +30,5 @@ $viewRenderers = [ 'success' => $successViewRenderer, 'error' => $errorViewRende
 // Create the controller injecting services, and run it.                   //
 //-------------------------------------------------------------------------//
 
-$controller = new Controllers\DefaultController( $commandLineParser, $sudokuLoader, $viewRenderers );
+$controller = new Controllers\DefaultController( $commandLineParser, $gridLoader, $viewRenderers );
 $controller->run();
