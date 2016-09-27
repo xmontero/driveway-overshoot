@@ -23,16 +23,20 @@ This model represents a sudoku solver.
     host$ vagrant up
     host$ vagrant ssh
     virtual$ cd /vagrant
-    virtual$ vendor/phpunit/phpunit/phpunit
+    virtual$ tools/phpunit
 
 ## To run a plain-PHP demo
 
     host$ vagrant up
     host$ vagrant ssh
     virtual$ cd /vagrant
-    virtual$ php demo/demo.php 1
+    virtual$ tools/demo
+    
+For the demo use the following numbers:
 
-    // You can change the 1 by any other number provided there is a file in the demo/Games directory.
+* 1 - Compatible determinate. The puzzle has a unique solution.
+* 2 - Compatible indeterminate. Same of Game1 but with several clues removed. Underspecified. The puzzle has infinite solutions.
+* 3 - Incompatible. Same of Game1 but the clue "1" in column 4, row 9, makes the puzzle not solvable, as the unique solution requires there to be a "7".
 
 ## TODO:
 

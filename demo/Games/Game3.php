@@ -2,9 +2,9 @@
 
 namespace XaviMontero\DrivewayOvershoot\Demo\Games;
 
-class Game1 implements GameInterface
+class Game3 implements GameInterface
 {
-    // Compatible determinate (AKA proper puzzle).
+    // Incompatible.
     function getClues() : array
     {
         return
@@ -19,7 +19,7 @@ class Game1 implements GameInterface
 
             [ 0, 9, 7,   3, 0, 0,   0, 0, 0 ],
             [ 0, 0, 1,   8, 2, 0,   9, 4, 7 ],
-            [ 8, 5, 0,   0, 0, 4,   6, 0, 0 ],
+            [ 8, 5, 0,   1, 0, 4,   6, 0, 0 ],
         ];
     }
 }
