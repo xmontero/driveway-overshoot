@@ -38,6 +38,13 @@ For the demo use the following numbers:
 * 2 - Compatible indeterminate. Same of Game1 but with several clues removed. Underspecified. The puzzle has infinite solutions.
 * 3 - Incompatible. Same of Game1 but the clue "1" in column 4, row 9, makes the puzzle not solvable, as the unique solution requires there to be a "7".
 
+## Generating output documentation
+
+* To create a code-coverage report, run `tools/phpunit_with_coverage`
+* To create an API documentation, run `tools/doxygen`
+
+Documentation output is in `doc/generated`
+
 ## TODO:
 
 We should be coherent with the name of some sort of standard.
