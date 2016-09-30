@@ -1,6 +1,6 @@
 <phpunit bootstrap="vendor/autoload.php" colors="true">
     <testsuites>
-        <testsuite name="money">
+        <testsuite name="driveway-overshoot">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
